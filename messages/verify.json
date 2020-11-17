@@ -1,0 +1,11 @@
+{
+  "description": "for an npm package validate the associated digital signature if it exits",
+  "examples": [
+    "sfdx plugins:trust:verify --npm @scope/npmName --registry http://my.repo.org:4874",
+    "sfdx plugins:trust:verify --npm @scope/npmName"
+  ],
+  "flags": {
+    "npm": "Specify the npm name. This can include a tag/version",
+    "registry": "The registry name. the behavior is the same as npm"
+  }
+}
