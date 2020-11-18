@@ -121,9 +121,7 @@ describe('InstallationVerification Tests', () => {
       readFile() {},
       createWriteStream() {
         return new Writable({
-          write(data) {
-            console.log(data);
-          },
+          write() {},
         });
       },
       createReadStream() {
@@ -199,9 +197,7 @@ describe('InstallationVerification Tests', () => {
       readFile() {},
       createWriteStream() {
         return new Writable({
-          write(data) {
-            console.log(data);
-          },
+          write() {},
         });
       },
       createReadStream() {
@@ -279,9 +275,7 @@ describe('InstallationVerification Tests', () => {
       readFile() {},
       createWriteStream() {
         return new Writable({
-          write(data) {
-            console.log(data);
-          },
+          write() {},
         });
       },
       createReadStream() {
@@ -364,9 +358,7 @@ describe('InstallationVerification Tests', () => {
       readFile() {},
       createWriteStream() {
         return new Writable({
-          write(data) {
-            console.log(data);
-          },
+          write() {},
         });
       },
       createReadStream() {
@@ -608,9 +600,7 @@ describe('InstallationVerification Tests', () => {
       unlink() {},
       createWriteStream() {
         return new Writable({
-          write(data) {
-            console.log(data);
-          },
+          write() {},
         });
       },
     };
@@ -672,9 +662,7 @@ describe('InstallationVerification Tests', () => {
       unlink() {},
       createWriteStream() {
         return new Writable({
-          write(data) {
-            console.log(data);
-          },
+          write() {},
         });
       },
       createReadStream() {

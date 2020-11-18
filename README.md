@@ -57,7 +57,7 @@ $ NODE_OPTIONS=--inspect-brk bin/run plugins:trust:verify
 
 ## Commands
 
-for an npm package validate the associated digital signature if it exits
+validate a digital signature for a npm package
 
 - [`sfdx plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`]
 

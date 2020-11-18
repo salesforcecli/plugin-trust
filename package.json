@@ -1,6 +1,6 @@
 {
   "name": "@salesforce/plugin-trust",
-  "description": "commands to verify the authenticity of a plugin",
+  "description": "validate a digital signature for a npm package",
   "version": "1.0.0",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
@@ -74,10 +74,10 @@
     ],
     "topics": {
       "plugins": {
-        "description": "commands to verify the authenticity of a plugin",
+        "description": "validate a digital signature for a npm package",
         "subtopics": {
           "trust": {
-            "description": "commands to verify the authenticity of a plugin"
+            "description": "validate a digital signature for a npm package"
           }
         }
       }

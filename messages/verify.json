@@ -1,5 +1,5 @@
 {
-  "description": "for an npm package validate the associated digital signature if it exits",
+  "description": "validate a digital signature for a npm package",
   "examples": [
     "sfdx plugins:trust:verify --npm @scope/npmName --registry http://my.repo.org:4874",
     "sfdx plugins:trust:verify --npm @scope/npmName"
