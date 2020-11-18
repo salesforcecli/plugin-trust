@@ -66,7 +66,7 @@
     "commands": "./lib/commands",
     "hooks": {
       "plugins:preinstall:verify:signature": [
-        "./dist/hooks/verifyInstallSignature.js"
+        "./lib/hooks/verifyInstallSignature.js"
       ]
     },
     "devPlugins": [
@@ -74,7 +74,6 @@
     ],
     "topics": {
       "plugins": {
-        "description": "validate a digital signature for a npm package",
         "subtopics": {
           "trust": {
             "description": "validate a digital signature for a npm package"
@@ -87,7 +86,7 @@
   "scripts": {
     "build": "sf-build",
     "clean": "sf-clean",
-    "clean-all": "-clean all",
+    "clean-all": "sf-clean all",
     "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json",
     "compile": "sf-compile",
     "docs": "sf-docs",
