@@ -1,32 +1,53 @@
 # plugin-trust
 
-commands to verify the authenticity of a plugin
+Verify the authenticity of a plugin being installed with `plugins:install`.
+
+### Allowlisting
+If a plugin needs to be installed in a unattended fashion as is the case with automation. The plugin acceptance prompt can be avoided by placing the plugin name in $HOME/.config/sfdx/unsignedPluginAllowList.json
+
+```json
+[    
+    "@salesforce/npmName",
+    "plugin2",
+    ...
+]
+```
+
+If a plugin is not signed you then won't get a prompt confirming the installation of an unsigned plugin. Instead you'll get a message stating that the plugin was allowlisted and the installation will proceed as normal.
+
+### Additional Verification Information
+In addition to signature verification additional checks are in place to help ensure authenticity of plugins.
+
+DNS - The public key url and signature urls must have an https scheme and originate from developer.salesforce.com
+Cert Pinning - The digial fingerprint of developer.salesforce.com's certificate is validated. This helps prevent man in the middle attacks.
 
 ## Getting Started
 
-To use, install the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) and run the following commands.
+The trust plugin is already bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli).
 
-```
-Verify the CLI is installed
-  $ sfdx (-v | --version)
-Install the plugin-trust plugin
-  $ sfdx plugins:install plugin-trust
-To run a command
-  $ sfdx [command]
+```bash
+# Verify the CLI is installed
+$ sfdx (-v | --version)
+
+# Install a plugin which will be verified by the trust plugin
+$ sfdx plugins:install auth
 ```
 
 To build the plugin locally, make sure to have yarn installed and run the following commands:
 
-```
-Clone the repository
-  $ git clone git@github.com:salesforcecli/plugin-trust
-Install the dependencies and compile
-  $ yarn install
-  $ yarn prepack
-Link your plugin to the sfdx cli
-  $ sfdx plugins:link .
-To verify
-  $ sfdx plugins
+```bash
+# Clone the repository
+git clone git@github.com:salesforcecli/plugin-trust
+
+# Install the dependencies and compile
+yarn
+yarn prepack
+
+# Link your plugin to the Salesforce cli
+sfdx plugins:link .
+
+# To verify
+sfdx plugins
 ```
 
 ## Debugging your plugin
