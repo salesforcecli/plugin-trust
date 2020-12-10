@@ -2,6 +2,10 @@
 
 Verify the authenticity of a plugin being installed with `plugins:install`.
 
+This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli). For more information on the CLI, read the [getting started guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm).
+
+We always recommend using the latest version of these commands bundled with the CLI, however, you can install a specific version or tag if needed.
+
 ### Allowlisting
 If a plugin needs to be installed in a unattended fashion as is the case with automation. The plugin acceptance prompt can be avoided by placing the plugin name in $HOME/.config/sfdx/unsignedPluginAllowList.json
 
@@ -21,17 +25,36 @@ In addition to signature verification additional checks are in place to help ens
 DNS - The public key url and signature urls must have an https scheme and originate from developer.salesforce.com
 Cert Pinning - The digial fingerprint of developer.salesforce.com's certificate is validated. This helps prevent man in the middle attacks.
 
-## Getting Started
-
-The trust plugin is already bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli).
+## Install
 
 ```bash
-# Verify the CLI is installed
-$ sfdx (-v | --version)
-
-# Install a plugin which will be verified by the trust plugin
-$ sfdx plugins:install auth
+sfdx plugins:install trust@x.y.z
 ```
+
+## Issues
+
+Please report any issues at https://github.com/forcedotcom/cli/issues
+
+## Contributing
+
+1. Please read our [Code of Conduct](CODE_OF_CONDUCT.md)
+2. Create a new issue before starting your project so that we can keep track of
+   what you are trying to add/fix. That way, we can also offer suggestions or
+   let you know if there is already an effort in progress.
+3. Fork this repository.
+4. [Build the plugin locally](#build)
+5. Create a _topic_ branch in your fork. Note, this step is recommended but technically not required if contributing using a fork.
+6. Edit the code in your fork.
+7. Write appropriate tests for your changes. Try to achieve at least 95% code coverage on any new code. No pull request will be accepted without unit tests.
+8. Sign CLA (see [CLA](#cla) below).
+9. Send us a pull request when you are done. We'll review your code, suggest any needed changes, and merge it in.
+
+### CLA
+
+External contributors will be required to sign a Contributor's License
+Agreement. You can do so by going to https://cla.salesforce.com/sign-cla.
+
+### Build
 
 To build the plugin locally, make sure to have yarn installed and run the following commands:
 
@@ -40,44 +63,28 @@ To build the plugin locally, make sure to have yarn installed and run the follow
 git clone git@github.com:salesforcecli/plugin-trust
 
 # Install the dependencies and compile
-yarn
-yarn prepack
+yarn install
+yarn build
+```
 
-# Link your plugin to the Salesforce cli
+To use your plugin, run using the local `./bin/run` or `./bin/run.cmd` file.
+
+```bash
+# Run using local run file.
+./bin/run plugins:trust
+```
+
+There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
+
+```bash
+# Link your plugin to the sfdx cli
 sfdx plugins:link .
-
 # To verify
 sfdx plugins
 ```
 
-## Debugging your plugin
-
-We recommend using the Visual Studio Code (VS Code) IDE for your plugin development. Included in the `.vscode` directory of this plugin is a `launch.json` config file, which allows you to attach a debugger to the node process when running your commands.
-
-To debug the `plugins:trust:verify` command:
-
-If you linked your plugin to the sfdx cli, call your command with the `dev-suspend` switch:
-
-```sh-session
-$ sfdx hello:org -u myOrg@example.com --dev-suspend
-```
-
-Alternatively, to call your command using the `bin/run` script, set the `NODE_OPTIONS` environment variable to `--inspect-brk` when starting the debugger:
-
-```sh-session
-$ NODE_OPTIONS=--inspect-brk bin/run plugins:trust:verify
-```
-
-2. Set some breakpoints in your command code
-3. Click on the Debug icon in the Activity Bar on the side of VS Code to open up the Debug view.
-4. In the upper left hand corner of VS Code, verify that the "Attach to Remote" launch configuration has been chosen.
-5. Hit the green play button to the left of the "Attach to Remote" launch configuration window. The debugger should now be suspended on the first line of the program.
-6. Hit the green play button at the top middle of VS Code (this play button will be to the right of the play button that you clicked in step #5).
-   ![how to debug](./.images/vscodeScreenshot.png)
-   Congrats, you are debugging!
-
 ## Commands
-
+<!-- commands -->
 validate a digital signature for a npm package
 
 - [`sfdx plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`]
@@ -106,3 +113,4 @@ EXAMPLES
   sfdx plugins:trust:verify --npm @scope/npmName --registry http://my.repo.org:4874
   sfdx plugins:trust:verify --npm @scope/npmName
 ```
+<!-- commandsstop -->
