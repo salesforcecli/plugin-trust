@@ -249,19 +249,7 @@ export class InstallationVerification implements Verifier {
     logger.debug(`isAllowListed | allowlistFilePath: ${allowListedFilePath}`);
     let fileContent: string;
     try {
-      // deprecation time for whitelist -> allowlist
-      try {
-        // read new file
-        fileContent = await this.readFileAsync(allowListedFilePath);
-      } catch {
-        // read old file
-        fileContent = await this.readFileAsync(path.join(this.getConfigPath(), 'unsignedPluginWhiteList.json'));
-        // send message
-        process.emitWarning(
-          'support for the file `unsignedPluginWhiteList.json` will be deprecated in the future. We are transitioning towards using `unsignedPluginAllowList.json` as a replacement'
-        );
-      }
-
+      fileContent = await this.readFileAsync(allowListedFilePath);
       const allowlistArray = JSON.parse(fileContent);
       logger.debug('isAllowListed | Successfully parsed allowlist.');
       return allowlistArray && allowlistArray.includes(this.pluginNpmName.toString());

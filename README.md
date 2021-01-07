@@ -7,10 +7,11 @@ This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.co
 We always recommend using the latest version of these commands bundled with the CLI, however, you can install a specific version or tag if needed.
 
 ### Allowlisting
-If a plugin needs to be installed in a unattended fashion as is the case with automation. The plugin acceptance prompt can be avoided by placing the plugin name in $HOME/.config/sfdx/unsignedPluginAllowList.json
+
+If a plugin needs to be installed in a unattended fashion as is the case with automation. The plugin acceptance prompt can be avoided by placing the plugin name in \$HOME/.config/sfdx/unsignedPluginAllowList.json
 
 ```json
-[    
+[
     "@salesforce/npmName",
     "plugin2",
     ...
@@ -20,10 +21,11 @@ If a plugin needs to be installed in a unattended fashion as is the case with au
 If a plugin is not signed you then won't get a prompt confirming the installation of an unsigned plugin. Instead you'll get a message stating that the plugin was allowlisted and the installation will proceed as normal.
 
 ### Additional Verification Information
+
 In addition to signature verification additional checks are in place to help ensure authenticity of plugins.
 
 DNS - The public key url and signature urls must have an https scheme and originate from developer.salesforce.com
-Cert Pinning - The digial fingerprint of developer.salesforce.com's certificate is validated. This helps prevent man in the middle attacks.
+Cert Pinning - The digital fingerprint of developer.salesforce.com's certificate is validated. This helps prevent man in the middle attacks.
 
 ## Install
 
@@ -33,7 +35,7 @@ sfdx plugins:install trust@x.y.z
 
 ## Issues
 
-Please report any issues at https://github.com/forcedotcom/cli/issues
+Please report any issues at <https://github.com/forcedotcom/cli/issues>
 
 ## Contributing
 
@@ -52,7 +54,7 @@ Please report any issues at https://github.com/forcedotcom/cli/issues
 ### CLA
 
 External contributors will be required to sign a Contributor's License
-Agreement. You can do so by going to https://cla.salesforce.com/sign-cla.
+Agreement. You can do so by going to <https://cla.salesforce.com/sign-cla>.
 
 ### Build
 
@@ -84,7 +86,9 @@ sfdx plugins
 ```
 
 ## Commands
+
 <!-- commands -->
+
 validate a digital signature for a npm package
 
 - [`sfdx plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`]
@@ -113,4 +117,5 @@ EXAMPLES
   sfdx plugins:trust:verify --npm @scope/npmName --registry http://my.repo.org:4874
   sfdx plugins:trust:verify --npm @scope/npmName
 ```
+
 <!-- commandsstop -->
