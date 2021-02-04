@@ -5,6 +5,11 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+
 import * as path from 'path';
 import { Readable } from 'stream';
 import { parse as parseUrl, URL, UrlWithStringQuery } from 'url';
@@ -267,7 +272,7 @@ export class InstallationVerification implements Verifier {
    *
    * @param url host url.
    */
-  public getSigningContent(url): Promise<Readable> {
+  public getSigningContent(url: string): Promise<Readable> {
     return new Promise((resolve, reject) => {
       this.requestImpl(url, (err: Error, response: request.RequestResponse, responseData) => {
         if (err) {
@@ -286,7 +291,7 @@ export class InstallationVerification implements Verifier {
           } else {
             return reject(
               new SfdxError(
-                `A request to url ${url as string} failed with error code: [${
+                `A request to url ${url} failed with error code: [${
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   (response as { statusCode: string }) ? response.statusCode : 'undefined'
                 }]`,

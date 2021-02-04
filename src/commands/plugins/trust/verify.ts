@@ -58,10 +58,10 @@ export class Verify extends SfdxCommand {
 
     vConfig.verifier = this.getVerifier(npmName, configContext);
 
-    vConfig.log = this.ux.log.bind(this.ux);
+    vConfig.log = this.ux.log.bind(this.ux) as (msg: string) => void;
 
     if (this.flags.registry) {
-      process.env.SFDX_NPM_REGISTRY = this.flags.registry;
+      process.env.SFDX_NPM_REGISTRY = this.flags.registry as string;
     }
 
     try {
@@ -81,7 +81,8 @@ export class Verify extends SfdxCommand {
       } else {
         return { message, verified: true };
       }
-    } catch (err) {
+    } catch (error) {
+      const err = error as SfdxError;
       this.logger.debug(`err reported: ${JSON.stringify(err, null, 4)}`);
       const response: VerifyResponse = {
         verified: false,
