@@ -1,5 +1,5 @@
 # -- CLEAN
-
+tmp/
 # use yarn by default, so ignore npm
 package-lock.json
 
@@ -12,8 +12,7 @@ yarn-error.log
 lerna-debug.log
 
 # compile source
-lib/*
-!src/lib/*
+lib
 
 # test artifacts
 *xunit.xml
@@ -24,6 +23,11 @@ coverage
 
 # generated docs
 docs
+
+# ignore sfdx-trust files
+*.tgz
+*.sig
+package.json.bak.
 
 # -- CLEAN ALL
 node_modules
