@@ -6,6 +6,11 @@
  */
 import { SfdxError } from '@salesforce/core';
 
+interface NpmNameInfo {
+  scope: string;
+  name: string;
+}
+
 /**
  * String representing the parsed components of an NpmName
  *
@@ -69,9 +74,9 @@ export class NpmName {
    * Static helper to parse the name and scope.
    *
    * @param {string} name - The string to parse.
-   * @param returnNpmName - The object to update.
+   * @param {NpmNameInfo} returnNpmName - The object to update.
    */
-  private static setNameAndScope(name: string, returnNpmName): void {
+  private static setNameAndScope(name: string, returnNpmName: NpmNameInfo): void {
     // There are at least 2 components. So there is likely a scope.
     const subComponents: string[] = name.split('/');
     if (subComponents.length === 2 && subComponents[0].trim().length > 0 && subComponents[1].trim().length > 0) {
