@@ -78,6 +78,7 @@
     ],
     "topics": {
       "plugins": {
+        "description": "list installed plugins",
         "subtopics": {
           "trust": {
             "description": "validate a digital signature for a npm package"
