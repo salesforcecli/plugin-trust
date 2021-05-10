@@ -118,5 +118,5 @@ EXAMPLES
   sfdx plugins:trust:verify --npm @scope/npmName
 ```
 
-_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-template/blob/v1.0.2/src/commands/plugins/trust/verify.ts)_
+_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-template/blob/v1.0.3/src/commands/plugins/trust/verify.ts)_
 <!-- commandsstop -->
