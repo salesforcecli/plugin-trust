@@ -88,7 +88,7 @@
       }
     }
   },
-  "repository": "salesforcecli/plugin-template",
+  "repository": "salesforcecli/plugin-trust",
   "scripts": {
     "build": "sf-build",
     "clean": "sf-clean",
