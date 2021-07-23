@@ -69,6 +69,26 @@ workflows:
             branches:
               only: main
           context: CLI_CTC
+        release-management/test-nut:
+          matrix:
+            parameters:
+              os:
+                - linux
+                - windows
+              sfdx_version:
+                - latest
+              node_version:
+                - latest
+          requires:
+            - release-management/test-package
+      - release-management/release-package:
+          sign: true
+          github-release: true
+          requires:
+            - release-management/test-package
+          filters:
+            branches:
+              only: main
   test-ts-update:
     triggers:
       - schedule:
