@@ -46,7 +46,7 @@ describe('getNpmRegistry', () => {
   });
 });
 
-describe('InstallationVerification Tests', () => {
+describe.skip('InstallationVerification Tests', () => {
   const config: ConfigContext = {
     get dataDir() {
       return 'dataPath';
@@ -474,7 +474,7 @@ describe('InstallationVerification Tests', () => {
       });
   });
 
-  it('Npm Meta Request Error', async () => {
+  it('NpmCommand Meta Request Error', async () => {
     const iRequest: IRequest = (url: string, cb?: request.RequestCallback): Readable => {
       if (url.includes('foo.tgz')) {
         const reader = new Readable({

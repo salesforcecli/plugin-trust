@@ -1,0 +1,240 @@
+{
+  "_id": "@salesforce/plugin-login@0.0.8",
+  "_rev": "14-c8a179da64b28c1cd8b579e2a10da204",
+  "name": "@salesforce/plugin-login",
+  "dist-tags": {
+    "latest": "0.0.8"
+  },
+  "versions": ["0.0.1", "0.0.2", "0.0.3", "0.0.4", "0.0.5", "0.0.6", "0.0.7", "0.0.8"],
+  "time": {
+    "created": "2021-05-19T15:18:27.818Z",
+    "0.0.1": "2021-05-19T15:18:28.368Z",
+    "modified": "2021-07-23T14:15:48.040Z",
+    "0.0.2": "2021-05-25T19:12:17.195Z",
+    "0.0.3": "2021-06-07T15:40:20.796Z",
+    "0.0.4": "2021-06-16T19:24:45.973Z",
+    "0.0.5": "2021-07-11T19:54:07.740Z",
+    "0.0.6": "2021-07-12T22:31:07.095Z",
+    "0.0.7": "2021-07-19T18:07:20.050Z",
+    "0.0.8": "2021-07-23T14:15:45.468Z"
+  },
+  "maintainers": [
+    "jgraff <jgraff@salesforce.com>",
+    "cdias <cdias@salesforce.com>",
+    "conal <conalc86@gmail.com>",
+    "jgrantham <jason.grantham@salesforce.com>",
+    "vazexqi <nchen.dev@mac.com>",
+    "mpsenn <msenn@salesforce.com>",
+    "sfdc_iamigo <igoldstein@salesforce.com>",
+    "diervo <elfogris@gmail.com>",
+    "rsalvador <rsalvador@salesforce.com>",
+    "kevinv11n <kevin@v11n.com>",
+    "tbliss <tbliss@salesforce.com>",
+    "davidturissini <davidairborne@gmail.com>",
+    "byao <bobbyyao@gmail.com>",
+    "pmdartus <dartus.pierremarie@gmail.com>",
+    "futuremint_sf <dwoodward@salesforce.com>",
+    "interactivellama <llama@interactivellama.com>",
+    "maratto <marat+npm@salesforce.com>",
+    "pallavi.singh <pallavi.singh@salesforce.com>",
+    "smugakamil <smugakamil@gmail.com>",
+    "tausifm <tausif.muzaffar@salesforce.com>",
+    "kriscfoster <kris.foster@ucdconnect.ie>",
+    "brandonm <bmurnane@salesforce.com>",
+    "vineet-sinha <vineet.sinha@gmail.com>",
+    "salesforce-bot <j.ward+npm@salesforce.com>",
+    "harshkothari410 <harshkothari410@gmail.com>",
+    "ekashida <ekashida@gmail.com>",
+    "gr8gatsby <kevinhill@live.com>",
+    "ravi.jayaramappa <ravi.jayaramappa@salesforce.com>",
+    "apapko <apapko@salesforce.com>",
+    "krisgraysfdc <kgray@salesforce.com>",
+    "jleen-sfdc <jleen@salesforce.com>",
+    "jqian <jqian@salesforce.com>",
+    "cwallsf <cwall@salesforce.com>",
+    "dhagberg-sf <dhagberg@salesforce.com>",
+    "rasphilco <philipe.navarro@salesforce.com>",
+    "jbfeingold <jfeingold@salesforce.com>",
+    "michaelhoefer <michaelhoefer@gmail.com>",
+    "tlohr <tlohr@salesforce.com>",
+    "dpessoa <dpessoa@salesforce.com>",
+    "khawkins <khawkins@salesforce.com>",
+    "jgellin <jgellin@salesforce.com>",
+    "maxreality <m@ab3.in>",
+    "amphro <amphro@gmail.com>",
+    "davidrouten <david@routen.io>",
+    "tconn <tconn@salesforce.com>",
+    "salesforce-releases <alm-cli@salesforce.com>",
+    "dehru <dehru2@yahoo.com>",
+    "nazligungor <n.gungor@salesforce.com>",
+    "abdulsattar <asattar.md@gmail.com>",
+    "jodarove <jodarove@gmail.com>",
+    "rxu-sfdc <rxu@salesforce.com>",
+    "amcconnell-sf <amcconnell@salesforce.com>",
+    "nolanlawson <nolan@nolanlawson.com>",
+    "sfdctaka <t.arai@salesforce.com>",
+    "fernomac <no_oneatall@hotmail.com>",
+    "maliroteh-sf <maliroteh@salesforce.com>",
+    "justinharringa <justin@harringa.com>",
+    "ahakro <ahakro@salesforce.com>",
+    "rjanamanchi <rjanamanchi@salesforce.com>",
+    "vttikoo <vtikoo@salesforce.com>",
+    "dlouvton <dlouvton@gmail.com>",
+    "cafreeman <cfreeman.code@gmail.com>",
+    "mallik.webaroo <mallik.webaroo@gmail.com>",
+    "jimjag <jimjag@gmail.com>",
+    "alyssaa14 <aarvin@salesforce.com>",
+    "ivarley <ian@ianvarley.com>",
+    "svanteddu <svanteddu@salesforce.com>",
+    "neeraj_g <ngirolkar@salesforce.com>",
+    "jbartolotta-sfdc <jbartolotta@salesforce.com>"
+  ],
+  "description": "A template repository for sfdx plugins",
+  "homepage": "https://github.com/salesforcecli/plugin-login",
+  "keywords": ["force", "salesforce", "sf", "sf login", "sf logout", "sf-plugin"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salesforcecli/plugin-login.git"
+  },
+  "author": "Salesforce",
+  "bugs": {
+    "url": "https://github.com/forcedotcom/cli/issues"
+  },
+  "license": "BSD-3-Clause",
+  "readmeFilename": "README.md",
+  "_cached": false,
+  "_contentLength": 0,
+  "version": "0.0.8",
+  "dependencies": {
+    "@oclif/core": "^0.5.21",
+    "@salesforce/core": "^3.1.1-v3.2",
+    "inquirer": "^8.0.0",
+    "open": "^8.0.6",
+    "tslib": "^2"
+  },
+  "devDependencies": {
+    "@oclif/plugin-command-snapshot": "^2.2.2",
+    "@salesforce/cli-plugins-testkit": "^0.0.27",
+    "@salesforce/dev-config": "^2.1.2",
+    "@salesforce/dev-scripts": "^0.9.18",
+    "@salesforce/plugin-command-reference": "^1.3.4",
+    "@salesforce/plugin-functions": "^0.2.18",
+    "@salesforce/prettier-config": "^0.0.2",
+    "@salesforce/ts-sinon": "1.3.21",
+    "@types/inquirer": "^7.3.1",
+    "@types/shelljs": "^0.8.8",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "chai": "^4.2.0",
+    "cli-ux": "^5.6.3",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-salesforce": "^0.1.6",
+    "eslint-config-salesforce-license": "^0.1.6",
+    "eslint-config-salesforce-typescript": "^0.2.7",
+    "eslint-plugin-header": "^3.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsdoc": "^27.0.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.2.2",
+    "mocha": "^8.4.0",
+    "nyc": "^15.1.0",
+    "oclif": "^2.0.0-main.1",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^3.1.0",
+    "shelljs": "^0.8.4",
+    "shx": "0.3.3",
+    "sinon": "10.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.1.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "sf",
+    "topicSeparator": " ",
+    "devPlugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-command-snapshot",
+      "@salesforce/plugin-command-reference",
+      "@salesforce/plugin-functions"
+    ],
+    "topics": {
+      "login": {
+        "description": "Log in interactively to Salesforce orgs and other services.",
+        "subtopics": {
+          "org": {
+            "description": "Log in to your Salesforce orgs."
+          }
+        }
+      },
+      "logout": {
+        "description": "Log out of all Salesforce orgs and environments."
+      }
+    }
+  },
+  "scripts": {
+    "build": "sf-build",
+    "clean": "sf-clean",
+    "clean-all": "sf-clean all",
+    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json",
+    "compile": "sf-compile",
+    "docs": "sf-docs",
+    "format": "sf-format",
+    "lint": "sf-lint",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "yarn lint && yarn test:deprecation-policy && yarn test:json-schema && yarn test:command-reference",
+    "prepack": "sf-prepack",
+    "prepare": "sf-install",
+    "pretest": "sf-compile-test",
+    "test": "sf-test",
+    "test:command-reference": "./bin/dev commandreference:generate --erroronwarnings",
+    "test:deprecation-policy": "./bin/dev snapshot:compare",
+    "test:json-schema": "./bin/dev schema:compare",
+    "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
+    "version": "oclif readme"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "sf-husky-pre-commit",
+      "commit-msg": "sf-husky-commit-msg",
+      "pre-push": "sf-husky-pre-push"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sfdx": {
+    "publicKeyUrl": "https://developer.salesforce.com/media/salesforce-cli/sfdx-cli-03032020.crt",
+    "signatureUrl": "https://developer.salesforce.com/media/salesforce-cli/signatures/salesforce-plugin-login-0.0.8.sig"
+  },
+  "_resolved": "",
+  "_integrity": "",
+  "_from": "file:/home/circleci/project/salesforce-plugin-login-0.0.8.tgz",
+  "_nodeVersion": "12.22.3",
+  "_npmVersion": "6.14.13",
+  "dist": {
+    "integrity": "sha512-iGTKKTFlb+FRViWGus96rC3mrjyPGWe6vBAw0Lk4prEh9L8FRjoBJyOuE5HA+L79garFbaT9W5wQ/aCZt4j0PQ==",
+    "shasum": "bb57a1ebdea4a765c9f85142c82abcdaf8125a85",
+    "tarball": "https://registry.npmjs.org/@salesforce/plugin-login/-/plugin-login-0.0.8.tgz",
+    "fileCount": 31,
+    "unpackedSize": 77159,
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJg+s8RCRA9TVsSAnZWagAAn10P/jqBvV8jODD4+g6V888G\nb/oTEMIryw89GvevcJRe2IVqibKrGkE3tweLfbffgS7xYTO1CKah53zBrZ9O\nJTzKKfVzmmp2v0AxBMQKe49VT7fr5GHkrZlLVN/gMAyZlLhsR9572/jglvRv\nIuqRVnlI2tXOGW9WDmgVWEaGBK++PXusmZA4vMLz0TX3/GPGg20cTVoG+ywS\nKsW0rgT06MovSyqIHDNO0Hw0pagRZbwFZBBMSpNk3bn5s5PFTZBWtVyLybU8\nyeud5OMghxp9kzGb3BFg6cbVtbLd9rpN8syn2yaf/sxk+sYlVhDytlPwWjtu\nY106ZUJx2DDemmTDxPSBZ+04ucJGj3OOjvZli0GGg0SPYN/hmt/fQp0Tvm6v\ne0r1g9Fo1NzRGfhdK3AnrGa4b6cs4H8+34t0fV8V2CjNcXg4MNIokZWahjOp\nU4z5s/GFqrbbVb9J8h3kv5TE/xFPqbL76ibTiNgfQfzRc4/cPUF/fCvVEspL\nmaoq5R5ErJAcD9POjGKWpwwUtFFCaV1EjfGzq9UR4jH0YPtDbzH0Or0eGr0u\nHc8p4zoxHALMSyeE5D+2a8eCK1Ym47ykdCWBs0K+wwMMfLF8T9RJYa7qZ2jA\nKvhrqkRqAtIoHFiYJS+zNgCKJMIl42sAICYLLkWLywdEkN1mh4Rf3vMku1Xp\nxIwb\r\n=Eda1\r\n-----END PGP SIGNATURE-----\r\n"
+  },
+  "_npmUser": "salesforce-releases <alm-cli@salesforce.com>",
+  "directories": {},
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/plugin-login_0.0.8_1627049745351_0.7752338051092889"
+  },
+  "_hasShrinkwrap": false
+}
