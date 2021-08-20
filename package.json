@@ -9,6 +9,7 @@
     "@salesforce/command": "^3.0.5",
     "@salesforce/core": "^2.23.2",
     "npm": "^7.21.0",
+    "npm-run-path": "^4.0.1",
     "shelljs": "^0.8.4",
     "tslib": "^2"
   },

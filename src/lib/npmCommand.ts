@@ -8,6 +8,7 @@
 
 import * as path from 'path';
 import * as shelljs from 'shelljs';
+import npmRunPath from 'npm-run-path';
 import { SfdxError, fs } from '@salesforce/core';
 
 type DistTags = {
@@ -51,12 +52,13 @@ export class NpmCommand {
 
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const npmCli = NpmCommand.npmCli();
-    const exec = `/bin/bash -c "node ${npmCli} ${cmd} --registry=${options.registry} --json"`;
+    const exec = `${npmCli} ${cmd} --registry=${options.registry} --json`;
     const npmShowResult = shelljs.exec(exec, {
       ...options,
       silent: true,
       fatal: true,
       async: false,
+      env: npmRunPath.env({ env: process.env }),
     });
     if (npmShowResult.code !== 0) {
       throw new SfdxError(npmShowResult.stderr, 'ShellExecError');
