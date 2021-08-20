@@ -15,10 +15,9 @@ import { Readable } from 'stream';
 import { parse as parseUrl, URL, UrlWithStringQuery } from 'url';
 import { promisify as utilPromisify } from 'util';
 import * as crypto from 'crypto';
-import * as shelljs from 'shelljs';
 import { Logger, fs, SfdxError } from '@salesforce/core';
-import { get } from '@salesforce/ts-types';
 import * as request from 'request';
+import { NpmModule } from '../lib/npmCommand';
 import { NpmName } from './NpmName';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
@@ -324,8 +323,6 @@ export class InstallationVerification implements Verifier {
   public async streamTagGz(): Promise<NpmMeta> {
     const logger = await this.getLogger();
     const npmMeta = await this.retrieveNpmMeta();
-    const npmCmd = `npm pack ${npmMeta.moduleName}@${npmMeta.version} --registry ${getNpmRegistry().href}`;
-    logger.debug(`npmCmd: ${npmCmd}`);
     const urlObject: URL = new URL(npmMeta.tarballUrl);
     const urlPathsAsArray = urlObject.pathname.split('/');
     npmMeta.tarballFilename = npmMeta.moduleName.replace(/@/g, '');
@@ -337,15 +334,14 @@ export class InstallationVerification implements Verifier {
     // Make sure the cache path exists.
     try {
       await fs.mkdirp(this.getCachePath());
-      shelljs.pushd(this.getCachePath());
-      shelljs.exec(npmCmd, { silent: true, fatal: true });
+      new NpmModule(npmMeta.moduleName, npmMeta.version).pack(getNpmRegistry().href, { cwd: this.getCachePath() });
       const tarBallFile = fs
         .readdirSync(this.getCachePath(), { withFileTypes: true })
         .find((entry) => entry.isFile() && entry.name.includes(npmMeta.version));
-      npmMeta.tarballLocalPath = `${this.getCachePath()}${path.sep}${tarBallFile.name}`;
-      shelljs.popd();
+      npmMeta.tarballLocalPath = path.join(this.getCachePath(), tarBallFile.name);
     } catch (err) {
       logger.debug(err);
+      throw new SfdxError(err, 'ShellExecError');
     }
 
     return npmMeta;
@@ -366,105 +362,87 @@ export class InstallationVerification implements Verifier {
    */
   private async retrieveNpmMeta(): Promise<NpmMeta> {
     const logger = await this.getLogger();
-    return new Promise<NpmMeta>((resolve, reject) => {
-      const npmRegistry = getNpmRegistry();
+    const npmRegistry = getNpmRegistry();
 
-      logger.debug(`retrieveNpmMeta | npmRegistry: ${npmRegistry.href}`);
-      logger.debug(`retrieveNpmMeta | this.pluginNpmName.name: ${this.pluginNpmName.name}`);
-      logger.debug(`retrieveNpmMeta | this.pluginNpmName.scope: ${this.pluginNpmName.scope}`);
-      logger.debug(`retrieveNpmMeta | this.pluginNpmName.tag: ${this.pluginNpmName.tag}`);
+    logger.debug(`retrieveNpmMeta | npmRegistry: ${npmRegistry.href}`);
+    logger.debug(`retrieveNpmMeta | this.pluginNpmName.name: ${this.pluginNpmName.name}`);
+    logger.debug(`retrieveNpmMeta | this.pluginNpmName.scope: ${this.pluginNpmName.scope}`);
+    logger.debug(`retrieveNpmMeta | this.pluginNpmName.tag: ${this.pluginNpmName.tag}`);
 
-      const npmShowModule = this.pluginNpmName.scope
-        ? `@${this.pluginNpmName.scope}/${this.pluginNpmName.name}`
-        : this.pluginNpmName.name;
+    const npmShowModule = this.pluginNpmName.scope
+      ? `@${this.pluginNpmName.scope}/${this.pluginNpmName.name}`
+      : this.pluginNpmName.name;
 
-      // run npm show to get metadata
-      const npmCmd = `npm show ${npmShowModule} --registry ${npmRegistry.href} --json`;
-      let npmMetadata: NpmShowResults;
-      try {
-        const npmShowResult = shelljs.exec(npmCmd, { silent: true, fatal: true });
-        npmMetadata = JSON.parse(npmShowResult.stdout);
-      } catch (error) {
-        return reject(new SfdxError(error, 'ShellExecError'));
-      }
-      const meta: NpmMeta = new NpmMeta();
-      meta.moduleName = npmShowModule;
-      logger.debug('retrieveNpmMeta | Found npm meta information.');
-      if (!npmMetadata.versions) {
-        return reject(
-          new SfdxError(
-            `The npm metadata for plugin ${this.pluginNpmName.name} is missing the versions attribute.`,
-            'InvalidNpmMetadata'
-          )
-        );
-      }
+    const npmMetadata = new NpmModule(npmShowModule).show(npmRegistry.href);
+    const meta: NpmMeta = new NpmMeta();
+    meta.moduleName = npmShowModule;
+    logger.debug('retrieveNpmMeta | Found npm meta information.');
+    if (!npmMetadata.versions) {
+      throw new SfdxError(
+        `The npm metadata for plugin ${this.pluginNpmName.name} is missing the versions attribute.`,
+        'InvalidNpmMetadata'
+      );
+    }
 
-      // Assume the tag is version tag.
-      let versionNumber = npmMetadata.versions.find((version) => version === this.pluginNpmName.tag);
+    // Assume the tag is version tag.
+    let versionNumber = npmMetadata.versions.find((version) => version === this.pluginNpmName.tag);
 
-      logger.debug(`retrieveNpmMeta | versionObject: ${JSON.stringify(versionNumber)}`);
+    logger.debug(`retrieveNpmMeta | versionObject: ${JSON.stringify(versionNumber)}`);
 
-      // If the assumption was not correct the tag must be a non-versioned dist-tag or not specified.
-      if (!versionNumber) {
-        // Assume dist-tag;
-        const distTags = npmMetadata['dist-tags'];
-        logger.debug(`retrieveNpmMeta | distTags: ${JSON.stringify(distTags)}`);
-        if (distTags) {
-          const tagVersionStr: string = get(distTags, this.pluginNpmName.tag) as string;
-          logger.debug(`retrieveNpmMeta | tagVersionStr: ${tagVersionStr}`);
+    // If the assumption was not correct the tag must be a non-versioned dist-tag or not specified.
+    if (!versionNumber) {
+      // Assume dist-tag;
+      const distTags = npmMetadata['dist-tags'];
+      logger.debug(`retrieveNpmMeta | distTags: ${JSON.stringify(distTags)}`);
+      if (distTags) {
+        const tagVersionStr: string = distTags[this.pluginNpmName.tag];
+        logger.debug(`retrieveNpmMeta | tagVersionStr: ${tagVersionStr}`);
 
-          // if we got a dist tag hit look up the version object
-          if (tagVersionStr && tagVersionStr.length > 0 && tagVersionStr.includes('.')) {
-            versionNumber = npmMetadata.versions.find((version) => version === tagVersionStr);
-            logger.debug(`retrieveNpmMeta | versionObject: ${versionNumber}`);
-          } else {
-            return reject(
-              new SfdxError(
-                `The dist tag ${this.pluginNpmName.tag} was not found for plugin: ${this.pluginNpmName.name}`,
-                'NpmTagNotFound'
-              )
-            );
-          }
+        // if we got a dist tag hit look up the version object
+        if (tagVersionStr && tagVersionStr.length > 0 && tagVersionStr.includes('.')) {
+          versionNumber = npmMetadata.versions.find((version) => version === tagVersionStr);
+          logger.debug(`retrieveNpmMeta | versionObject: ${versionNumber}`);
         } else {
-          throw new SfdxError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat');
+          throw new SfdxError(
+            `The dist tag ${this.pluginNpmName.tag} was not found for plugin: ${this.pluginNpmName.name}`,
+            'NpmTagNotFound'
+          );
         }
-      }
-
-      meta.version = versionNumber;
-
-      if (!npmMetadata.sfdx) {
-        throw new SfdxError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
       } else {
-        if (!validSalesforceHostname(npmMetadata.sfdx.publicKeyUrl)) {
-          return reject(
-            new SfdxError(
-              `The host is not allowed to provide signing information. [${npmMetadata.sfdx.publicKeyUrl}]`,
-              'UnexpectedHost'
-            )
-          );
-        } else {
-          logger.debug(`retrieveNpmMeta | versionObject.sfdx.publicKeyUrl: ${npmMetadata.sfdx.publicKeyUrl}`);
-          meta.publicKeyUrl = npmMetadata.sfdx.publicKeyUrl;
-        }
-
-        if (!validSalesforceHostname(npmMetadata.sfdx.signatureUrl)) {
-          return reject(
-            new SfdxError(
-              `The host is not allowed to provide signing information. [${npmMetadata.sfdx.signatureUrl}]`,
-              'UnexpectedHost'
-            )
-          );
-        } else {
-          logger.debug(`retrieveNpmMeta | versionObject.sfdx.signatureUrl: ${npmMetadata.sfdx.signatureUrl}`);
-          meta.signatureUrl = npmMetadata.sfdx.signatureUrl;
-        }
-
-        meta.tarballUrl = npmMetadata.dist.tarball;
-        logger.debug(`retrieveNpmMeta | meta.tarballUrl: ${meta.tarballUrl}`);
-
-        return resolve(meta);
+        throw new SfdxError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat');
       }
-    });
+    }
+
+    meta.version = versionNumber;
+
+    if (!npmMetadata.sfdx) {
+      throw new SfdxError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
+    } else {
+      if (!validSalesforceHostname(npmMetadata.sfdx.publicKeyUrl)) {
+        throw new SfdxError(
+          `The host is not allowed to provide signing information. [${npmMetadata.sfdx.publicKeyUrl}]`,
+          'UnexpectedHost'
+        );
+      } else {
+        logger.debug(`retrieveNpmMeta | versionObject.sfdx.publicKeyUrl: ${npmMetadata.sfdx.publicKeyUrl}`);
+        meta.publicKeyUrl = npmMetadata.sfdx.publicKeyUrl;
+      }
+
+      if (!validSalesforceHostname(npmMetadata.sfdx.signatureUrl)) {
+        throw new SfdxError(
+          `The host is not allowed to provide signing information. [${npmMetadata.sfdx.signatureUrl}]`,
+          'UnexpectedHost'
+        );
+      } else {
+        logger.debug(`retrieveNpmMeta | versionObject.sfdx.signatureUrl: ${npmMetadata.sfdx.signatureUrl}`);
+        meta.signatureUrl = npmMetadata.sfdx.signatureUrl;
+      }
+
+      meta.tarballUrl = npmMetadata.dist.tarball;
+      logger.debug(`retrieveNpmMeta | meta.tarballUrl: ${meta.tarballUrl}`);
+
+      return meta;
+    }
   }
 
   private async getLogger(): Promise<Logger> {

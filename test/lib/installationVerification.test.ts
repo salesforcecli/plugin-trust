@@ -9,7 +9,7 @@ import { expect } from 'chai';
 import * as request from 'request';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { SfdxError } from '@salesforce/core';
+import { SfdxError, fs } from '@salesforce/core';
 import Sinon = require('sinon');
 import {
   ConfigContext,
@@ -27,17 +27,47 @@ import { NpmName } from '../../src/lib/NpmName';
 import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert';
 
 const BLANK_PLUGIN = { plugin: '', tag: '' };
+const MODULE_NAME = '@salesforce/plugin-source';
+const MODULE_VERSION = '1.0.0';
+const PACK_RESULT = [
+  {
+    id: `${MODULE_NAME}@${MODULE_VERSION}`,
+    name: MODULE_NAME,
+    version: MODULE_VERSION,
+    size: 1024,
+    unpackedSize: 4096,
+    shasum: 'DEADBEEF',
+    integrity: 'sha512-L5/ABCDE/ABCDEFGHIJKLMNOPQRSTUVWXYZ==',
+    filename: `${MODULE_NAME}-${MODULE_VERSION}.tgz`,
+    files: [
+      {
+        path: 'README.md',
+        size: 512,
+        mode: 444,
+      },
+    ],
+  },
+];
 
-const getShelljsExecStub = (sandbox: sinon.SinonSandbox, npmMetadata: NpmShowResults): Sinon.SinonStub => {
+const getShelljsExecStub = (
+  sandbox: sinon.SinonSandbox,
+  npmMetadata: NpmShowResults,
+  code = 0 as number,
+  stderr?: string
+): Sinon.SinonStub => {
   return stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
     expect(cmd).to.be.a('string').and.not.to.be.empty;
     if (cmd.includes('show')) {
       return {
+        code,
+        stderr,
         stdout: JSON.stringify(npmMetadata),
       };
     } else if (cmd.includes('pack')) {
       return {
-        stdout: undefined,
+        code,
+        stderr,
+        stdout: JSON.stringify(PACK_RESULT),
       };
     } else {
       throw new Error(`Unexpected test cmd - ${cmd}`);
@@ -81,13 +111,23 @@ describe('InstallationVerification Tests', () => {
   let plugin: NpmName;
   let sandbox: sinon.SinonSandbox;
   let shelljsExecStub: Sinon.SinonStub;
+  let fsReaddirSyncStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
+    fsReaddirSyncStub = stubMethod(sandbox, fs, 'readdirSync').returns([
+      {
+        name: 'foo-1.0.0.tgz',
+        isFile() {
+          return true;
+        },
+      },
+    ]);
     plugin = NpmName.parse('foo');
   });
 
   afterEach(() => {
+    fsReaddirSyncStub.restore();
     if (shelljsExecStub) {
       shelljsExecStub.restore();
     }
@@ -132,7 +172,7 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       createWriteStream() {
         return new Writable({
@@ -152,7 +192,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -194,7 +234,7 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       createWriteStream() {
         return new Writable({
@@ -215,7 +255,7 @@ describe('InstallationVerification Tests', () => {
     };
 
     plugin.tag = '1.0.0';
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -249,7 +289,7 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       createWriteStream() {
         return new Writable({
@@ -271,7 +311,7 @@ describe('InstallationVerification Tests', () => {
 
     plugin.tag = 'gozer';
     // For the key and signature to line up gozer must map to 1.2.3
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -309,7 +349,7 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       createWriteStream() {
         return new Writable({
@@ -331,7 +371,7 @@ describe('InstallationVerification Tests', () => {
 
     plugin.tag = 'gozer';
     // For the key and signature to line up gozer must map to 1.2.3
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -353,12 +393,12 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       unlink() {},
     };
 
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -394,12 +434,12 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       unlink() {},
     };
 
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -412,7 +452,7 @@ describe('InstallationVerification Tests', () => {
   });
 
   it('NpmCommand Meta Request Error', async () => {
-    shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').throws('SomeError');
+    shelljsExecStub = getShelljsExecStub(sandbox, {} as NpmShowResults, 1, 'command execution error');
 
     const iRequest: IRequest = (url: string, cb?: request.RequestCallback) => {
       if (url.includes('sig')) {
@@ -428,12 +468,12 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       unlink() {},
     };
 
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -467,7 +507,7 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       unlink() {},
     };
@@ -479,7 +519,7 @@ describe('InstallationVerification Tests', () => {
 
     for (const testMeta of results) {
       returnCode = testMeta.code;
-      const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+      const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
       try {
         await verification.verify();
       } catch (error) {
@@ -526,7 +566,7 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       unlink() {},
       createWriteStream() {
@@ -536,7 +576,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -552,7 +592,7 @@ describe('InstallationVerification Tests', () => {
     const npmMetadata: NpmShowResults = {
       versions: ['1.0.0', '1.0.1'],
       'dist-tags': {
-        latest: '1.0.1',
+        latest: '1.0.0',
       },
       sfdx: {
         publicKeyUrl: 'https://developer.salesforce.com/crt',
@@ -575,7 +615,7 @@ describe('InstallationVerification Tests', () => {
       }
     };
 
-    const fs = {
+    const fsImpl = {
       readFile() {},
       unlink() {},
       createWriteStream() {
@@ -593,7 +633,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    const verification = new InstallationVerification(iRequest, fs).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -609,13 +649,13 @@ describe('InstallationVerification Tests', () => {
   describe('isAllowListed', () => {
     it('steel thread with scope', async () => {
       const TEST_VALUE1 = '@salesforce/FOO';
-      const fs = {
+      const fsImpl = {
         readFile(path, cb) {
           cb(null, `["${TEST_VALUE1}"]`);
         },
         unlink() {},
       };
-      const verification1 = new InstallationVerification(null, fs)
+      const verification1 = new InstallationVerification(null, fsImpl)
         .setPluginNpmName(NpmName.parse(TEST_VALUE1))
         .setConfig(config);
       expect(await verification1.isAllowListed()).to.be.equal(true);
@@ -623,20 +663,20 @@ describe('InstallationVerification Tests', () => {
 
     it('steel thread without scope', async () => {
       const TEST_VALUE2 = 'FOO';
-      const fs = {
+      const fsImpl = {
         readFile(path, cb) {
           cb(null, `["${TEST_VALUE2}"]`);
         },
         unlink() {},
       };
-      const verification2 = new InstallationVerification(null, fs)
+      const verification2 = new InstallationVerification(null, fsImpl)
         .setPluginNpmName(NpmName.parse(TEST_VALUE2))
         .setConfig(config);
       expect(await verification2.isAllowListed()).to.be.equal(true);
     });
 
     it("file doesn't exist", async () => {
-      const fs = {
+      const fsImpl = {
         readFile(path, cb) {
           const error = new SfdxError('ENOENT', 'ENOENT');
           error['code'] = 'ENOENT';
@@ -645,7 +685,7 @@ describe('InstallationVerification Tests', () => {
         unlink() {},
       };
 
-      const verification = new InstallationVerification(null, fs)
+      const verification = new InstallationVerification(null, fsImpl)
         .setPluginNpmName(NpmName.parse('BAR'))
         .setConfig(config);
       expect(await verification.isAllowListed()).to.be.equal(false);
