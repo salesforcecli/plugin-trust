@@ -31,6 +31,19 @@ describe('plugins:install commands', () => {
     });
     expect(result.shellOutput.stdout).to.contain(`Successfully validated digital signature for ${SIGNED_MODULE_NAME}`);
   });
+
+  it('plugins:install fails on unsigned plugin', () => {
+    process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
+    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
+      ensureExitCode: 1,
+      answers: ['N'],
+    });
+    // eslint-disable-next-line no-console
+    console.log('result', result);
+    // expect(result.shellOutput.stdout).to.contain(
+    //   `The plugin [${UNSIGNED_MODULE_NAME}] is not digitally signed but it is allow-listed.`
+    // );
+  });
 });
 
 describe('plugins:install commands', () => {
@@ -49,19 +62,6 @@ describe('plugins:install commands', () => {
   after(async () => {
     await session?.zip(undefined, 'artifacts');
     await session?.clean();
-  });
-
-  it('plugins:install fails on unsigned plugin', () => {
-    process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
-    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
-      ensureExitCode: 1,
-      answers: ['N'],
-    });
-    // eslint-disable-next-line no-console
-    console.log('result', result);
-    // expect(result.shellOutput.stdout).to.contain(
-    //   `The plugin [${UNSIGNED_MODULE_NAME}] is not digitally signed but it is allow-listed.`
-    // );
   });
 
   it('plugins:install unsigned plugin', () => {
