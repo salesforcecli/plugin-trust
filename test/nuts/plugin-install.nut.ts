@@ -32,16 +32,29 @@ describe('plugins:install commands', () => {
     expect(result.shellOutput.stdout).to.contain(`Successfully validated digital signature for ${SIGNED_MODULE_NAME}`);
   });
 
-  it('plugins:install fails on unsigned plugin', () => {
+  it('plugins:install prompts on unsigned plugin (denies)', () => {
     process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
-      ensureExitCode: 1,
+      ensureExitCode: 2, // This is the output code for the NO answer
       answers: ['N'],
     });
     // eslint-disable-next-line no-console
     console.log('result', result);
+    expect(result.shellOutput.stdout).to.contain(
+      'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:.'
+    );
+  });
+
+  it('plugins:install prompts on unsigned plugin (accepts)', () => {
+    process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
+    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
+      ensureExitCode: 0, // This is the output code for the NO answer
+      answers: ['Y'],
+    });
+    // eslint-disable-next-line no-console
+    console.log('result', result);
     // expect(result.shellOutput.stdout).to.contain(
-    //   `The plugin [${UNSIGNED_MODULE_NAME}] is not digitally signed but it is allow-listed.`
+    //   'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:.'
     // );
   });
 });
