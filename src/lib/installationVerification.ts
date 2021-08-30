@@ -17,7 +17,7 @@ import { promisify as utilPromisify } from 'util';
 import * as crypto from 'crypto';
 import { Logger, fs, SfdxError } from '@salesforce/core';
 import * as request from 'request';
-import { NpmModule } from '../lib/npmCommand';
+import { NpmModule, NpmMeta } from '../lib/npmCommand';
 import { NpmName } from './NpmName';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
@@ -34,20 +34,6 @@ export interface Verifier {
   verify(): Promise<NpmMeta>;
   isAllowListed(): Promise<boolean>;
 }
-
-export type NpmShowResults = {
-  versions: string[];
-  'dist-tags': {
-    [name: string]: string;
-  };
-  sfdx?: {
-    publicKeyUrl: string;
-    signatureUrl: string;
-  };
-  dist?: {
-    [name: string]: string;
-  };
-};
 
 export class CodeVerifierInfo {
   private signature: Readable;
@@ -149,20 +135,6 @@ export async function verify(codeVerifierInfo: CodeVerifierInfo): Promise<boolea
 export const getNpmRegistry = (): URL => {
   return new URL(process.env.SFDX_NPM_REGISTRY || DEFAULT_REGISTRY);
 };
-
-/**
- * simple data structure representing the discovered meta information needed for signing,
- */
-export class NpmMeta {
-  public tarballUrl: string;
-  public signatureUrl: string;
-  public publicKeyUrl: string;
-  public tarballLocalPath: string;
-  public verified: boolean;
-  public moduleName: string;
-  public version: string;
-  public tarballFilename: string;
-}
 
 /**
  * class for verifying a digital signature pack of an npm
@@ -373,9 +345,8 @@ export class InstallationVerification implements Verifier {
       ? `@${this.pluginNpmName.scope}/${this.pluginNpmName.name}`
       : this.pluginNpmName.name;
 
-    const npmMetadata = new NpmModule(npmShowModule).show(npmRegistry.href);
-    const meta: NpmMeta = new NpmMeta();
-    meta.moduleName = npmShowModule;
+    const npmModule = new NpmModule(npmShowModule);
+    const npmMetadata = npmModule.show(npmRegistry.href);
     logger.debug('retrieveNpmMeta | Found npm meta information.');
     if (!npmMetadata.versions) {
       throw new SfdxError(
@@ -413,7 +384,7 @@ export class InstallationVerification implements Verifier {
       }
     }
 
-    meta.version = versionNumber;
+    npmModule.npmMeta.version = versionNumber;
 
     if (!npmMetadata.sfdx) {
       throw new SfdxError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
@@ -425,7 +396,7 @@ export class InstallationVerification implements Verifier {
         );
       } else {
         logger.debug(`retrieveNpmMeta | versionObject.sfdx.publicKeyUrl: ${npmMetadata.sfdx.publicKeyUrl}`);
-        meta.publicKeyUrl = npmMetadata.sfdx.publicKeyUrl;
+        npmModule.npmMeta.publicKeyUrl = npmMetadata.sfdx.publicKeyUrl;
       }
 
       if (!validSalesforceHostname(npmMetadata.sfdx.signatureUrl)) {
@@ -435,13 +406,13 @@ export class InstallationVerification implements Verifier {
         );
       } else {
         logger.debug(`retrieveNpmMeta | versionObject.sfdx.signatureUrl: ${npmMetadata.sfdx.signatureUrl}`);
-        meta.signatureUrl = npmMetadata.sfdx.signatureUrl;
+        npmModule.npmMeta.signatureUrl = npmMetadata.sfdx.signatureUrl;
       }
 
-      meta.tarballUrl = npmMetadata.dist.tarball;
-      logger.debug(`retrieveNpmMeta | meta.tarballUrl: ${meta.tarballUrl}`);
+      npmModule.npmMeta.tarballUrl = npmMetadata.dist.tarball;
+      logger.debug(`retrieveNpmMeta | meta.tarballUrl: ${npmModule.npmMeta.tarballUrl}`);
 
-      return meta;
+      return npmModule.npmMeta;
     }
   }
 

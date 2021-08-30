@@ -35,11 +35,9 @@ describe('plugins:install commands', () => {
   it('plugins:install prompts on unsigned plugin (denies)', () => {
     process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
-      ensureExitCode: 2, // This is the output code for the NO answer
+      ensureExitCode: 2, // code 2 is the output code for the NO answer
       answers: ['N'],
     });
-    // eslint-disable-next-line no-console
-    console.log('result', result);
     expect(result.shellOutput.stderr).to.contain(
       'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:'
     );
@@ -49,11 +47,9 @@ describe('plugins:install commands', () => {
   it('plugins:install prompts on unsigned plugin (accepts)', () => {
     process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
-      ensureExitCode: 0, // This is the output code for the NO answer
+      ensureExitCode: 0,
       answers: ['Y'],
     });
-    // eslint-disable-next-line no-console
-    console.log('result', result);
     expect(result.shellOutput.stderr).to.contain(
       'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:'
     );

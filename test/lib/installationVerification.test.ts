@@ -18,11 +18,10 @@ import {
   getNpmRegistry,
   InstallationVerification,
   IRequest,
-  NpmMeta,
   VerificationConfig,
   Verifier,
-  NpmShowResults,
 } from '../../src/lib/installationVerification';
+import { NpmMeta, NpmShowResults } from '../../src/lib/npmCommand';
 import { NpmName } from '../../src/lib/NpmName';
 import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert';
 

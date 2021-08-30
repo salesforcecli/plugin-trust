@@ -11,24 +11,28 @@ import * as shelljs from 'shelljs';
 import npmRunPath from 'npm-run-path';
 import { SfdxError, fs } from '@salesforce/core';
 
-type DistTags = {
-  [name: string]: string;
+export type NpmMeta = {
+  tarballUrl?: string;
+  signatureUrl?: string;
+  publicKeyUrl?: string;
+  tarballLocalPath?: string;
+  verified?: boolean;
+  moduleName?: string;
+  version?: string;
+  tarballFilename?: string;
 };
 
-type NpmShowResults = {
+export type NpmShowResults = {
   versions: string[];
-  'dist-tags': DistTags;
+  'dist-tags': {
+    [name: string]: string;
+  };
   sfdx?: {
     publicKeyUrl: string;
     signatureUrl: string;
   };
   dist?: {
-    integrity: string;
-    shasum: string;
-    tarball: string;
-    fileCount: number;
-    unpackedSize: number;
-    'npm-signature': string;
+    [name: string]: string;
   };
 };
 
@@ -83,12 +87,16 @@ export class NpmCommand {
 }
 
 export class NpmModule {
+  public npmMeta: NpmMeta;
   private version: string;
   private module: string;
 
   public constructor(module: string, version = 'latest') {
     this.module = module;
     this.version = version;
+    this.npmMeta = {
+      moduleName: module,
+    };
   }
 
   public show(registry: string): NpmShowResults {
