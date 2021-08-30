@@ -40,9 +40,10 @@ describe('plugins:install commands', () => {
     });
     // eslint-disable-next-line no-console
     console.log('result', result);
-    expect(result.shellOutput.stdout).to.contain(
-      'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:.'
+    expect(result.shellOutput.stderr).to.contain(
+      'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:'
     );
+    expect(result.shellOutput.stderr).to.contain('The user canceled the plugin installation');
   });
 
   it('plugins:install prompts on unsigned plugin (accepts)', () => {
@@ -53,9 +54,10 @@ describe('plugins:install commands', () => {
     });
     // eslint-disable-next-line no-console
     console.log('result', result);
-    // expect(result.shellOutput.stdout).to.contain(
-    //   'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:.'
-    // );
+    expect(result.shellOutput.stderr).to.contain(
+      'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:'
+    );
+    expect(result.shellOutput.stdout).to.contain('Finished digital signature check');
   });
 });
 
@@ -77,13 +79,11 @@ describe('plugins:install commands', () => {
     await session?.clean();
   });
 
-  it('plugins:install unsigned plugin', () => {
+  it('plugins:install unsigned plugin in the allow list', () => {
     process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
       ensureExitCode: 0,
     });
-    // eslint-disable-next-line no-console
-    // console.log('result', result);
     expect(result.shellOutput.stdout).to.contain(
       `The plugin [${UNSIGNED_MODULE_NAME}] is not digitally signed but it is allow-listed.`
     );
