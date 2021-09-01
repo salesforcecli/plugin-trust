@@ -88,12 +88,7 @@ export class NpmCommand {
 
 export class NpmModule {
   public npmMeta: NpmMeta;
-  private version: string;
-  private module: string;
-
-  public constructor(module: string, version = 'latest') {
-    this.module = module;
-    this.version = version;
+  public constructor(private module: string, private version: string = 'latest') {
     this.npmMeta = {
       moduleName: module,
     };
