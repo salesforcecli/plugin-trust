@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.5](https://github.com/salesforcecli/plugin-trust/compare/v1.0.4...v1.0.5) (2021-09-07)
+
+
+### Bug Fixes
+
+* use npm instead of http ([#154](https://github.com/salesforcecli/plugin-trust/issues/154)) ([2bce1f9](https://github.com/salesforcecli/plugin-trust/commit/2bce1f9bd331b75d81f0309bc46962b5c5d19b16))
+
 ### [1.0.4](https://github.com/salesforcecli/plugin-template/compare/v1.0.3...v1.0.4) (2021-05-10)
 
 ### [1.0.3](https://github.com/salesforcecli/plugin-template/compare/v1.0.2...v1.0.3) (2021-04-09)
