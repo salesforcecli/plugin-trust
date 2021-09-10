@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.6](https://github.com/salesforcecli/plugin-trust/compare/v1.0.5...v1.0.6) (2021-09-10)
+
+
+### Bug Fixes
+
+* install plugin-trust as an executable ([#164](https://github.com/salesforcecli/plugin-trust/issues/164)) ([34b293c](https://github.com/salesforcecli/plugin-trust/commit/34b293c1e9276e7653aff41a9fc8e17635ee0a92))
+
 ### [1.0.5](https://github.com/salesforcecli/plugin-trust/compare/v1.0.4...v1.0.5) (2021-09-07)
 
 
