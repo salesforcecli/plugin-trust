@@ -345,7 +345,7 @@ export class InstallationVerification implements Verifier {
       ? `@${this.pluginNpmName.scope}/${this.pluginNpmName.name}`
       : this.pluginNpmName.name;
 
-    const npmModule = new NpmModule(npmShowModule);
+    const npmModule = new NpmModule(npmShowModule, this.pluginNpmName.tag);
     const npmMetadata = npmModule.show(npmRegistry.href);
     logger.debug('retrieveNpmMeta | Found npm meta information.');
     if (!npmMetadata.versions) {
