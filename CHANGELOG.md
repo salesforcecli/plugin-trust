@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](https://github.com/salesforcecli/plugin-trust/compare/v1.0.6...v1.0.7) (2021-09-17)
+
+
+### Bug Fixes
+
+* use tag when getting npm meta ([#165](https://github.com/salesforcecli/plugin-trust/issues/165)) ([e9fe7f2](https://github.com/salesforcecli/plugin-trust/commit/e9fe7f229a716e4685b7cd54ee753c02667bccd8))
+
 ### [1.0.6](https://github.com/salesforcecli/plugin-trust/compare/v1.0.5...v1.0.6) (2021-09-10)
 
 
