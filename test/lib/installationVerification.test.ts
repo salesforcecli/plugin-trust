@@ -68,6 +68,18 @@ const getShelljsExecStub = (
         stderr,
         stdout: JSON.stringify(PACK_RESULT),
       };
+    } else if (cmd.includes('node')) {
+      return {
+        code: 0,
+        stderr,
+        stdout: 'node',
+      };
+    } else if (cmd.includes('sfdx')) {
+      return {
+        code: 0,
+        stderr,
+        stdout: 'sfdx',
+      };
     } else {
       throw new Error(`Unexpected test cmd - ${cmd}`);
     }
@@ -104,6 +116,9 @@ describe('InstallationVerification Tests', () => {
     },
     get configDir() {
       return 'configDir';
+    },
+    get rootDir() {
+      return __dirname;
     },
   };
   const currentRegistry = process.env.SFDX_NPM_REGISTRY;

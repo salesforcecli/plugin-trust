@@ -67,6 +67,16 @@ describe('should run npm commands', () => {
           code: 0,
           stdout: JSON.stringify(PACK_RESULT),
         };
+      } else if (cmd.includes('node')) {
+        return {
+          code: 0,
+          stdout: 'node',
+        };
+      } else if (cmd.includes('sfdx')) {
+        return {
+          code: 0,
+          stdout: 'sfdx',
+        };
       } else {
         throw new Error(`Unexpected test cmd - ${cmd}`);
       }
@@ -78,26 +88,26 @@ describe('should run npm commands', () => {
   });
 
   it('Runs the show command', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME).show(DEFAULT_REGISTRY);
-    expect(shelljsExecStub.callCount).to.equal(1);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    expect(shelljsExecStub.callCount).to.equal(2);
+    expect(shelljsExecStub.secondCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
+    expect(shelljsExecStub.secondCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
   it('Runs the show command with specified version', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION).show(DEFAULT_REGISTRY);
-    expect(shelljsExecStub.callCount).to.equal(1);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+    expect(shelljsExecStub.callCount).to.equal(2);
+    expect(shelljsExecStub.secondCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
+    expect(shelljsExecStub.secondCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
   it('Runs the pack command', () => {
-    new NpmModule(MODULE_NAME, MODULE_VERSION).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
-    expect(shelljsExecStub.callCount).to.equal(1);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+    expect(shelljsExecStub.callCount).to.equal(2);
+    expect(shelljsExecStub.secondCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
+    expect(shelljsExecStub.secondCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
   });
 });
 
@@ -120,6 +130,16 @@ describe('should run npm commands with execution errors', () => {
           stderr: 'command execution error',
           stdout: '',
         };
+      } else if (cmd.includes('node')) {
+        return {
+          code: 0,
+          stdout: 'node',
+        };
+      } else if (cmd.includes('sfdx')) {
+        return {
+          code: 0,
+          stdout: 'sfdx',
+        };
       } else {
         throw new Error(`Unexpected test cmd - ${cmd}`);
       }
@@ -132,7 +152,7 @@ describe('should run npm commands with execution errors', () => {
 
   it('show command throws error', () => {
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -142,7 +162,7 @@ describe('should run npm commands with execution errors', () => {
 
   it('Runs the pack command', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
       fail('Error');
     } catch (error) {
       expect(error.code).to.equal('ShellExecError');
@@ -167,6 +187,16 @@ describe('should run npm commands with parse errors', () => {
           code: 0,
           stdout: 'not a json string',
         };
+      } else if (cmd.includes('node')) {
+        return {
+          code: 0,
+          stdout: 'node',
+        };
+      } else if (cmd.includes('sfdx')) {
+        return {
+          code: 0,
+          stdout: 'sfdx',
+        };
       } else {
         throw new Error(`Unexpected test cmd - ${cmd}`);
       }
@@ -179,7 +209,7 @@ describe('should run npm commands with parse errors', () => {
 
   it('show command throws error', () => {
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -189,7 +219,7 @@ describe('should run npm commands with parse errors', () => {
 
   it('Runs the pack command', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
       fail('Error');
     } catch (error) {
       expect(error.code).to.equal('ShellParseError');

@@ -50,6 +50,7 @@ export class Verify extends SfdxCommand {
       cacheDir: get(this.config, 'configDir') as string,
       configDir: get(this.config, 'cacheDir') as string,
       dataDir: get(this.config, 'dataDir') as string,
+      rootDir: get(this.config, 'root') as string,
     };
 
     this.logger.debug(`cacheDir: ${configContext.cacheDir}`);

@@ -39,6 +39,7 @@ export type NpmShowResults = {
 type NpmCommandOptions = shelljs.ExecOptions & {
   json?: boolean;
   registry?: string;
+  root?: string;
 };
 
 type NpmCommandResult = NpmShowResults & {
@@ -55,7 +56,7 @@ export class NpmCommand {
   private static npmPkgPath = require.resolve('npm/package.json');
 
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
-    const npmCli = NpmCommand.npmCli();
+    const npmCli = NpmCommand.npmCli(options.root);
     const exec = `${npmCli} ${cmd} --registry=${options.registry} --json`;
     const npmShowResult = shelljs.exec(exec, {
       ...options,
@@ -78,28 +79,92 @@ export class NpmCommand {
     return this.npmPkgPath;
   }
 
-  private static npmCli(): string {
+  /**
+   * Return a executable path to this modules reference to npm as
+   * <path to node executable> <path to npm-cli.js>
+   *
+   * @private
+   */
+  private static npmCli(root: string = undefined): string {
+    const nodeBinPath = NpmCommand.findNodeBin(root);
     const pkgPath = NpmCommand.npmPackagePath();
     const pkgJson = fs.readJsonSync(pkgPath) as NpmPackage;
     const prjPath = pkgPath.substring(0, pkgPath.lastIndexOf(path.sep));
-    return path.join(prjPath, pkgJson.bin['npm']);
+    return `"${nodeBinPath}" "${path.join(prjPath, pkgJson.bin['npm'])}"`;
+  }
+
+  /**
+   * Locate node executable and return its full path.
+   * First see if node is on the path, if so, use unqualified name.
+   * If not on the path, try to locate the node version installed with sfdx.
+   * If found, return full path to the executable
+   * If sfdx or node executable cannot be found, an exception is thrown
+   *
+   * @private
+   */
+  private static findNodeBin(root: string = undefined): string {
+    let sfdxPath;
+    if (root) {
+      sfdxPath = root;
+    } else {
+      throw new SfdxError('Plugin root dir is not set', 'PluginRootNotSet');
+    }
+    // find node within sfdx installation
+    const sfdxBinDirPaths = NpmCommand.getSfdxBinDirs(sfdxPath);
+    if (sfdxBinDirPaths && sfdxBinDirPaths.length > 0) {
+      const nodeBinPath = shelljs
+        .find(sfdxBinDirPaths)
+        .filter((file) => {
+          const fileName = path.basename(file);
+          const stat = fs.statSync(file);
+          const isExecutable = !stat.isDirectory();
+          return isExecutable && (process.platform === 'win32' ? fileName === 'node.exe' : fileName === 'node');
+        })
+        .find((file) => file);
+      if (nodeBinPath) {
+        return fs.realpathSync(nodeBinPath);
+      }
+    }
+    // check to see if node is installed
+    const whichNode = shelljs.exec('which node', {
+      silent: true,
+      fatal: false,
+      async: false,
+      env: process.env,
+    });
+    if (whichNode.code === 0) {
+      return 'node';
+    }
+    throw new SfdxError('Cannot locate node executable within sfdx installation.', 'CannotFindNodeExecutable');
+  }
+
+  /**
+   * Test each potential directory exists used for sfdx installation
+   *
+   * @param sfdxPath
+   * @private
+   */
+  private static getSfdxBinDirs(sfdxPath: string): string[] {
+    return sfdxPath
+      ? [path.join(sfdxPath, 'bin'), path.join(sfdxPath, 'config,', 'bin')].filter((p) => fs.existsSync(p))
+      : [];
   }
 }
 
 export class NpmModule {
   public npmMeta: NpmMeta;
-  public constructor(private module: string, private version: string = 'latest') {
+  public constructor(private module: string, private version: string = 'latest', private root: string = undefined) {
     this.npmMeta = {
       moduleName: module,
     };
   }
 
   public show(registry: string): NpmShowResults {
-    return NpmCommand.runNpmCmd(`show ${this.module}@${this.version}`, { registry });
+    return NpmCommand.runNpmCmd(`show ${this.module}@${this.version}`, { registry, root: this.root });
   }
 
   public pack(registry: string, options?: shelljs.ExecOptions): void {
-    NpmCommand.runNpmCmd(`pack ${this.module}@${this.version}`, { ...options, registry });
+    NpmCommand.runNpmCmd(`pack ${this.module}@${this.version}`, { ...options, registry, root: this.root });
     return;
   }
 }
