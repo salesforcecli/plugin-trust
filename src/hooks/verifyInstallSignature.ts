@@ -58,7 +58,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
       cacheDir: options.config.cacheDir,
       configDir: options.config.configDir,
       dataDir: options.config.dataDir,
-      rootDir: options.config.root,
+      cliRoot: options.config.root,
     };
 
     const vConfig = VerificationConfigBuilder.build(npmName, configContext);

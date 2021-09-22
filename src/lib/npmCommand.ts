@@ -126,13 +126,7 @@ export class NpmCommand {
       }
     }
     // check to see if node is installed
-    const whichNode = shelljs.exec('which node', {
-      silent: true,
-      fatal: false,
-      async: false,
-      env: process.env,
-    });
-    if (whichNode.code === 0) {
+    if (shelljs.which('node')) {
       return 'node';
     }
     throw new SfdxError('Cannot locate node executable within sfdx installation.', 'CannotFindNodeExecutable');
