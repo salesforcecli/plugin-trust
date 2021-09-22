@@ -117,7 +117,7 @@ describe('InstallationVerification Tests', () => {
     get configDir() {
       return 'configDir';
     },
-    get rootDir() {
+    get cliRoot() {
       return __dirname;
     },
   };

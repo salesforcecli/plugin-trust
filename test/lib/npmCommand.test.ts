@@ -89,25 +89,25 @@ describe('should run npm commands', () => {
 
   it('Runs the show command', () => {
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
-    expect(shelljsExecStub.callCount).to.equal(2);
-    expect(shelljsExecStub.secondCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
-    expect(shelljsExecStub.secondCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(shelljsExecStub.callCount).to.equal(1);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
   it('Runs the show command with specified version', () => {
     const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
-    expect(shelljsExecStub.callCount).to.equal(2);
-    expect(shelljsExecStub.secondCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
-    expect(shelljsExecStub.secondCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(shelljsExecStub.callCount).to.equal(1);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
   it('Runs the pack command', () => {
     new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
-    expect(shelljsExecStub.callCount).to.equal(2);
-    expect(shelljsExecStub.secondCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
-    expect(shelljsExecStub.secondCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(shelljsExecStub.callCount).to.equal(1);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
   });
 });
 
