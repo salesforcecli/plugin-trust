@@ -111,7 +111,7 @@ export class NpmCommand {
     }
     // find node within sfdx installation
     const sfdxBinDirPaths = NpmCommand.getSfdxBinDirs(sfdxPath);
-    if (sfdxBinDirPaths && sfdxBinDirPaths.length > 0) {
+    if (sfdxBinDirPaths?.length > 0) {
       const nodeBinPath = shelljs
         .find(sfdxBinDirPaths)
         .filter((file) => {
