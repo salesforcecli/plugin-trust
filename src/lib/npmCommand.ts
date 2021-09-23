@@ -39,7 +39,7 @@ export type NpmShowResults = {
 type NpmCommandOptions = shelljs.ExecOptions & {
   json?: boolean;
   registry?: string;
-  root?: string;
+  cliRoot?: string;
 };
 
 type NpmCommandResult = NpmShowResults & {
@@ -56,7 +56,7 @@ export class NpmCommand {
   private static npmPkgPath = require.resolve('npm/package.json');
 
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
-    const npmCli = NpmCommand.npmCli(options.root);
+    const npmCli = NpmCommand.npmCli(options.cliRoot);
     const exec = `${npmCli} ${cmd} --registry=${options.registry} --json`;
     const npmShowResult = shelljs.exec(exec, {
       ...options,
@@ -140,25 +140,25 @@ export class NpmCommand {
    */
   private static getSfdxBinDirs(sfdxPath: string): string[] {
     return sfdxPath
-      ? [path.join(sfdxPath, 'bin'), path.join(sfdxPath, 'config,', 'bin')].filter((p) => fs.existsSync(p))
+      ? [path.join(sfdxPath, 'bin'), path.join(sfdxPath, 'client', 'bin')].filter((p) => fs.existsSync(p))
       : [];
   }
 }
 
 export class NpmModule {
   public npmMeta: NpmMeta;
-  public constructor(private module: string, private version: string = 'latest', private root: string = undefined) {
+  public constructor(private module: string, private version: string = 'latest', private cliRoot: string = undefined) {
     this.npmMeta = {
       moduleName: module,
     };
   }
 
   public show(registry: string): NpmShowResults {
-    return NpmCommand.runNpmCmd(`show ${this.module}@${this.version}`, { registry, root: this.root });
+    return NpmCommand.runNpmCmd(`show ${this.module}@${this.version}`, { registry, cliRoot: this.cliRoot });
   }
 
   public pack(registry: string, options?: shelljs.ExecOptions): void {
-    NpmCommand.runNpmCmd(`pack ${this.module}@${this.version}`, { ...options, registry, root: this.root });
+    NpmCommand.runNpmCmd(`pack ${this.module}@${this.version}`, { ...options, registry, cliRoot: this.cliRoot });
     return;
   }
 }
