@@ -103,12 +103,9 @@ export class NpmCommand {
    * @private
    */
   private static findNodeBin(root: string = undefined): string {
-    let sfdxPath;
-    if (root) {
-      sfdxPath = root;
-    } else {
+    if (!root) {
       throw new SfdxError('Plugin root dir is not set', 'PluginRootNotSet');
-    }
+    } 
     // find node within sfdx installation
     const sfdxBinDirPaths = NpmCommand.getSfdxBinDirs(sfdxPath);
     if (sfdxBinDirPaths?.length > 0) {
