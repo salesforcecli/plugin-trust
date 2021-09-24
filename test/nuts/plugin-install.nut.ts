@@ -18,6 +18,7 @@ let session: TestSession;
 describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
+    await fs.mkdirp(path.join(session.homeDir, '.sfdx'));
     await fs.writeJson(
       path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'),
       JSON.stringify({
@@ -77,6 +78,7 @@ describe('plugins:install commands', () => {
 describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
+    await fs.mkdirp(path.join(session.homeDir, '.sfdx'));
     await fs.writeJson(
       path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'),
       JSON.stringify({
