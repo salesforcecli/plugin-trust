@@ -19,7 +19,7 @@ describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
     await fs.writeJson(
-      path.join(session.homeDir, '.sfdx'),
+      path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'),
       JSON.stringify({
         acknowledged: true,
       })
@@ -78,7 +78,7 @@ describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
     await fs.writeJson(
-      path.join(session.homeDir, '.sfdx'),
+      path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'),
       JSON.stringify({
         acknowledged: true,
       })
