@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.8](https://github.com/salesforcecli/plugin-trust/compare/v1.0.7...v1.0.8) (2021-09-24)
+
+
+### Bug Fixes
+
+* verify fails if node not installed ([#167](https://github.com/salesforcecli/plugin-trust/issues/167)) ([0393b90](https://github.com/salesforcecli/plugin-trust/commit/0393b906a30e8858816625517eda5db69377c178)), closes [#168](https://github.com/salesforcecli/plugin-trust/issues/168)
+
 ### [1.0.7](https://github.com/salesforcecli/plugin-trust/compare/v1.0.6...v1.0.7) (2021-09-17)
 
 
