@@ -28,7 +28,11 @@ describe('plugins:install commands', () => {
 
   after(async () => {
     await session?.zip(undefined, 'artifacts');
-    await session?.clean();
+    try {
+      await session?.clean();
+    } catch (error) {
+      // ignore
+    }
   });
 
   it('plugins:install signed plugin', () => {
@@ -91,7 +95,11 @@ describe('plugins:install commands', () => {
 
   after(async () => {
     await session?.zip(undefined, 'artifacts');
-    await session?.clean();
+    try {
+      await session?.clean();
+    } catch (error) {
+      // ignore
+    }
   });
 
   it('plugins:install unsigned plugin in the allow list', () => {
