@@ -56,9 +56,10 @@ export class NpmCommand {
   private static npmPkgPath = require.resolve('npm/package.json');
 
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
-    const npmCli = NpmCommand.npmCli(options.cliRoot);
-    const exec = `${npmCli} ${cmd} --registry=${options.registry} --json`;
-    const npmShowResult = shelljs.exec(exec, {
+    const nodeExecutable = NpmCommand.findNode(options.cliRoot);
+    const npmCli = NpmCommand.npmCli();
+    const command = `"${nodeExecutable}" "${npmCli}" ${cmd} --registry=${options.registry} --json`;
+    const npmShowResult = shelljs.exec(command, {
       ...options,
       silent: true,
       fatal: true,
@@ -80,62 +81,52 @@ export class NpmCommand {
   }
 
   /**
-   * Return a executable path to this modules reference to npm as
-   * <path to node executable> <path to npm-cli.js>
+   * Returns the path to the npm-cli.js file in this package's node_modules
    *
    * @private
    */
-  private static npmCli(root: string = undefined): string {
-    const nodeBinPath = NpmCommand.findNodeBin(root);
+  private static npmCli(): string {
     const pkgPath = NpmCommand.npmPackagePath();
     const pkgJson = fs.readJsonSync(pkgPath) as NpmPackage;
     const prjPath = pkgPath.substring(0, pkgPath.lastIndexOf(path.sep));
-    return `"${nodeBinPath}" "${path.join(prjPath, pkgJson.bin['npm'])}"`;
+    return `${path.join(prjPath, pkgJson.bin['npm'])}`;
   }
 
   /**
-   * Locate node executable and return its full path.
-   * First see if node is on the path, if so, use unqualified name.
-   * If not on the path, try to locate the node version installed with sfdx.
-   * If found, return full path to the executable
-   * If sfdx or node executable cannot be found, an exception is thrown
+   * Locate node executable and return its absolute path
+   * First it tries to locate the node executable on the root path passed in
+   * If not found then tries to use whatver 'node' resolves to on the user's PATH
+   * If found return absolute path to the executable
+   * If the node executable cannot be found, an error is thrown
    *
    * @private
    */
-  private static findNodeBin(root: string = undefined): string {
-    if (!root) {
-      throw new SfdxError('Plugin root dir is not set', 'PluginRootNotSet');
-    } 
-    // find node within sfdx installation
-    const sfdxBinDirPaths = NpmCommand.getSfdxBinDirs(sfdxPath);
-    if (sfdxBinDirPaths?.length > 0) {
-      const nodeBinPath = shelljs
-        .find(sfdxBinDirPaths)
-        .filter((file) => {
-          const fileName = path.basename(file);
-          const stat = fs.statSync(file);
-          const isExecutable = !stat.isDirectory();
-          return isExecutable && (process.platform === 'win32' ? fileName === 'node.exe' : fileName === 'node');
-        })
-        .find((file) => file);
-      if (nodeBinPath) {
-        return fs.realpathSync(nodeBinPath);
+  private static findNode(root: string = undefined): string {
+    if (root) {
+      const sfdxBinDirs = NpmCommand.findSfdxBinDirs(root);
+      if (sfdxBinDirs.length > 0) {
+        // Find the node executable
+        const node = shelljs.find(sfdxBinDirs).find((file) => file.includes('node'));
+        if (node) {
+          return fs.realpathSync(node);
+        }
       }
     }
-    // check to see if node is installed
-    if (shelljs.which('node')) {
-      return 'node';
-    }
-    throw new SfdxError('Cannot locate node executable within sfdx installation.', 'CannotFindNodeExecutable');
+
+    // Check to see if node is installed
+    const nodeShellString: shelljs.ShellString = shelljs.which('node');
+    if (nodeShellString?.code === 0 && nodeShellString?.stdout) return nodeShellString.stdout;
+
+    throw new SfdxError('Cannot locate node executable.', 'CannotFindNodeExecutable');
   }
 
   /**
-   * Test each potential directory exists used for sfdx installation
+   * Finds the bin directory in the sfdx installation root path
    *
    * @param sfdxPath
    * @private
    */
-  private static getSfdxBinDirs(sfdxPath: string): string[] {
+  private static findSfdxBinDirs(sfdxPath: string): string[] {
     return sfdxPath
       ? [path.join(sfdxPath, 'bin'), path.join(sfdxPath, 'client', 'bin')].filter((p) => fs.existsSync(p))
       : [];

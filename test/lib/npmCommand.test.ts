@@ -54,10 +54,14 @@ const NODE_PATH = `/usr/local/sfdx/bin/${NODE_NAME}`;
 
 describe('should run npm commands', () => {
   let sandbox: sinon.SinonSandbox;
+  let realpathSyncStub: Sinon.SinonStub;
   let shelljsExecStub: Sinon.SinonStub;
+  let shelljsFindStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
+    realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
+    shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
     shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
       expect(cmd).to.be.a('string').and.not.to.be.empty;
       if (cmd.includes('show')) {
@@ -87,6 +91,9 @@ describe('should run npm commands', () => {
   });
 
   afterEach(() => {
+    realpathSyncStub.restore();
+    shelljsFindStub.restore();
+    shelljsExecStub.restore();
     sandbox.restore();
   });
 
@@ -120,7 +127,6 @@ describe('should find the node executable', () => {
   let shelljsFindStub: Sinon.SinonStub;
   let shelljsWhichStub: Sinon.SinonStub;
   let existsSyncStub: Sinon.SinonStub;
-  let statSyncStub: Sinon.SinonStub;
   let realpathSyncStub: Sinon.SinonStub;
 
   beforeEach(() => {
@@ -155,14 +161,6 @@ describe('should find the node executable', () => {
       expect(filePaths).to.be.a('array').and.to.have.length.greaterThan(0);
       return [NODE_PATH];
     });
-    statSyncStub = stubMethod(sandbox, fs, 'statSync').callsFake((filePath: string) => {
-      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
-      return {
-        isDirectory() {
-          return false;
-        },
-      };
-    });
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').callsFake((filePath: string) => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
       return NODE_PATH;
@@ -181,7 +179,6 @@ describe('should find the node executable', () => {
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
     expect(existsSyncStub.callCount).to.equal(2);
     expect(shelljsFindStub.callCount).to.equal(1);
-    expect(statSyncStub.callCount).to.equal(1);
     expect(realpathSyncStub.callCount).to.equal(1);
     expect(shelljsExecStub.callCount).to.equal(1);
     expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
@@ -198,12 +195,14 @@ describe('should find the node executable', () => {
     });
     shelljsWhichStub = stubMethod(sandbox, shelljs, 'which').callsFake((filePath: string) => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0).and.to.be.equal('node');
-      return NODE_PATH;
+      return {
+        stdout: NODE_PATH,
+        code: 0,
+      } as shelljs.ShellString;
     });
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
     expect(existsSyncStub.callCount).to.equal(2);
     expect(shelljsFindStub.callCount).to.equal(0);
-    expect(statSyncStub.callCount).to.equal(0);
     expect(realpathSyncStub.callCount).to.equal(0);
     expect(shelljsWhichStub.callCount).to.equal(1);
     expect(shelljsExecStub.callCount).to.equal(1);
@@ -219,6 +218,7 @@ describe('should find the node executable', () => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
       return false;
     });
+    shelljsWhichStub.restore();
     shelljsWhichStub = stubMethod(sandbox, shelljs, 'which').callsFake((filePath: string) => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0).and.to.be.equal('node');
       return null;
