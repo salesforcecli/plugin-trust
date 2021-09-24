@@ -29,6 +29,7 @@ export interface ConfigContext {
   configDir?: string;
   cacheDir?: string;
   dataDir?: string;
+  cliRoot?: string;
 }
 export interface Verifier {
   verify(): Promise<NpmMeta>;
@@ -306,7 +307,9 @@ export class InstallationVerification implements Verifier {
     // Make sure the cache path exists.
     try {
       await fs.mkdirp(this.getCachePath());
-      new NpmModule(npmMeta.moduleName, npmMeta.version).pack(getNpmRegistry().href, { cwd: this.getCachePath() });
+      new NpmModule(npmMeta.moduleName, npmMeta.version, this.config.cliRoot).pack(getNpmRegistry().href, {
+        cwd: this.getCachePath(),
+      });
       const tarBallFile = fs
         .readdirSync(this.getCachePath(), { withFileTypes: true })
         .find((entry) => entry.isFile() && entry.name.includes(npmMeta.version));
@@ -345,7 +348,7 @@ export class InstallationVerification implements Verifier {
       ? `@${this.pluginNpmName.scope}/${this.pluginNpmName.name}`
       : this.pluginNpmName.name;
 
-    const npmModule = new NpmModule(npmShowModule, this.pluginNpmName.tag);
+    const npmModule = new NpmModule(npmShowModule, this.pluginNpmName.tag, this.config.cliRoot);
     const npmMetadata = npmModule.show(npmRegistry.href);
     logger.debug('retrieveNpmMeta | Found npm meta information.');
     if (!npmMetadata.versions) {

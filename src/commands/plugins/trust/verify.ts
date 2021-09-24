@@ -47,9 +47,10 @@ export class Verify extends SfdxCommand {
     const vConfig = new VerificationConfig();
 
     const configContext: ConfigContext = {
-      cacheDir: get(this.config, 'configDir') as string,
-      configDir: get(this.config, 'cacheDir') as string,
+      cacheDir: get(this.config, 'cacheDir') as string,
+      configDir: get(this.config, 'configDir') as string,
       dataDir: get(this.config, 'dataDir') as string,
+      cliRoot: get(this.config, 'root') as string,
     };
 
     this.logger.debug(`cacheDir: ${configContext.cacheDir}`);

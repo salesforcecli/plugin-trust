@@ -68,6 +68,18 @@ const getShelljsExecStub = (
         stderr,
         stdout: JSON.stringify(PACK_RESULT),
       };
+    } else if (cmd.includes('node')) {
+      return {
+        code: 0,
+        stderr,
+        stdout: 'node',
+      };
+    } else if (cmd.includes('sfdx')) {
+      return {
+        code: 0,
+        stderr,
+        stdout: 'sfdx',
+      };
     } else {
       throw new Error(`Unexpected test cmd - ${cmd}`);
     }
@@ -105,12 +117,17 @@ describe('InstallationVerification Tests', () => {
     get configDir() {
       return 'configDir';
     },
+    get cliRoot() {
+      return __dirname;
+    },
   };
   const currentRegistry = process.env.SFDX_NPM_REGISTRY;
+  let fsReaddirSyncStub: Sinon.SinonStub;
   let plugin: NpmName;
+  let realpathSyncStub: Sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
   let shelljsExecStub: Sinon.SinonStub;
-  let fsReaddirSyncStub: Sinon.SinonStub;
+  let shelljsFindStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
@@ -122,11 +139,15 @@ describe('InstallationVerification Tests', () => {
         },
       },
     ]);
+    realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
+    shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
     plugin = NpmName.parse('foo');
   });
 
   afterEach(() => {
     fsReaddirSyncStub.restore();
+    realpathSyncStub.restore();
+    shelljsFindStub.restore();
     if (shelljsExecStub) {
       shelljsExecStub.restore();
     }

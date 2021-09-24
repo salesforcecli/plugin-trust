@@ -6,11 +6,16 @@
  */
 
 import { fail } from 'assert';
-import { expect } from 'chai';
-import Sinon = require('sinon');
+import * as os from 'os';
+import { expect, use as chaiUse } from 'chai';
+import * as Sinon from 'sinon';
+import * as SinonChai from 'sinon-chai';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
+import { fs } from '@salesforce/core';
 import { NpmModule } from '../../src/lib/npmCommand';
+
+chaiUse(SinonChai);
 
 const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 const MODULE_NAME = '@salesforce/plugin-source';
@@ -48,10 +53,87 @@ const PACK_RESULT = [
     ],
   },
 ];
+const NODE_NAME = 'node';
+const NODE_PATH = `/usr/local/sfdx/bin/${NODE_NAME}`;
 
 describe('should run npm commands', () => {
   let sandbox: sinon.SinonSandbox;
+  let realpathSyncStub: Sinon.SinonStub;
   let shelljsExecStub: Sinon.SinonStub;
+  let shelljsFindStub: Sinon.SinonStub;
+
+  beforeEach(() => {
+    sandbox = Sinon.createSandbox();
+    realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
+    shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
+    shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
+      expect(cmd).to.be.a('string').and.not.to.be.empty;
+      if (cmd.includes('show')) {
+        return {
+          code: 0,
+          stdout: JSON.stringify(SHOW_RESULT),
+        };
+      } else if (cmd.includes('pack')) {
+        return {
+          code: 0,
+          stdout: JSON.stringify(PACK_RESULT),
+        };
+      } else if (cmd.includes('node')) {
+        return {
+          code: 0,
+          stdout: 'node',
+        };
+      } else if (cmd.includes('sfdx')) {
+        return {
+          code: 0,
+          stdout: 'sfdx',
+        };
+      } else {
+        throw new Error(`Unexpected test cmd - ${cmd}`);
+      }
+    });
+  });
+
+  afterEach(() => {
+    realpathSyncStub.restore();
+    shelljsFindStub.restore();
+    shelljsExecStub.restore();
+    sandbox.restore();
+  });
+
+  it('Runs the show command', () => {
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    expect(shelljsExecStub).to.have.been.calledOnce;
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(npmMetadata).to.deep.equal(SHOW_RESULT);
+  });
+
+  it('Runs the show command with specified version', () => {
+    const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+    expect(shelljsExecStub).to.have.been.calledOnce;
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(npmMetadata).to.deep.equal(SHOW_RESULT);
+  });
+
+  it('Runs the pack command', () => {
+    new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+    expect(shelljsExecStub).to.have.been.calledOnce;
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+  });
+});
+
+describe('should find the node executable', () => {
+  let sandbox: sinon.SinonSandbox;
+  let shelljsExecStub: Sinon.SinonStub;
+  let shelljsFindStub: Sinon.SinonStub;
+  let shelljsWhichStub: Sinon.SinonStub;
+  let existsSyncStub: Sinon.SinonStub;
+  let realpathSyncStub: Sinon.SinonStub;
+  let osTypeStub: Sinon.SinonStub;
+  let accessSyncStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
@@ -67,37 +149,117 @@ describe('should run npm commands', () => {
           code: 0,
           stdout: JSON.stringify(PACK_RESULT),
         };
+      } else if (cmd.includes('node')) {
+        return {
+          code: 0,
+          stdout: 'node',
+        };
+      } else if (cmd.includes('sfdx')) {
+        return {
+          code: 0,
+          stdout: 'sfdx',
+        };
       } else {
         throw new Error(`Unexpected test cmd - ${cmd}`);
       }
     });
+    shelljsFindStub = stubMethod(sandbox, shelljs, 'find').callsFake((filePaths: string[]) => {
+      expect(filePaths).to.be.a('array').and.to.have.length.greaterThan(0);
+      return [NODE_PATH];
+    });
+    realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').callsFake((filePath: string) => {
+      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
+      return NODE_PATH;
+    });
+    existsSyncStub = stubMethod(sandbox, fs, 'existsSync').callsFake((filePath: string) => {
+      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
+      return true;
+    });
+    accessSyncStub = stubMethod(sandbox, fs, 'accessSync').callsFake((filePath: string) => {
+      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
+      return undefined;
+    });
+    osTypeStub = stubMethod(sandbox, os, 'type').callsFake(() => 'Linux');
   });
 
   afterEach(() => {
     sandbox.restore();
   });
 
-  it('Runs the show command', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME).show(DEFAULT_REGISTRY);
-    expect(shelljsExecStub.callCount).to.equal(1);
+  it('finds node binary inside sfdx bin folder and runs npm show command', () => {
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    expect(accessSyncStub).to.have.been.calledOnce;
+    expect(existsSyncStub).to.have.been.calledTwice;
+    expect(osTypeStub).to.have.been.calledOnce;
+    expect(realpathSyncStub).to.have.been.calledOnce;
+    expect(shelljsExecStub).to.have.been.calledOnce;
+    expect(shelljsFindStub).to.have.been.calledOnce;
+    expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
-  it('Runs the show command with specified version', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION).show(DEFAULT_REGISTRY);
-    expect(shelljsExecStub.callCount).to.equal(1);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
+  it('finds node binary inside sfdx bin folder on windows and runs npm show command', () => {
+    shelljsFindStub.returns(['C:\\Program Files\\sfdx\\client\\bin\\node.exe']);
+    osTypeStub.returns('Windows_NT');
+
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    expect(accessSyncStub).to.not.have.been.called;
+    expect(existsSyncStub).to.have.been.calledTwice;
+    expect(osTypeStub).to.have.been.calledOnce;
+    expect(realpathSyncStub).to.have.been.calledOnce;
+    expect(shelljsExecStub).to.have.been.calledOnce;
+    expect(shelljsFindStub).to.have.been.calledOnce;
+    expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
-  it('Runs the pack command', () => {
-    new NpmModule(MODULE_NAME, MODULE_VERSION).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
-    expect(shelljsExecStub.callCount).to.equal(1);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
+  it('fails to find node binary inside sfdx bin folder and falls back to global node and runs npm show command', () => {
+    existsSyncStub.restore();
+    existsSyncStub = stubMethod(sandbox, fs, 'existsSync').callsFake((filePath: string) => {
+      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
+      return false;
+    });
+    shelljsWhichStub = stubMethod(sandbox, shelljs, 'which').callsFake((filePath: string) => {
+      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0).and.to.be.equal('node');
+      return {
+        stdout: NODE_PATH,
+        code: 0,
+      } as shelljs.ShellString;
+    });
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    expect(existsSyncStub).to.have.been.calledTwice;
+    expect(shelljsFindStub).to.not.have.been.called;
+    expect(realpathSyncStub).to.not.have.been.called;
+    expect(shelljsWhichStub).to.have.been.calledOnce;
+    expect(shelljsExecStub).to.have.been.calledOnce;
+    expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_NAME);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(npmMetadata).to.deep.equal(SHOW_RESULT);
+  });
+
+  it('fails to find node binary and throws', () => {
+    existsSyncStub.restore();
+    existsSyncStub = stubMethod(sandbox, fs, 'existsSync').callsFake((filePath: string) => {
+      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
+      return false;
+    });
+    shelljsWhichStub.restore();
+    shelljsWhichStub = stubMethod(sandbox, shelljs, 'which').callsFake((filePath: string) => {
+      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0).and.to.be.equal('node');
+      return null;
+    });
+    try {
+      const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+      expect(npmMetadata).to.be.undefined;
+      fail('Error');
+    } catch (error) {
+      expect(error.code).to.equal('CannotFindNodeExecutable');
+    }
   });
 });
 
@@ -120,6 +282,16 @@ describe('should run npm commands with execution errors', () => {
           stderr: 'command execution error',
           stdout: '',
         };
+      } else if (cmd.includes('node')) {
+        return {
+          code: 0,
+          stdout: 'node',
+        };
+      } else if (cmd.includes('sfdx')) {
+        return {
+          code: 0,
+          stdout: 'sfdx',
+        };
       } else {
         throw new Error(`Unexpected test cmd - ${cmd}`);
       }
@@ -132,7 +304,7 @@ describe('should run npm commands with execution errors', () => {
 
   it('show command throws error', () => {
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -142,7 +314,7 @@ describe('should run npm commands with execution errors', () => {
 
   it('Runs the pack command', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
       fail('Error');
     } catch (error) {
       expect(error.code).to.equal('ShellExecError');
@@ -167,6 +339,16 @@ describe('should run npm commands with parse errors', () => {
           code: 0,
           stdout: 'not a json string',
         };
+      } else if (cmd.includes('node')) {
+        return {
+          code: 0,
+          stdout: 'node',
+        };
+      } else if (cmd.includes('sfdx')) {
+        return {
+          code: 0,
+          stdout: 'sfdx',
+        };
       } else {
         throw new Error(`Unexpected test cmd - ${cmd}`);
       }
@@ -179,7 +361,7 @@ describe('should run npm commands with parse errors', () => {
 
   it('show command throws error', () => {
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -189,7 +371,7 @@ describe('should run npm commands with parse errors', () => {
 
   it('Runs the pack command', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
       fail('Error');
     } catch (error) {
       expect(error.code).to.equal('ShellParseError');
