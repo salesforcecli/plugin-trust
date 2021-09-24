@@ -103,7 +103,7 @@ describe('should run npm commands', () => {
 
   it('Runs the show command', () => {
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
-    expect(shelljsExecStub.callCount).to.equal(1);
+    expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
@@ -111,7 +111,7 @@ describe('should run npm commands', () => {
 
   it('Runs the show command with specified version', () => {
     const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
-    expect(shelljsExecStub.callCount).to.equal(1);
+    expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
@@ -119,7 +119,7 @@ describe('should run npm commands', () => {
 
   it('Runs the pack command', () => {
     new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
-    expect(shelljsExecStub.callCount).to.equal(1);
+    expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
   });
@@ -231,11 +231,11 @@ describe('should find the node executable', () => {
       } as shelljs.ShellString;
     });
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
-    expect(existsSyncStub.callCount).to.equal(2);
-    expect(shelljsFindStub.callCount).to.equal(0);
-    expect(realpathSyncStub.callCount).to.equal(0);
-    expect(shelljsWhichStub.callCount).to.equal(1);
-    expect(shelljsExecStub.callCount).to.equal(1);
+    expect(existsSyncStub).to.have.been.calledTwice;
+    expect(shelljsFindStub).to.not.have.been.called;
+    expect(realpathSyncStub).to.not.have.been.called;
+    expect(shelljsWhichStub).to.have.been.calledOnce;
+    expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_NAME);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
