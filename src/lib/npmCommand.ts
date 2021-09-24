@@ -89,7 +89,7 @@ export class NpmCommand {
     const pkgPath = NpmCommand.npmPackagePath();
     const pkgJson = fs.readJsonSync(pkgPath) as NpmPackage;
     const prjPath = pkgPath.substring(0, pkgPath.lastIndexOf(path.sep));
-    return `${path.join(prjPath, pkgJson.bin['npm'])}`;
+    return path.join(prjPath, pkgJson.bin['npm']);
   }
 
   /**
