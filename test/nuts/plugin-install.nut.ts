@@ -18,6 +18,12 @@ let session: TestSession;
 describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
+    await fs.writeJson(
+      path.join(session.homeDir, '.sfdx'),
+      JSON.stringify({
+        acknowledged: true,
+      })
+    );
   });
 
   after(async () => {
@@ -67,6 +73,12 @@ describe('plugins:install commands', () => {
 describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
+    await fs.writeJson(
+      path.join(session.homeDir, '.sfdx'),
+      JSON.stringify({
+        acknowledged: true,
+      })
+    );
     const configDir = path.join(session.homeDir, '.config', 'sfdx');
     fs.mkdirSync(configDir, { recursive: true });
     fs.writeJsonSync(path.join(configDir, 'unsignedPluginAllowList.json'), [UNSIGNED_MODULE_NAME]);
