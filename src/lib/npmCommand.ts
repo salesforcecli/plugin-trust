@@ -6,9 +6,12 @@
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { type as osType } from 'os';
 import * as path from 'path';
-import * as shelljs from 'shelljs';
+
 import npmRunPath from 'npm-run-path';
+import * as shelljs from 'shelljs';
+
 import { SfdxError, fs } from '@salesforce/core';
 
 export type NpmMeta = {
@@ -102,11 +105,26 @@ export class NpmCommand {
    * @private
    */
   private static findNode(root: string = undefined): string {
+    const isExecutable = (filepath: string): boolean => {
+      if (osType() === 'Windows_NT') return filepath.endsWith('node.exe');
+
+      try {
+        if (filepath.endsWith('node')) {
+          // This checks if the filepath is executable on Mac or Linux, if it is not it errors.
+          fs.accessSync(filepath, fs.constants.X_OK);
+          return true;
+        }
+      } catch {
+        return false;
+      }
+      return false;
+    };
+
     if (root) {
       const sfdxBinDirs = NpmCommand.findSfdxBinDirs(root);
       if (sfdxBinDirs.length > 0) {
         // Find the node executable
-        const node = shelljs.find(sfdxBinDirs).find((file) => file.includes('node'));
+        const node = shelljs.find(sfdxBinDirs).filter((file) => isExecutable(file))[0];
         if (node) {
           return fs.realpathSync(node);
         }

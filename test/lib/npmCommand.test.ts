@@ -6,12 +6,16 @@
  */
 
 import { fail } from 'assert';
-import { expect } from 'chai';
-import Sinon = require('sinon');
+import * as os from 'os';
+import { expect, use as chaiUse } from 'chai';
+import * as Sinon from 'sinon';
+import * as SinonChai from 'sinon-chai';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { fs } from '@salesforce/core';
 import { NpmModule } from '../../src/lib/npmCommand';
+
+chaiUse(SinonChai);
 
 const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 const MODULE_NAME = '@salesforce/plugin-source';
@@ -128,6 +132,8 @@ describe('should find the node executable', () => {
   let shelljsWhichStub: Sinon.SinonStub;
   let existsSyncStub: Sinon.SinonStub;
   let realpathSyncStub: Sinon.SinonStub;
+  let osTypeStub: Sinon.SinonStub;
+  let accessSyncStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
@@ -169,6 +175,11 @@ describe('should find the node executable', () => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
       return true;
     });
+    accessSyncStub = stubMethod(sandbox, fs, 'accessSync').callsFake((filePath: string) => {
+      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
+      return undefined;
+    });
+    osTypeStub = stubMethod(sandbox, os, 'type').callsFake(() => 'Linux');
   });
 
   afterEach(() => {
@@ -177,10 +188,29 @@ describe('should find the node executable', () => {
 
   it('finds node binary inside sfdx bin folder and runs npm show command', () => {
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
-    expect(existsSyncStub.callCount).to.equal(2);
-    expect(shelljsFindStub.callCount).to.equal(1);
-    expect(realpathSyncStub.callCount).to.equal(1);
-    expect(shelljsExecStub.callCount).to.equal(1);
+    expect(accessSyncStub).to.have.been.calledOnce;
+    expect(existsSyncStub).to.have.been.calledTwice;
+    expect(osTypeStub).to.have.been.calledOnce;
+    expect(realpathSyncStub).to.have.been.calledOnce;
+    expect(shelljsExecStub).to.have.been.calledOnce;
+    expect(shelljsFindStub).to.have.been.calledOnce;
+    expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
+    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(npmMetadata).to.deep.equal(SHOW_RESULT);
+  });
+
+  it('finds node binary inside sfdx bin folder on windows and runs npm show command', () => {
+    shelljsFindStub.returns(['C:\\Program Files\\sfdx\\client\\bin\\node.exe']);
+    osTypeStub.returns('Windows_NT');
+
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    expect(accessSyncStub).to.not.have.been.called;
+    expect(existsSyncStub).to.have.been.calledTwice;
+    expect(osTypeStub).to.have.been.calledOnce;
+    expect(realpathSyncStub).to.have.been.calledOnce;
+    expect(shelljsExecStub).to.have.been.calledOnce;
+    expect(shelljsFindStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
