@@ -6,6 +6,7 @@
  */
 
 import * as path from 'path';
+import * as os from 'os';
 import { expect } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { fs } from '@salesforce/core';
@@ -33,27 +34,33 @@ describe('plugins:install commands', () => {
   });
 
   it('plugins:install prompts on unsigned plugin (denies)', () => {
-    process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
-    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
-      ensureExitCode: 2, // code 2 is the output code for the NO answer
-      answers: ['N'],
-    });
-    expect(result.shellOutput.stderr).to.contain(
-      'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:'
-    );
-    expect(result.shellOutput.stderr).to.contain('The user canceled the plugin installation');
+    // windows does not support answering the prompt
+    if (os.type() !== 'Windows_NT') {
+      process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
+      const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
+        ensureExitCode: 2, // code 2 is the output code for the NO answer
+        answers: ['N'],
+      });
+      expect(result.shellOutput.stderr).to.contain(
+        'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:'
+      );
+      expect(result.shellOutput.stderr).to.contain('The user canceled the plugin installation');
+    }
   });
 
   it('plugins:install prompts on unsigned plugin (accepts)', () => {
-    process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
-    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
-      ensureExitCode: 0,
-      answers: ['Y'],
-    });
-    expect(result.shellOutput.stderr).to.contain(
-      'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:'
-    );
-    expect(result.shellOutput.stdout).to.contain('Finished digital signature check');
+    // windows does not support answering the prompt
+    if (os.type() !== 'Windows_NT') {
+      process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
+      const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
+        ensureExitCode: 0,
+        answers: ['Y'],
+      });
+      expect(result.shellOutput.stderr).to.contain(
+        'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?:'
+      );
+      expect(result.shellOutput.stdout).to.contain('Finished digital signature check');
+    }
   });
 });
 
