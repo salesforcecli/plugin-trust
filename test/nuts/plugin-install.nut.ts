@@ -12,19 +12,16 @@ import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { fs } from '@salesforce/core';
 
 const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
-const UNSIGNED_MODULE_NAME = 'sfdx-jayree';
+const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
 let session: TestSession;
 
 describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
     await fs.mkdirp(path.join(session.homeDir, '.sfdx'));
-    await fs.writeJson(
-      path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'),
-      JSON.stringify({
-        acknowledged: true,
-      })
-    );
+    await fs.writeJson(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), {
+      acknowledged: true,
+    });
   });
 
   after(async () => {
@@ -79,12 +76,9 @@ describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
     await fs.mkdirp(path.join(session.homeDir, '.sfdx'));
-    await fs.writeJson(
-      path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'),
-      JSON.stringify({
-        acknowledged: true,
-      })
-    );
+    await fs.writeJson(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), {
+      acknowledged: true,
+    });
     const configDir = path.join(session.homeDir, '.config', 'sfdx');
     fs.mkdirSync(configDir, { recursive: true });
     fs.writeJsonSync(path.join(configDir, 'unsignedPluginAllowList.json'), [UNSIGNED_MODULE_NAME]);
