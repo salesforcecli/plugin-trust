@@ -316,7 +316,7 @@ export class InstallationVerification implements Verifier {
       npmMeta.tarballLocalPath = path.join(this.getCachePath(), tarBallFile.name);
     } catch (err) {
       logger.debug(err);
-      throw new SfdxError(err, 'ShellExecError');
+      throw err;
     }
 
     return npmMeta;

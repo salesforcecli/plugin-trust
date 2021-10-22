@@ -317,7 +317,7 @@ describe('should run npm commands with execution errors', () => {
       new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
       fail('Error');
     } catch (error) {
-      expect(error.code).to.equal('ShellExecError');
+      expect(error.code).to.equal('NpmError');
     }
   });
 });
@@ -363,15 +363,6 @@ describe('should run npm commands with parse errors', () => {
     try {
       const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
       expect(npmMetadata).to.be.undefined;
-      fail('Error');
-    } catch (error) {
-      expect(error.code).to.equal('ShellParseError');
-    }
-  });
-
-  it('Runs the pack command', () => {
-    try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
       fail('Error');
     } catch (error) {
       expect(error.code).to.equal('ShellParseError');
