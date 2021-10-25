@@ -59,11 +59,10 @@ export class NpmCommand {
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const nodeExecutable = NpmCommand.findNode(options.cliRoot);
     const npmCli = NpmCommand.npmCli();
-    const command = `"${nodeExecutable}" "${npmCli}" ${cmd} --registry=${options.registry} --json`;
+    const command = `"${nodeExecutable}" "${npmCli}" ${cmd} --registry=${options.registry}`;
     const npmCmdResult = shelljs.exec(command, {
       ...options,
       silent: true,
-      fatal: true,
       async: false,
       env: npmRunPath.env({ env: process.env }),
     });
@@ -155,15 +154,15 @@ export class NpmModule {
   }
 
   public show(registry: string): NpmShowResults {
-    const showCmd = NpmCommand.runNpmCmd(`show ${this.module}@${this.version}`, {
+    const showCmd = NpmCommand.runNpmCmd(`show ${this.module}@${this.version} --json`, {
       registry,
       cliRoot: this.cliRoot,
     });
 
-    // `npm show` always return exit code 0, even if the package it's trying to get doesn't exist.
+    // `npm show` doesn't return exit code 1 when it fails to get a specific package version
     // If `stdout` is empty then no info was found in the registry.
     if (showCmd.stdout === '') {
-      throw new SfdxError('Failed to get data from npm', 'NpmError');
+      throw new SfdxError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError');
     }
 
     try {
@@ -181,7 +180,8 @@ export class NpmModule {
         cliRoot: this.cliRoot,
       });
     } catch (err) {
-      throw new SfdxError('Failed to fetch tarball from npm', 'NpmError');
+      const sfdxErr = SfdxError.wrap(err);
+      throw new SfdxError(`Failed to fetch tarball from the registry: \n${sfdxErr.message}`, 'NpmError');
     }
     return;
   }
