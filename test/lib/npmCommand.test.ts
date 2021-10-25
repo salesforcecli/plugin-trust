@@ -369,3 +369,49 @@ describe('should run npm commands with parse errors', () => {
     }
   });
 });
+
+describe('should run npm commands with npm errors', () => {
+  let sandbox: sinon.SinonSandbox;
+
+  beforeEach(() => {
+    sandbox = Sinon.createSandbox();
+    stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
+      expect(cmd).to.be.a('string').and.not.to.be.empty;
+      if (cmd.includes('show')) {
+        return {
+          code: 0,
+          stdout: '',
+        };
+      } else if (cmd.includes('pack')) {
+        return {
+          code: 1,
+          stderr: 'npm err',
+        };
+      } else {
+        throw new Error(`Unexpected test cmd - ${cmd}`);
+      }
+    });
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
+  it('show command throws error', () => {
+    try {
+      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+    } catch (error) {
+      expect(error.code).to.equal('NpmError');
+      expect(error.message).to.equal('Failed to find @salesforce/plugin-source@1.0.0 in the registry');
+    }
+  });
+
+  it('pack command throws error', () => {
+    try {
+      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY);
+    } catch (error) {
+      expect(error.code).to.equal('NpmError');
+      expect(error.message).to.equal('Failed to fetch tarball from the registry: \nnpm err');
+    }
+  });
+});
