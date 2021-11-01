@@ -308,7 +308,7 @@ export class InstallationVerification implements Verifier {
     try {
       await fs.mkdirp(this.getCachePath());
       const npmModule = new NpmModule(npmMeta.moduleName, npmMeta.version, this.config.cliRoot);
-      await npmModule.fetchTarbarll(getNpmRegistry().href, {
+      await npmModule.fetchTarball(getNpmRegistry().href, {
         cwd: this.getCachePath(),
       });
       const tarBallFile = fs

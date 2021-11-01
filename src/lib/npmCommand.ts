@@ -188,7 +188,7 @@ export class NpmModule {
     return;
   }
 
-  public async fetchTarbarll(registry: string, options?: shelljs.ExecOptions): Promise<void> {
+  public async fetchTarball(registry: string, options?: shelljs.ExecOptions): Promise<void> {
     await this.pollForAvailability(() => {
       this.pack(registry, options);
     });
