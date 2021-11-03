@@ -307,7 +307,8 @@ export class InstallationVerification implements Verifier {
     // Make sure the cache path exists.
     try {
       await fs.mkdirp(this.getCachePath());
-      new NpmModule(npmMeta.moduleName, npmMeta.version, this.config.cliRoot).pack(getNpmRegistry().href, {
+      const npmModule = new NpmModule(npmMeta.moduleName, npmMeta.version, this.config.cliRoot);
+      await npmModule.fetchTarball(getNpmRegistry().href, {
         cwd: this.getCachePath(),
       });
       const tarBallFile = fs

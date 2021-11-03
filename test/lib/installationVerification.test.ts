@@ -21,7 +21,7 @@ import {
   VerificationConfig,
   Verifier,
 } from '../../src/lib/installationVerification';
-import { NpmMeta, NpmShowResults } from '../../src/lib/npmCommand';
+import { NpmMeta, NpmModule, NpmShowResults } from '../../src/lib/npmCommand';
 import { NpmName } from '../../src/lib/NpmName';
 import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert';
 
@@ -128,6 +128,7 @@ describe('InstallationVerification Tests', () => {
   let sandbox: sinon.SinonSandbox;
   let shelljsExecStub: Sinon.SinonStub;
   let shelljsFindStub: Sinon.SinonStub;
+  let pollForAvailabilityStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
@@ -142,6 +143,7 @@ describe('InstallationVerification Tests', () => {
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
     shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
     plugin = NpmName.parse('foo');
+    pollForAvailabilityStub = stubMethod(sandbox, NpmModule.prototype, 'pollForAvailability').resolves();
   });
 
   afterEach(() => {
@@ -151,6 +153,7 @@ describe('InstallationVerification Tests', () => {
     if (shelljsExecStub) {
       shelljsExecStub.restore();
     }
+    pollForAvailabilityStub.restore();
   });
 
   after(() => {
