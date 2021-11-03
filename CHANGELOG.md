@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.11](https://github.com/salesforcecli/plugin-trust/compare/v1.0.10...v1.0.11) (2021-11-03)
+
+
+### Bug Fixes
+
+* poll `npm pack` until tarball is available ([#185](https://github.com/salesforcecli/plugin-trust/issues/185)) ([001c1ab](https://github.com/salesforcecli/plugin-trust/commit/001c1ab3c79277bf411bc3e4459396e859e5672c))
+
 ### [1.0.10](https://github.com/salesforcecli/plugin-trust/compare/v1.0.9...v1.0.10) (2021-10-12)
 
 
