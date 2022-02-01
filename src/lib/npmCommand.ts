@@ -13,6 +13,8 @@ import npmRunPath from 'npm-run-path';
 import * as shelljs from 'shelljs';
 
 import { SfdxError, fs } from '@salesforce/core';
+import { UX } from '@salesforce/command';
+import { sleep } from '@salesforce/kit';
 
 export type NpmMeta = {
   tarballUrl?: string;
@@ -45,9 +47,7 @@ type NpmCommandOptions = shelljs.ExecOptions & {
   cliRoot?: string;
 };
 
-type NpmCommandResult = NpmShowResults & {
-  [name: string]: string;
-};
+type NpmCommandResult = shelljs.ShellString;
 
 type NpmPackage = {
   bin: {
@@ -61,22 +61,18 @@ export class NpmCommand {
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const nodeExecutable = NpmCommand.findNode(options.cliRoot);
     const npmCli = NpmCommand.npmCli();
-    const command = `"${nodeExecutable}" "${npmCli}" ${cmd} --registry=${options.registry} --json`;
-    const npmShowResult = shelljs.exec(command, {
+    const command = `"${nodeExecutable}" "${npmCli}" ${cmd} --registry=${options.registry}`;
+    const npmCmdResult = shelljs.exec(command, {
       ...options,
       silent: true,
-      fatal: true,
       async: false,
       env: npmRunPath.env({ env: process.env }),
     });
-    if (npmShowResult.code !== 0) {
-      throw new SfdxError(npmShowResult.stderr, 'ShellExecError');
+    if (npmCmdResult.code !== 0) {
+      throw new SfdxError(npmCmdResult.stderr, 'ShellExecError');
     }
-    try {
-      return JSON.parse(npmShowResult.stdout) as NpmCommandResult;
-    } catch (error) {
-      throw new SfdxError(error, 'ShellParseError');
-    }
+
+    return npmCmdResult;
   }
 
   private static npmPackagePath(): string {
@@ -160,11 +156,73 @@ export class NpmModule {
   }
 
   public show(registry: string): NpmShowResults {
-    return NpmCommand.runNpmCmd(`show ${this.module}@${this.version}`, { registry, cliRoot: this.cliRoot });
+    const showCmd = NpmCommand.runNpmCmd(`show ${this.module}@${this.version} --json`, {
+      registry,
+      cliRoot: this.cliRoot,
+    });
+
+    // `npm show` doesn't return exit code 1 when it fails to get a specific package version
+    // If `stdout` is empty then no info was found in the registry.
+    if (showCmd.stdout === '') {
+      throw new SfdxError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError');
+    }
+
+    try {
+      return JSON.parse(showCmd.stdout) as NpmShowResults;
+    } catch (error) {
+      throw new SfdxError(error, 'ShellParseError');
+    }
   }
 
   public pack(registry: string, options?: shelljs.ExecOptions): void {
-    NpmCommand.runNpmCmd(`pack ${this.module}@${this.version}`, { ...options, registry, cliRoot: this.cliRoot });
+    try {
+      NpmCommand.runNpmCmd(`pack ${this.module}@${this.version}`, {
+        ...options,
+        registry,
+        cliRoot: this.cliRoot,
+      });
+    } catch (err) {
+      const sfdxErr = SfdxError.wrap(err);
+      throw new SfdxError(`Failed to fetch tarball from the registry: \n${sfdxErr.message}`, 'NpmError');
+    }
     return;
+  }
+
+  public async fetchTarball(registry: string, options?: shelljs.ExecOptions): Promise<void> {
+    await this.pollForAvailability(() => {
+      this.pack(registry, options);
+    });
+    this.pack(registry, options);
+  }
+
+  public async pollForAvailability(checkFn: () => void): Promise<void> {
+    const ux = await UX.create();
+    const isNonTTY = process.env.CI !== undefined || process.env.CIRCLECI !== undefined;
+    let found = false;
+    let attempts = 0;
+    const maxAttempts = 300;
+
+    const start = isNonTTY ? (msg: string): UX => ux.log(msg) : (msg: string): void => ux.startSpinner(msg);
+    const update = isNonTTY ? (msg: string): UX => ux.log(msg) : (msg: string): void => ux.setSpinnerStatus(msg);
+    const stop = isNonTTY ? (msg: string): UX => ux.log(msg) : (msg: string): void => ux.stopSpinner(msg);
+
+    start('Polling for new version(s) to become available on npm');
+    while (!found && attempts < maxAttempts) {
+      attempts += 1;
+      update(`attempt: ${attempts} of ${maxAttempts}`);
+
+      try {
+        checkFn();
+        found = true;
+      } catch (error) {
+        if (attempts === maxAttempts) {
+          throw error;
+        }
+        found = false;
+      }
+
+      await sleep(1000);
+    }
+    stop(attempts >= maxAttempts ? 'failed' : 'done');
   }
 }

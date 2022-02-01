@@ -90,15 +90,18 @@ sfdx plugins
 ## Commands
 
 <!-- commands -->
-* [`@salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#salesforceplugin-trust-pluginstrustverify--n-string--r-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+
+- [`@salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#salesforceplugin-trust-pluginstrustverify--n-string--r-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
 ## `@salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 validate a digital signature for a npm package
 
 ```
+validate a digital signature for a npm package
+
 USAGE
-  $ @salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel 
+  $ @salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -118,5 +121,6 @@ EXAMPLES
   sfdx plugins:trust:verify --npm @scope/npmName
 ```
 
-_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/v1.0.9/src/commands/plugins/trust/verify.ts)_
+_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/v1.0.11/src/commands/plugins/trust/verify.ts)_
+
 <!-- commandsstop -->
