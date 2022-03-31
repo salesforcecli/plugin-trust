@@ -14,9 +14,9 @@ import {
   doPrompt,
   InstallationVerification,
   VerificationConfig,
-} from '../lib/installationVerification';
+} from '../shared/installationVerification';
 
-import { NpmName } from '../lib/NpmName';
+import { NpmName } from '../shared/NpmName';
 
 /**
  * Build a VerificationConfig. Useful for testing.

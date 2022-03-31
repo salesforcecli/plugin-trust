@@ -20,9 +20,9 @@ import {
   IRequest,
   VerificationConfig,
   Verifier,
-} from '../../src/lib/installationVerification';
-import { NpmMeta, NpmModule, NpmShowResults } from '../../src/lib/npmCommand';
-import { NpmName } from '../../src/lib/NpmName';
+} from '../../src/shared/installationVerification';
+import { NpmMeta, NpmModule, NpmShowResults } from '../../src/shared/npmCommand';
+import { NpmName } from '../../src/shared/NpmName';
 import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert';
 
 const BLANK_PLUGIN = { plugin: '', tag: '' };

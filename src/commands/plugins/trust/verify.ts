@@ -9,8 +9,8 @@ import * as os from 'os';
 import { get } from '@salesforce/ts-types';
 import { flags, FlagsConfig, SfdxCommand } from '@salesforce/command';
 import { Messages, SfdxError } from '@salesforce/core';
-import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../lib/installationVerification';
-import { NpmName } from '../../../lib/NpmName';
+import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../shared/installationVerification';
+import { NpmName } from '../../../shared/NpmName';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');

@@ -13,7 +13,7 @@ import * as SinonChai from 'sinon-chai';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { fs } from '@salesforce/core';
-import { NpmModule } from '../../src/lib/npmCommand';
+import { NpmModule } from '../../src/shared/npmCommand';
 
 chaiUse(SinonChai);
 

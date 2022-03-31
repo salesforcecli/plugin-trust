@@ -17,7 +17,7 @@ import { promisify as utilPromisify } from 'util';
 import * as crypto from 'crypto';
 import { Logger, fs, SfdxError } from '@salesforce/core';
 import * as request from 'request';
-import { NpmModule, NpmMeta } from '../lib/npmCommand';
+import { NpmModule, NpmMeta } from '../shared/npmCommand';
 import { NpmName } from './NpmName';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
