@@ -7,9 +7,9 @@
 
 import * as path from 'path';
 import * as os from 'os';
+import * as fs from 'fs/promises';
 import { expect } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
-import { fs } from '@salesforce/core';
 
 const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
 const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
@@ -18,9 +18,12 @@ let session: TestSession;
 describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
-    await fs.mkdirp(path.join(session.homeDir, '.sfdx'));
-    await fs.writeJson(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), {
-      acknowledged: true,
+    await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
+
+    const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
+    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData, {
+      encoding: 'utf8',
+      mode: 600,
     });
   });
 
@@ -75,13 +78,23 @@ describe('plugins:install commands', () => {
 describe('plugins:install commands', () => {
   before(async () => {
     session = await TestSession.create();
-    await fs.mkdirp(path.join(session.homeDir, '.sfdx'));
-    await fs.writeJson(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), {
-      acknowledged: true,
+    await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
+
+    const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
+    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData, {
+      encoding: 'utf8',
+      mode: 600,
     });
+
     const configDir = path.join(session.homeDir, '.config', 'sfdx');
-    fs.mkdirSync(configDir, { recursive: true });
-    fs.writeJsonSync(path.join(configDir, 'unsignedPluginAllowList.json'), [UNSIGNED_MODULE_NAME]);
+    await fs.mkdir(configDir, { recursive: true });
+
+    const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME], null, 2);
+    await fs.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod, {
+      encoding: 'utf8',
+      mode: 600,
+    });
+
     process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
     execCmd('plugins:link . --dev-debug', {
       cwd: path.dirname(session.dir),

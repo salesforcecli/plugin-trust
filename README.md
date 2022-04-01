@@ -98,29 +98,28 @@ sfdx plugins
 validate a digital signature for a npm package
 
 ```
-validate a digital signature for a npm package
-
 USAGE
   $ @salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel
-  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+    trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
-OPTIONS
-  -n, --npm=npm                                                                     (required) Specify the npm name.
+FLAGS
+  -n, --npm=<value>                                                                 (required) Specify the npm name.
                                                                                     This can include a tag/version
-
-  -r, --registry=registry                                                           The registry name. the behavior is
+  -r, --registry=<value>                                                            The registry name. the behavior is
                                                                                     the same as npm
-
   --json                                                                            format output as json
-
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
+DESCRIPTION
+  validate a digital signature for a npm package
+
 EXAMPLES
   sfdx plugins:trust:verify --npm @scope/npmName --registry http://my.repo.org:4874
+
   sfdx plugins:trust:verify --npm @scope/npmName
 ```
 
-_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/v1.0.11/src/commands/plugins/trust/verify.ts)_
+_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/v2.0.0/src/commands/plugins/trust/verify.ts)_
 
 <!-- commandsstop -->

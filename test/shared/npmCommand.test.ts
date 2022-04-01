@@ -7,12 +7,12 @@
 
 import { fail } from 'assert';
 import * as os from 'os';
+import * as fs from 'fs';
 import { expect, use as chaiUse } from 'chai';
 import * as Sinon from 'sinon';
 import * as SinonChai from 'sinon-chai';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { fs } from '@salesforce/core';
 import { NpmModule } from '../../src/shared/npmCommand';
 
 chaiUse(SinonChai);

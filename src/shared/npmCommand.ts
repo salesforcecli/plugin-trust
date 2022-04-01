@@ -9,12 +9,13 @@
 import { type as osType } from 'os';
 import * as path from 'path';
 
+import * as fs from 'fs';
 import npmRunPath from 'npm-run-path';
 import * as shelljs from 'shelljs';
 
-import { SfdxError, fs } from '@salesforce/core';
+import { SfError } from '@salesforce/core';
 import { UX } from '@salesforce/command';
-import { sleep } from '@salesforce/kit';
+import { sleep, parseJson } from '@salesforce/kit';
 
 export type NpmMeta = {
   tarballUrl?: string;
@@ -69,7 +70,7 @@ export class NpmCommand {
       env: npmRunPath.env({ env: process.env }),
     });
     if (npmCmdResult.code !== 0) {
-      throw new SfdxError(npmCmdResult.stderr, 'ShellExecError');
+      throw new SfError(npmCmdResult.stderr, 'ShellExecError');
     }
 
     return npmCmdResult;
@@ -86,7 +87,10 @@ export class NpmCommand {
    */
   private static npmCli(): string {
     const pkgPath = NpmCommand.npmPackagePath();
-    const pkgJson = fs.readJsonSync(pkgPath) as NpmPackage;
+
+    const fileData = fs.readFileSync(pkgPath, 'utf8');
+    const pkgJson = parseJson(fileData, pkgPath) as NpmPackage;
+
     const prjPath = pkgPath.substring(0, pkgPath.lastIndexOf(path.sep));
     return path.join(prjPath, pkgJson.bin['npm']);
   }
@@ -131,7 +135,7 @@ export class NpmCommand {
     const nodeShellString: shelljs.ShellString = shelljs.which('node');
     if (nodeShellString?.code === 0 && nodeShellString?.stdout) return nodeShellString.stdout;
 
-    throw new SfdxError('Cannot locate node executable.', 'CannotFindNodeExecutable');
+    throw new SfError('Cannot locate node executable.', 'CannotFindNodeExecutable');
   }
 
   /**
@@ -164,13 +168,13 @@ export class NpmModule {
     // `npm show` doesn't return exit code 1 when it fails to get a specific package version
     // If `stdout` is empty then no info was found in the registry.
     if (showCmd.stdout === '') {
-      throw new SfdxError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError');
+      throw new SfError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError');
     }
 
     try {
       return JSON.parse(showCmd.stdout) as NpmShowResults;
     } catch (error) {
-      throw new SfdxError(error, 'ShellParseError');
+      throw new SfError(error, 'ShellParseError');
     }
   }
 
@@ -182,8 +186,8 @@ export class NpmModule {
         cliRoot: this.cliRoot,
       });
     } catch (err) {
-      const sfdxErr = SfdxError.wrap(err);
-      throw new SfdxError(`Failed to fetch tarball from the registry: \n${sfdxErr.message}`, 'NpmError');
+      const sfdxErr = SfError.wrap(err);
+      throw new SfError(`Failed to fetch tarball from the registry: \n${sfdxErr.message}`, 'NpmError');
     }
     return;
   }

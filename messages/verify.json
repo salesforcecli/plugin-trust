@@ -7,5 +7,6 @@
   "flags": {
     "npm": "Specify the npm name. This can include a tag/version",
     "registry": "The registry name. the behavior is the same as npm"
-  }
+  },
+  "FailedDigitalSignatureVerification": "A digital signature is specified for this plugin but it didn't verify against the certificate."
 }

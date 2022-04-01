@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, salesforce.com, inc.
+ * Copyright (c) 2022, salesforce.com, inc.
  * All rights reserved.
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
@@ -15,7 +15,9 @@ import { Readable } from 'stream';
 import { parse as parseUrl, URL, UrlWithStringQuery } from 'url';
 import { promisify as utilPromisify } from 'util';
 import * as crypto from 'crypto';
-import { Logger, fs, SfdxError } from '@salesforce/core';
+import * as fs from 'fs';
+import { mkdir } from 'fs/promises';
+import { Logger, SfError } from '@salesforce/core';
 import * as request from 'request';
 import { NpmModule, NpmMeta } from '../shared/npmCommand';
 import { NpmName } from './NpmName';
@@ -88,7 +90,7 @@ function retrieveKey(stream: Readable): Promise<string> {
       });
       stream.on('end', () => {
         if (!key.includes('-----BEGIN')) {
-          return reject(new SfdxError('The specified key format is invalid.', 'InvalidKeyFormat'));
+          return reject(new SfError('The specified key format is invalid.', 'InvalidKeyFormat'));
         }
         return resolve(key);
       });
@@ -115,7 +117,7 @@ export async function verify(codeVerifierInfo: CodeVerifierInfo): Promise<boolea
 
       codeVerifierInfo.signatureStream.on('end', () => {
         if (signature.byteLength === 0) {
-          return reject(new SfdxError('The provided signature is invalid or missing.', 'InvalidSignature'));
+          return reject(new SfError('The provided signature is invalid or missing.', 'InvalidSignature'));
         } else {
           const verification = signApi.verify(publicKey, signature.toString('utf8'), 'base64');
           return resolve(verification);
@@ -176,7 +178,7 @@ export class InstallationVerification implements Verifier {
       this.config = _config;
       return this;
     }
-    throw new SfdxError('the cli engine config cannot be null', 'InvalidParam');
+    throw new SfError('the cli engine config cannot be null', 'InvalidParam');
   }
 
   /**
@@ -189,7 +191,7 @@ export class InstallationVerification implements Verifier {
       this.pluginNpmName = _pluginName;
       return this;
     }
-    throw new SfdxError('pluginName must be specified.', 'InvalidParam');
+    throw new SfError('pluginName must be specified.', 'InvalidParam');
   }
 
   /**
@@ -225,7 +227,7 @@ export class InstallationVerification implements Verifier {
       })
       .catch((e) => {
         if (e.code === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
-          throw new SfdxError(
+          throw new SfError(
             'Encountered a self signed certificated. To enable "export NODE_TLS_REJECT_UNAUTHORIZED=0"',
             'SelfSignedCert'
           );
@@ -276,7 +278,7 @@ export class InstallationVerification implements Verifier {
             );
           } else {
             return reject(
-              new SfdxError(
+              new SfError(
                 `A request to url ${url} failed with error code: [${
                   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   (response as { statusCode: string }) ? response.statusCode : 'undefined'
@@ -306,7 +308,7 @@ export class InstallationVerification implements Verifier {
 
     // Make sure the cache path exists.
     try {
-      await fs.mkdirp(this.getCachePath());
+      await mkdir(this.getCachePath(), { recursive: true });
       const npmModule = new NpmModule(npmMeta.moduleName, npmMeta.version, this.config.cliRoot);
       await npmModule.fetchTarball(getNpmRegistry().href, {
         cwd: this.getCachePath(),
@@ -353,7 +355,7 @@ export class InstallationVerification implements Verifier {
     const npmMetadata = npmModule.show(npmRegistry.href);
     logger.debug('retrieveNpmMeta | Found npm meta information.');
     if (!npmMetadata.versions) {
-      throw new SfdxError(
+      throw new SfError(
         `The npm metadata for plugin ${this.pluginNpmName.name} is missing the versions attribute.`,
         'InvalidNpmMetadata'
       );
@@ -378,23 +380,23 @@ export class InstallationVerification implements Verifier {
           versionNumber = npmMetadata.versions.find((version) => version === tagVersionStr);
           logger.debug(`retrieveNpmMeta | versionObject: ${versionNumber}`);
         } else {
-          throw new SfdxError(
+          throw new SfError(
             `The dist tag ${this.pluginNpmName.tag} was not found for plugin: ${this.pluginNpmName.name}`,
             'NpmTagNotFound'
           );
         }
       } else {
-        throw new SfdxError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat');
+        throw new SfError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat');
       }
     }
 
     npmModule.npmMeta.version = versionNumber;
 
     if (!npmMetadata.sfdx) {
-      throw new SfdxError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
+      throw new SfError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
     } else {
       if (!validSalesforceHostname(npmMetadata.sfdx.publicKeyUrl)) {
-        throw new SfdxError(
+        throw new SfError(
           `The host is not allowed to provide signing information. [${npmMetadata.sfdx.publicKeyUrl}]`,
           'UnexpectedHost'
         );
@@ -404,7 +406,7 @@ export class InstallationVerification implements Verifier {
       }
 
       if (!validSalesforceHostname(npmMetadata.sfdx.signatureUrl)) {
-        throw new SfdxError(
+        throw new SfError(
           `The host is not allowed to provide signing information. [${npmMetadata.sfdx.signatureUrl}]`,
           'UnexpectedHost'
         );
@@ -466,7 +468,7 @@ export async function doPrompt(vconfig: VerificationConfig): Promise<void> {
     case 'y':
       return;
     default:
-      throw new SfdxError('The user canceled the plugin installation.', 'InstallationCanceledError');
+      throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
   }
 }
 
@@ -478,7 +480,7 @@ export async function doInstallationCodeSigningVerification(
   try {
     const meta = await verificationConfig.verifier.verify();
     if (!meta.verified) {
-      throw new SfdxError(
+      throw new SfError(
         "A digital signature is specified for this plugin but it didn't verify against the certificate.",
         'FailedDigitalSignatureVerification'
       );
@@ -493,8 +495,8 @@ export async function doInstallationCodeSigningVerification(
         return await doPrompt(verificationConfig);
       }
     } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
-      throw new SfdxError(err.message || 'The user canceled the plugin installation.');
+      throw new SfError(err.message || 'The user canceled the plugin installation.');
     }
-    throw SfdxError.wrap(err);
+    throw SfError.wrap(err);
   }
 }
