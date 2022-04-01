@@ -38,7 +38,11 @@ export class NpmName {
    */
   public static parse(npmName: string): NpmName {
     if (!npmName || npmName.length < 1) {
-      throw new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
+      const err = new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'MissingOrInvalidNpmName';
+      throw err;
     }
 
     const returnNpmName = new NpmName();
@@ -85,7 +89,11 @@ export class NpmName {
     } else if (subComponents.length === 1) {
       returnNpmName.name = NpmName.validateComponentString(subComponents[0]);
     } else {
-      throw new SfError('The npm name is invalid.', 'InvalidNpmName');
+      const err = new SfError('The npm name is invalid.', 'InvalidNpmName');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'InvalidNpmName';
+      throw err;
     }
   }
 
@@ -100,7 +108,11 @@ export class NpmName {
     if (trimmedName && trimmedName.length > 0) {
       return trimmedName;
     } else {
-      throw new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
+      const err = new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'MissingOrInvalidNpmName';
+      throw err;
     }
   }
 

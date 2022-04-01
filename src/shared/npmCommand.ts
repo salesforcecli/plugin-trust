@@ -70,7 +70,11 @@ export class NpmCommand {
       env: npmRunPath.env({ env: process.env }),
     });
     if (npmCmdResult.code !== 0) {
-      throw new SfError(npmCmdResult.stderr, 'ShellExecError');
+      const err = new SfError(npmCmdResult.stderr, 'ShellExecError');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'ShellExecError';
+      throw err;
     }
 
     return npmCmdResult;
@@ -135,7 +139,11 @@ export class NpmCommand {
     const nodeShellString: shelljs.ShellString = shelljs.which('node');
     if (nodeShellString?.code === 0 && nodeShellString?.stdout) return nodeShellString.stdout;
 
-    throw new SfError('Cannot locate node executable.', 'CannotFindNodeExecutable');
+    const err = new SfError('Cannot locate node executable.', 'CannotFindNodeExecutable');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore override readonly .name field
+    err.name = 'CannotFindNodeExecutable';
+    throw err;
   }
 
   /**
@@ -168,13 +176,21 @@ export class NpmModule {
     // `npm show` doesn't return exit code 1 when it fails to get a specific package version
     // If `stdout` is empty then no info was found in the registry.
     if (showCmd.stdout === '') {
-      throw new SfError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError');
+      const err = new SfError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'NpmError';
+      throw err;
     }
 
     try {
       return JSON.parse(showCmd.stdout) as NpmShowResults;
     } catch (error) {
-      throw new SfError(error, 'ShellParseError');
+      const err = new SfError(error, 'ShellParseError');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'ShellParseError';
+      throw err;
     }
   }
 
@@ -186,8 +202,12 @@ export class NpmModule {
         cliRoot: this.cliRoot,
       });
     } catch (err) {
-      const sfdxErr = SfError.wrap(err);
-      throw new SfError(`Failed to fetch tarball from the registry: \n${sfdxErr.message}`, 'NpmError');
+      const sfErr = SfError.wrap(err);
+      const e = new SfError(`Failed to fetch tarball from the registry: \n${sfErr.message}`, 'NpmError');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      e.name = 'NpmError';
+      throw e;
     }
     return;
   }

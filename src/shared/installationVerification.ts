@@ -178,7 +178,11 @@ export class InstallationVerification implements Verifier {
       this.config = _config;
       return this;
     }
-    throw new SfError('the cli engine config cannot be null', 'InvalidParam');
+    const err = new SfError('the cli engine config cannot be null', 'InvalidParam');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore override readonly .name field
+    err.name = 'InvalidParam';
+    throw err;
   }
 
   /**
@@ -191,7 +195,11 @@ export class InstallationVerification implements Verifier {
       this.pluginNpmName = _pluginName;
       return this;
     }
-    throw new SfError('pluginName must be specified.', 'InvalidParam');
+    const err = new SfError('pluginName must be specified.', 'InvalidParam');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore override readonly .name field
+    err.name = 'InvalidParam';
+    throw err;
   }
 
   /**
@@ -227,10 +235,14 @@ export class InstallationVerification implements Verifier {
       })
       .catch((e) => {
         if (e.code === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
-          throw new SfError(
+          const err = new SfError(
             'Encountered a self signed certificated. To enable "export NODE_TLS_REJECT_UNAUTHORIZED=0"',
             'SelfSignedCert'
           );
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore override readonly .name field
+          err.name = 'SelfSignedCert';
+          throw err;
         }
         throw e;
       });
@@ -355,10 +367,14 @@ export class InstallationVerification implements Verifier {
     const npmMetadata = npmModule.show(npmRegistry.href);
     logger.debug('retrieveNpmMeta | Found npm meta information.');
     if (!npmMetadata.versions) {
-      throw new SfError(
+      const err = new SfError(
         `The npm metadata for plugin ${this.pluginNpmName.name} is missing the versions attribute.`,
         'InvalidNpmMetadata'
       );
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'InvalidNpmMetadata';
+      throw err;
     }
 
     // Assume the tag is version tag.
@@ -380,36 +396,56 @@ export class InstallationVerification implements Verifier {
           versionNumber = npmMetadata.versions.find((version) => version === tagVersionStr);
           logger.debug(`retrieveNpmMeta | versionObject: ${versionNumber}`);
         } else {
-          throw new SfError(
+          const err = new SfError(
             `The dist tag ${this.pluginNpmName.tag} was not found for plugin: ${this.pluginNpmName.name}`,
             'NpmTagNotFound'
           );
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore override readonly .name field
+          err.name = 'NpmTagNotFound';
+          throw err;
         }
       } else {
-        throw new SfError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat');
+        const err = new SfError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore override readonly .name field
+        err.name = 'UnexpectedNpmFormat';
+        throw err;
       }
     }
 
     npmModule.npmMeta.version = versionNumber;
 
     if (!npmMetadata.sfdx) {
-      throw new SfError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
+      const err = new SfError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'NotSigned';
+      throw err;
     } else {
       if (!validSalesforceHostname(npmMetadata.sfdx.publicKeyUrl)) {
-        throw new SfError(
+        const err = new SfError(
           `The host is not allowed to provide signing information. [${npmMetadata.sfdx.publicKeyUrl}]`,
           'UnexpectedHost'
         );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore override readonly .name field
+        err.name = 'UnexpectedHost';
+        throw err;
       } else {
         logger.debug(`retrieveNpmMeta | versionObject.sfdx.publicKeyUrl: ${npmMetadata.sfdx.publicKeyUrl}`);
         npmModule.npmMeta.publicKeyUrl = npmMetadata.sfdx.publicKeyUrl;
       }
 
       if (!validSalesforceHostname(npmMetadata.sfdx.signatureUrl)) {
-        throw new SfError(
+        const err = new SfError(
           `The host is not allowed to provide signing information. [${npmMetadata.sfdx.signatureUrl}]`,
           'UnexpectedHost'
         );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore override readonly .name field
+        err.name = 'UnexpectedHost';
+        throw err;
       } else {
         logger.debug(`retrieveNpmMeta | versionObject.sfdx.signatureUrl: ${npmMetadata.sfdx.signatureUrl}`);
         npmModule.npmMeta.signatureUrl = npmMetadata.sfdx.signatureUrl;
@@ -467,8 +503,13 @@ export async function doPrompt(vconfig: VerificationConfig): Promise<void> {
   switch (shouldContinue.toLowerCase()) {
     case 'y':
       return;
-    default:
-      throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
+    default: {
+      const err = new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'InstallationCanceledError';
+      throw err;
+    }
   }
 }
 
@@ -480,10 +521,14 @@ export async function doInstallationCodeSigningVerification(
   try {
     const meta = await verificationConfig.verifier.verify();
     if (!meta.verified) {
-      throw new SfError(
+      const err = new SfError(
         "A digital signature is specified for this plugin but it didn't verify against the certificate.",
         'FailedDigitalSignatureVerification'
       );
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'FailedDigitalSignatureVerification';
+      throw err;
     }
     verificationConfig.log(`Successfully validated digital signature for ${plugin.plugin}.`);
   } catch (err) {
@@ -495,8 +540,16 @@ export async function doInstallationCodeSigningVerification(
         return await doPrompt(verificationConfig);
       }
     } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
-      throw new SfError(err.message || 'The user canceled the plugin installation.');
+      const e = new SfError(err.message || 'The user canceled the plugin installation.');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      e.name = '';
+      throw e;
     }
-    throw SfError.wrap(err);
+    const sfErr = SfError.wrap(err);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore override readonly .name field
+    sfErr.name = err.name;
+    throw sfErr;
   }
 }
