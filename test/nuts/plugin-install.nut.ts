@@ -21,10 +21,7 @@ describe('plugins:install commands', () => {
     await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
 
     const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
-    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData, {
-      encoding: 'utf8',
-      mode: 600,
-    });
+    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
   });
 
   after(async () => {
@@ -81,19 +78,13 @@ describe('plugins:install commands', () => {
     await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
 
     const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
-    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData, {
-      encoding: 'utf8',
-      mode: 600,
-    });
+    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
 
     const configDir = path.join(session.homeDir, '.config', 'sfdx');
     await fs.mkdir(configDir, { recursive: true });
 
     const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME], null, 2);
-    await fs.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod, {
-      encoding: 'utf8',
-      mode: 600,
-    });
+    await fs.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod);
 
     process.env.TESTKIT_EXECUTABLE_PATH = 'sfdx';
     execCmd('plugins:link . --dev-debug', {
