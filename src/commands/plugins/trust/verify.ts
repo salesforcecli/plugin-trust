@@ -8,9 +8,9 @@
 import * as os from 'os';
 import { get } from '@salesforce/ts-types';
 import { flags, FlagsConfig, SfdxCommand } from '@salesforce/command';
-import { Messages, SfdxError } from '@salesforce/core';
-import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../lib/installationVerification';
-import { NpmName } from '../../../lib/NpmName';
+import { Messages, SfError } from '@salesforce/core';
+import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../shared/installationVerification';
+import { NpmName } from '../../../shared/NpmName';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
@@ -70,10 +70,11 @@ export class Verify extends SfdxCommand {
       this.logger.debug(`meta.verified: ${meta.verified}`);
 
       if (!meta.verified) {
-        throw new SfdxError(
-          "A digital signature is specified for this plugin but it didn't verify against the certificate.",
-          'FailedDigitalSignatureVerification'
-        );
+        const e = messages.createError('FailedDigitalSignatureVerification');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore override readonly .name field
+        e.name = 'FailedDigitalSignatureVerification';
+        throw e;
       }
       const message = `Successfully validated digital signature for ${npmName.name}.`;
 
@@ -83,7 +84,7 @@ export class Verify extends SfdxCommand {
         return { message, verified: true };
       }
     } catch (error) {
-      const err = error as SfdxError;
+      const err = error as SfError;
       this.logger.debug(`err reported: ${JSON.stringify(err, null, 4)}`);
       const response: VerifyResponse = {
         verified: false,
@@ -103,7 +104,7 @@ export class Verify extends SfdxCommand {
         }
         return response;
       }
-      throw SfdxError.wrap(err);
+      throw SfError.wrap(err);
     }
   }
 

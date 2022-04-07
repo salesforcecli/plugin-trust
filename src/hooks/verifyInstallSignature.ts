@@ -5,8 +5,8 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Hook } from '@oclif/config';
-import { Logger, SfdxError } from '@salesforce/core';
+import { Hook } from '@oclif/core';
+import { Logger, SfError } from '@salesforce/core';
 import { cli } from 'cli-ux';
 import {
   ConfigContext,
@@ -14,9 +14,9 @@ import {
   doPrompt,
   InstallationVerification,
   VerificationConfig,
-} from '../lib/installationVerification';
+} from '../shared/installationVerification';
 
-import { NpmName } from '../lib/NpmName';
+import { NpmName } from '../shared/NpmName';
 
 /**
  * Build a VerificationConfig. Useful for testing.
@@ -69,7 +69,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
       await doInstallationCodeSigningVerification(configContext, { plugin: plugin.name, tag: plugin.tag }, vConfig);
       cli.log('Finished digital signature check.');
     } catch (error) {
-      const err = error as SfdxError;
+      const err = error as SfError;
       logger.debug(err.message);
       this.error(err);
     }

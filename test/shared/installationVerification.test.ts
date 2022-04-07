@@ -1,15 +1,16 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
+ * Copyright (c) 2022, salesforce.com, inc.
  * All rights reserved.
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { Readable, Writable } from 'stream';
+import * as fs from 'fs';
 import { expect } from 'chai';
 import * as request from 'request';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { SfdxError, fs } from '@salesforce/core';
+import { SfError } from '@salesforce/core';
 import Sinon = require('sinon');
 import {
   ConfigContext,
@@ -20,9 +21,9 @@ import {
   IRequest,
   VerificationConfig,
   Verifier,
-} from '../../src/lib/installationVerification';
-import { NpmMeta, NpmModule, NpmShowResults } from '../../src/lib/npmCommand';
-import { NpmName } from '../../src/lib/NpmName';
+} from '../../src/shared/installationVerification';
+import { NpmMeta, NpmModule, NpmShowResults } from '../../src/shared/npmCommand';
+import { NpmName } from '../../src/shared/NpmName';
 import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert';
 
 const BLANK_PLUGIN = { plugin: '', tag: '' };
@@ -701,7 +702,7 @@ describe('InstallationVerification Tests', () => {
     it("file doesn't exist", async () => {
       const fsImpl = {
         readFile(path, cb) {
-          const error = new SfdxError('ENOENT', 'ENOENT');
+          const error = new SfError('ENOENT', 'ENOENT');
           error['code'] = 'ENOENT';
           cb(error);
         },

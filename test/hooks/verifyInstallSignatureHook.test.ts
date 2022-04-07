@@ -9,7 +9,7 @@ import * as sinon from 'sinon';
 
 import { stubMethod } from '@salesforce/ts-sinon';
 
-import { InstallationVerification, VerificationConfig } from '../../src/lib/installationVerification';
+import { InstallationVerification, VerificationConfig } from '../../src/shared/installationVerification';
 import { hook, VerificationConfigBuilder } from '../../src/hooks/verifyInstallSignature';
 
 describe('plugin install hook', () => {

@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2018, salesforce.com, inc.
+ * Copyright (c) 2022, salesforce.com, inc.
  * All rights reserved.
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { SfdxError } from '@salesforce/core';
+import { SfError } from '@salesforce/core';
 
 interface NpmNameInfo {
   scope: string;
@@ -38,7 +38,11 @@ export class NpmName {
    */
   public static parse(npmName: string): NpmName {
     if (!npmName || npmName.length < 1) {
-      throw new SfdxError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
+      const err = new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'MissingOrInvalidNpmName';
+      throw err;
     }
 
     const returnNpmName = new NpmName();
@@ -85,7 +89,11 @@ export class NpmName {
     } else if (subComponents.length === 1) {
       returnNpmName.name = NpmName.validateComponentString(subComponents[0]);
     } else {
-      throw new SfdxError('The npm name is invalid.', 'InvalidNpmName');
+      const err = new SfError('The npm name is invalid.', 'InvalidNpmName');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'InvalidNpmName';
+      throw err;
     }
   }
 
@@ -100,7 +108,11 @@ export class NpmName {
     if (trimmedName && trimmedName.length > 0) {
       return trimmedName;
     } else {
-      throw new SfdxError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
+      const err = new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore override readonly .name field
+      err.name = 'MissingOrInvalidNpmName';
+      throw err;
     }
   }
 
