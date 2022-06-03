@@ -12,7 +12,7 @@
     "@oclif/core": "^1.6.3",
     "@salesforce/command": "^5.0.4",
     "@salesforce/core": "^3.10.1",
-    "npm": "^7.21.0",
+    "npm": "^8.11.0",
     "npm-run-path": "^4.0.1",
     "shelljs": "^0.8.4",
     "tslib": "^2"
