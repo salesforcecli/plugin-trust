@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/salesforcecli/plugin-trust/compare/v2.0.0...v2.0.1) (2022-06-08)
+
+### Bug Fixes
+
+- bump npm to v8 to remove vulnerable json-schema ([#270](https://github.com/salesforcecli/plugin-trust/issues/270)) ([af03a4d](https://github.com/salesforcecli/plugin-trust/commit/af03a4d7075cb51f869807259ad3f951e02caac8))
+
 ## [2.0.0](https://github.com/salesforcecli/plugin-trust/compare/v1.1.0...v2.0.0) (2022-04-20)
 
 ## [1.1.0](https://github.com/salesforcecli/plugin-trust/compare/v1.0.11...v1.1.0) (2021-12-02)
