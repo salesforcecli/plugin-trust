@@ -18,14 +18,15 @@ import * as crypto from 'crypto';
 import * as fs from 'fs';
 import { mkdir } from 'fs/promises';
 import { Logger, SfError } from '@salesforce/core';
-import * as request from 'request';
+import got from 'got';
+import * as ProxyAgent from 'proxy-agent';
+import { getProxyForUrl } from 'proxy-from-env';
 import { NpmModule, NpmMeta } from '../shared/npmCommand';
 import { NpmName } from './NpmName';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
 export const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
-export type IRequest = (url: string, cb?: request.RequestCallback) => void;
 
 export interface ConfigContext {
   configDir?: string;
@@ -149,9 +150,6 @@ export class InstallationVerification implements Verifier {
   // config derived from the cli environment
   private config: ConfigContext;
 
-  // Reference for the http client;
-  private readonly requestImpl: IRequest;
-
   // Reference for fs
   private fsImpl;
 
@@ -160,9 +158,8 @@ export class InstallationVerification implements Verifier {
 
   private logger: Logger;
 
-  public constructor(requestImpl?: IRequest, fsImpl?: unknown) {
+  public constructor(fsImpl?: unknown) {
     // why? dependency injection is better than sinon
-    this.requestImpl = requestImpl ? requestImpl : request;
     this.fsImpl = fsImpl ? fsImpl : fs;
     this.readFileAsync = utilPromisify(this.fsImpl.readFile);
     this.unlinkAsync = utilPromisify(this.fsImpl.unlink);
@@ -274,33 +271,36 @@ export class InstallationVerification implements Verifier {
    */
   public getSigningContent(url: string): Promise<Readable> {
     return new Promise((resolve, reject) => {
-      this.requestImpl(url, (err: Error, response: request.RequestResponse, responseData) => {
-        if (err) {
-          return reject(err);
-        } else {
-          if (response && response.statusCode === 200) {
+      got
+        .get({
+          timeout: {
+            request: 10000,
+          },
+          agent: {
+            https: ProxyAgent(getProxyForUrl(url)),
+          },
+          url,
+        })
+        .then((res) => {
+          if (res && res.statusCode === 200) {
             // The verification api expects a readable
             return resolve(
               new Readable({
                 read(): void {
-                  this.push(responseData);
+                  this.push(res.body);
                   this.push(null);
                 },
               })
             );
           } else {
             return reject(
-              new SfError(
-                `A request to url ${url} failed with error code: [${
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  (response as { statusCode: string }) ? response.statusCode : 'undefined'
-                }]`,
-                'ErrorGettingContent'
-              )
+              new SfError(`A request to url ${url} failed with error code: [${res.statusCode}]`, 'ErrorGettingContent')
             );
           }
-        }
-      });
+        })
+        .catch((err) => {
+          return reject(err);
+        });
     });
   }
 

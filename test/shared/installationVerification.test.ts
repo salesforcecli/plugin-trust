@@ -7,7 +7,8 @@
 import { Readable, Writable } from 'stream';
 import * as fs from 'fs';
 import { expect } from 'chai';
-import * as request from 'request';
+import got from 'got';
+import { OptionsOfTextResponseBody } from 'got';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
@@ -18,7 +19,6 @@ import {
   doInstallationCodeSigningVerification,
   getNpmRegistry,
   InstallationVerification,
-  IRequest,
   VerificationConfig,
   Verifier,
 } from '../../src/shared/installationVerification';
@@ -130,6 +130,7 @@ describe('InstallationVerification Tests', () => {
   let shelljsExecStub: Sinon.SinonStub;
   let shelljsFindStub: Sinon.SinonStub;
   let pollForAvailabilityStub: Sinon.SinonStub;
+  let gotStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
@@ -145,6 +146,7 @@ describe('InstallationVerification Tests', () => {
     shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
     plugin = NpmName.parse('foo');
     pollForAvailabilityStub = stubMethod(sandbox, NpmModule.prototype, 'pollForAvailability').resolves();
+    gotStub = stubMethod(sandbox, got, 'get');
   });
 
   afterEach(() => {
@@ -155,6 +157,7 @@ describe('InstallationVerification Tests', () => {
       shelljsExecStub.restore();
     }
     pollForAvailabilityStub.restore();
+    gotStub.restore();
   });
 
   after(() => {
@@ -186,15 +189,23 @@ describe('InstallationVerification Tests', () => {
 
     shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
 
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback): void => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('sig')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('crt')) {
-        cb(null, { statusCode: 200 } as request.Response, CERTIFICATE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: CERTIFICATE,
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
@@ -216,7 +227,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -240,7 +251,9 @@ describe('InstallationVerification Tests', () => {
 
     shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
 
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback): Readable => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('foo.tgz')) {
         const reader = new Readable({
           read() {},
@@ -248,15 +261,21 @@ describe('InstallationVerification Tests', () => {
         process.nextTick(() => {
           reader.emit('end');
         });
-        return reader;
+        return Promise.resolve(reader);
       } else if (url.includes('sig')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('crt')) {
-        cb(null, { statusCode: 200 } as request.Response, CERTIFICATE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: CERTIFICATE,
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
@@ -279,7 +298,7 @@ describe('InstallationVerification Tests', () => {
     };
 
     plugin.tag = '1.0.0';
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -303,15 +322,23 @@ describe('InstallationVerification Tests', () => {
     };
 
     shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback) => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('sig.weaver')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('crt.master')) {
-        cb(null, { statusCode: 200 } as request.Response, CERTIFICATE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: CERTIFICATE,
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
@@ -335,7 +362,7 @@ describe('InstallationVerification Tests', () => {
 
     plugin.tag = 'gozer';
     // For the key and signature to line up gozer must map to 1.2.3
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -363,15 +390,23 @@ describe('InstallationVerification Tests', () => {
 
     shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
 
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback) => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('sig.weaver')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('crt.master')) {
-        cb(null, { statusCode: 200 } as request.Response, CERTIFICATE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: CERTIFICATE,
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
@@ -395,7 +430,7 @@ describe('InstallationVerification Tests', () => {
 
     plugin.tag = 'gozer';
     // For the key and signature to line up gozer must map to 1.2.3
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -407,22 +442,30 @@ describe('InstallationVerification Tests', () => {
 
     shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
 
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback) => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('sig')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('key')) {
-        cb(null, { statusCode: 200 } as request.Response, CERTIFICATE);
+        return Promise.resolve({
+          statusCode: 202,
+          body: CERTIFICATE,
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
       unlink() {},
     };
 
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -448,22 +491,30 @@ describe('InstallationVerification Tests', () => {
 
     shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
 
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback) => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('sig')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('key')) {
-        cb(null, { statusCode: 200 } as request.Response, CERTIFICATE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: CERTIFICATE,
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
       unlink() {},
     };
 
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -478,26 +529,34 @@ describe('InstallationVerification Tests', () => {
   it('NpmCommand Meta Request Error', async () => {
     shelljsExecStub = getShelljsExecStub(sandbox, {} as NpmShowResults, 1, 'command execution error');
 
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback) => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('sig')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('key')) {
-        cb(null, { statusCode: 200 } as request.Response, CERTIFICATE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: CERTIFICATE,
+        });
       } else if (url.endsWith(plugin.name)) {
         const err = new Error();
         err.name = 'NPMMetaError';
-        cb(err, { statusCode: 500 } as request.Response, {});
+        throw err;
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
       unlink() {},
     };
 
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -510,8 +569,9 @@ describe('InstallationVerification Tests', () => {
   });
 
   it.skip('server error', async () => {
-    let returnCode = 404;
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback): Readable => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('foo.tgz')) {
         const reader = new Readable({
           read() {},
@@ -519,17 +579,25 @@ describe('InstallationVerification Tests', () => {
         process.nextTick(() => {
           reader.emit('end');
         });
-        return reader;
+        return Promise.resolve(reader);
       } else if (url.includes('sig')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('key')) {
-        cb(null, { statusCode: 200 } as request.Response, CERTIFICATE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: CERTIFICATE,
+        });
       } else if (url.endsWith(plugin.name)) {
-        cb(null, { statusCode: returnCode } as request.Response, {});
+        return Promise.resolve({
+          statusCode: 404,
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
@@ -542,8 +610,7 @@ describe('InstallationVerification Tests', () => {
     ];
 
     for (const testMeta of results) {
-      returnCode = testMeta.code;
-      const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+      const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
       try {
         await verification.verify();
       } catch (error) {
@@ -555,7 +622,9 @@ describe('InstallationVerification Tests', () => {
   it.skip('Read tarball stream failed', () => {
     const ERROR = 'Ok, who brought the dog? - Louis Tully';
 
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback): Readable => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('foo.tgz')) {
         const reader = new Readable({
           read() {},
@@ -563,12 +632,11 @@ describe('InstallationVerification Tests', () => {
         process.nextTick(() => {
           reader.emit('error', new Error(ERROR));
         });
-        return reader;
+        return Promise.resolve(reader);
       } else if (url.endsWith(plugin.name)) {
-        cb(
-          null,
-          { statusCode: 200 } as request.Response,
-          JSON.stringify({
+        return Promise.resolve({
+          statusCode: 404,
+          body: JSON.stringify({
             versions: {
               '1.2.3': {
                 sfdx: {
@@ -583,12 +651,12 @@ describe('InstallationVerification Tests', () => {
             'dist-tags': {
               latest: '1.2.3',
             },
-          })
-        );
+          }),
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
@@ -600,7 +668,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -629,15 +697,22 @@ describe('InstallationVerification Tests', () => {
 
     shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
 
-    const iRequest: IRequest = (url: string, cb?: request.RequestCallback) => {
+    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+      const url = opts.url as string;
+
       if (url.includes('sig')) {
-        cb(null, { statusCode: 200 } as request.Response, TEST_DATA_SIGNATURE);
+        return Promise.resolve({
+          statusCode: 200,
+          body: TEST_DATA_SIGNATURE,
+        });
       } else if (url.includes('crt')) {
-        cb(null, { statusCode: 404 } as request.Response, {});
+        return Promise.resolve({
+          statusCode: 404,
+        });
       } else {
         throw new Error(`Unexpected test url - ${url}`);
       }
-    };
+    });
 
     const fsImpl = {
       readFile() {},
@@ -657,7 +732,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    const verification = new InstallationVerification(iRequest, fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -679,7 +754,7 @@ describe('InstallationVerification Tests', () => {
         },
         unlink() {},
       };
-      const verification1 = new InstallationVerification(null, fsImpl)
+      const verification1 = new InstallationVerification(fsImpl)
         .setPluginNpmName(NpmName.parse(TEST_VALUE1))
         .setConfig(config);
       expect(await verification1.isAllowListed()).to.be.equal(true);
@@ -693,7 +768,7 @@ describe('InstallationVerification Tests', () => {
         },
         unlink() {},
       };
-      const verification2 = new InstallationVerification(null, fsImpl)
+      const verification2 = new InstallationVerification(fsImpl)
         .setPluginNpmName(NpmName.parse(TEST_VALUE2))
         .setConfig(config);
       expect(await verification2.isAllowListed()).to.be.equal(true);
@@ -709,7 +784,7 @@ describe('InstallationVerification Tests', () => {
         unlink() {},
       };
 
-      const verification = new InstallationVerification(null, fsImpl)
+      const verification = new InstallationVerification(fsImpl)
         .setPluginNpmName(NpmName.parse('BAR'))
         .setConfig(config);
       expect(await verification.isAllowListed()).to.be.equal(false);
