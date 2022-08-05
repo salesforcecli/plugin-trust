@@ -269,39 +269,16 @@ export class InstallationVerification implements Verifier {
    *
    * @param url host url.
    */
-  public getSigningContent(url: string): Promise<Readable> {
-    return new Promise((resolve, reject) => {
-      got
-        .get({
-          timeout: {
-            request: 10000,
-          },
-          agent: {
-            https: ProxyAgent(getProxyForUrl(url)),
-          },
-          url,
-        })
-        .then((res) => {
-          if (res && res.statusCode === 200) {
-            // The verification api expects a readable
-            return resolve(
-              new Readable({
-                read(): void {
-                  this.push(res.body);
-                  this.push(null);
-                },
-              })
-            );
-          } else {
-            return reject(
-              new SfError(`A request to url ${url} failed with error code: [${res.statusCode}]`, 'ErrorGettingContent')
-            );
-          }
-        })
-        .catch((err) => {
-          return reject(err);
-        });
+  public async getSigningContent(url: string): Promise<Readable> {
+    const res = await got.get({
+      url,
+      timeout: { request: 10000 },
+      agent: { https: ProxyAgent(getProxyForUrl(url)) },
     });
+    if (res.statusCode !== 200) {
+      throw new SfError(`A request to url ${url} failed with error code: [${res.statusCode}]`, 'ErrorGettingContent');
+    }
+    return Readable.from(Buffer.from(res.body));
   }
 
   /**
