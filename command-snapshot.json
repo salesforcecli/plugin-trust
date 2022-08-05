@@ -1,12 +1,7 @@
 [
-    {
-        "command": "plugins:trust:verify",
-        "plugin": "@salesforce/plugin-trust",
-        "flags": [
-            "json",
-            "loglevel",
-            "npm",
-            "registry"
-        ]
-    }
+  {
+    "command": "plugins:trust:verify",
+    "plugin": "@salesforce/plugin-trust",
+    "flags": ["json", "loglevel", "npm", "registry"]
+  }
 ]
