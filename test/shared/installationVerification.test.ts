@@ -526,30 +526,8 @@ describe('InstallationVerification Tests', () => {
       });
   });
 
-  it('NpmCommand Meta Request Error', async () => {
+  it('npm show fails to find a package', async () => {
     shelljsExecStub = getShelljsExecStub(sandbox, {} as NpmShowResults, 1, 'command execution error');
-
-    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
-      const url = opts.url as string;
-
-      if (url.includes('sig')) {
-        return Promise.resolve({
-          statusCode: 200,
-          body: TEST_DATA_SIGNATURE,
-        });
-      } else if (url.includes('key')) {
-        return Promise.resolve({
-          statusCode: 200,
-          body: CERTIFICATE,
-        });
-      } else if (url.endsWith(plugin.name)) {
-        const err = new Error();
-        err.name = 'NPMMetaError';
-        throw err;
-      } else {
-        throw new Error(`Unexpected test url - ${url}`);
-      }
-    });
 
     const fsImpl = {
       readFile() {},
@@ -565,118 +543,6 @@ describe('InstallationVerification Tests', () => {
       })
       .catch((err: Error) => {
         expect(err).to.have.property('name', 'ShellExecError');
-      });
-  });
-
-  it.skip('server error', async () => {
-    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
-      const url = opts.url as string;
-
-      if (url.includes('foo.tgz')) {
-        const reader = new Readable({
-          read() {},
-        });
-        process.nextTick(() => {
-          reader.emit('end');
-        });
-        return Promise.resolve(reader);
-      } else if (url.includes('sig')) {
-        return Promise.resolve({
-          statusCode: 200,
-          body: TEST_DATA_SIGNATURE,
-        });
-      } else if (url.includes('key')) {
-        return Promise.resolve({
-          statusCode: 200,
-          body: CERTIFICATE,
-        });
-      } else if (url.endsWith(plugin.name)) {
-        return Promise.resolve({
-          statusCode: 404,
-        });
-      } else {
-        throw new Error(`Unexpected test url - ${url}`);
-      }
-    });
-
-    const fsImpl = {
-      readFile() {},
-      unlink() {},
-    };
-
-    const results = [
-      { code: 404, expectedName: 'PluginNotFound' },
-      { code: 403, expectedName: 'PluginAccessDenied' },
-    ];
-
-    for (const testMeta of results) {
-      const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
-      try {
-        await verification.verify();
-      } catch (error) {
-        expect(error).to.have.property('name', testMeta.expectedName);
-      }
-    }
-  });
-
-  it.skip('Read tarball stream failed', () => {
-    const ERROR = 'Ok, who brought the dog? - Louis Tully';
-
-    gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
-      const url = opts.url as string;
-
-      if (url.includes('foo.tgz')) {
-        const reader = new Readable({
-          read() {},
-        });
-        process.nextTick(() => {
-          reader.emit('error', new Error(ERROR));
-        });
-        return Promise.resolve(reader);
-      } else if (url.endsWith(plugin.name)) {
-        return Promise.resolve({
-          statusCode: 404,
-          body: JSON.stringify({
-            versions: {
-              '1.2.3': {
-                sfdx: {
-                  publicKeyUrl: 'https://developer.salesforce.com/key',
-                  signatureUrl: 'https://developer.salesforce.com/sig',
-                },
-                dist: {
-                  tarball: 'https://registry.example.com/foo.tgz',
-                },
-              },
-            },
-            'dist-tags': {
-              latest: '1.2.3',
-            },
-          }),
-        });
-      } else {
-        throw new Error(`Unexpected test url - ${url}`);
-      }
-    });
-
-    const fsImpl = {
-      readFile() {},
-      unlink() {},
-      createWriteStream() {
-        return new Writable({
-          write() {},
-        });
-      },
-    };
-
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
-
-    return verification
-      .verify()
-      .then(() => {
-        throw new Error("This shouldn't happen. Failure expected");
-      })
-      .catch((err: Error) => {
-        expect(err).to.have.property('message', ERROR);
       });
   });
 
