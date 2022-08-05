@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3](https://github.com/salesforcecli/plugin-trust/compare/v2.0.2...v2.0.3) (2022-08-05)
+
+### Bug Fixes
+
+- replace `request` with `got` for HTTP calls ([#289](https://github.com/salesforcecli/plugin-trust/issues/289)) ([14e75a5](https://github.com/salesforcecli/plugin-trust/commit/14e75a536c7a6fccda6585fb20ba3a2d04be8389)), closes [#290](https://github.com/salesforcecli/plugin-trust/issues/290)
+
 ### [2.0.2](https://github.com/salesforcecli/plugin-trust/compare/v2.0.1...v2.0.2) (2022-08-03)
 
 ### Bug Fixes
