@@ -7,7 +7,7 @@
 
 import { Hook } from '@oclif/core';
 import { Logger, SfError } from '@salesforce/core';
-import { cli } from 'cli-ux';
+import { CliUx } from '@oclif/core';
 import {
   ConfigContext,
   doInstallationCodeSigningVerification,
@@ -26,15 +26,17 @@ export class VerificationConfigBuilder {
     const vConfig = new VerificationConfig();
     vConfig.verifier = new InstallationVerification().setPluginNpmName(npmName).setConfig(configContext);
 
-    vConfig.log = cli.log.bind(cli) as (msg: string) => void;
+    vConfig.log = (msg: string): void => {
+      CliUx.ux.log(msg);
+    };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    vConfig.prompt = cli.prompt.bind(cli);
+    vConfig.prompt = CliUx.ux.prompt.bind(CliUx);
     return vConfig;
   }
   public static buildForRepo(): VerificationConfig {
     const vConfig = new VerificationConfig();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    vConfig.prompt = cli.prompt.bind(cli);
+    vConfig.prompt = CliUx.ux.prompt.bind(CliUx);
     return vConfig;
   }
 }
@@ -67,7 +69,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
     try {
       logger.debug('doing verification');
       await doInstallationCodeSigningVerification(configContext, { plugin: plugin.name, tag: plugin.tag }, vConfig);
-      cli.log('Finished digital signature check.');
+      CliUx.ux.log('Finished digital signature check.');
     } catch (error) {
       const err = error as SfError;
       logger.debug(err.message);
