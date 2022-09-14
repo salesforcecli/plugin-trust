@@ -26,7 +26,9 @@ export class VerificationConfigBuilder {
     const vConfig = new VerificationConfig();
     vConfig.verifier = new InstallationVerification().setPluginNpmName(npmName).setConfig(configContext);
 
-    vConfig.log = CliUx.ux.log.bind(CliUx) as (msg: string) => void;
+    vConfig.log = (msg: string): void => {
+      CliUx.ux.log(msg);
+    };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     vConfig.prompt = CliUx.ux.prompt.bind(CliUx);
     return vConfig;
