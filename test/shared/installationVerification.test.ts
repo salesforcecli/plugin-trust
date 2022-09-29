@@ -54,8 +54,7 @@ const getShelljsExecStub = (
   npmMetadata: NpmShowResults,
   code = 0 as number,
   stderr?: string
-): Sinon.SinonStub => {
-  return stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
+): Sinon.SinonStub => stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
     expect(cmd).to.be.a('string').and.not.to.be.empty;
     if (cmd.includes('show')) {
       return {
@@ -85,7 +84,6 @@ const getShelljsExecStub = (
       throw new Error(`Unexpected test cmd - ${cmd}`);
     }
   });
-};
 
 describe('getNpmRegistry', () => {
   const currentRegistry = process.env.SFDX_NPM_REGISTRY;
@@ -706,9 +704,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      vConfig.prompt = async () => {
-        return 'N';
-      };
+      vConfig.prompt = async () => 'N';
 
       return doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig)
         .then(() => {
@@ -732,9 +728,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      vConfig.prompt = async () => {
-        return 'Y';
-      };
+      vConfig.prompt = async () => 'Y';
 
       return doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig)
         .then(() => {
@@ -758,9 +752,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      vConfig.prompt = async () => {
-        return 'Y';
-      };
+      vConfig.prompt = async () => 'Y';
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
