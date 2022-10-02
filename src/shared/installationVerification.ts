@@ -95,9 +95,7 @@ function retrieveKey(stream: Readable): Promise<string> {
         }
         return resolve(key);
       });
-      stream.on('error', (err) => {
-        return reject(err);
-      });
+      stream.on('error', (err) => reject(err));
     }
   });
 }
@@ -125,20 +123,14 @@ export async function verify(codeVerifierInfo: CodeVerifierInfo): Promise<boolea
         }
       });
 
-      codeVerifierInfo.signatureStream.on('error', (err) => {
-        return reject(err);
-      });
+      codeVerifierInfo.signatureStream.on('error', (err) => reject(err));
     });
 
-    codeVerifierInfo.dataToVerify.on('error', (err) => {
-      return reject(err);
-    });
+    codeVerifierInfo.dataToVerify.on('error', (err) => reject(err));
   });
 }
 
-export const getNpmRegistry = (): URL => {
-  return new URL(process.env.SFDX_NPM_REGISTRY || DEFAULT_REGISTRY);
-};
+export const getNpmRegistry = (): URL => new URL(process.env.SFDX_NPM_REGISTRY || DEFAULT_REGISTRY);
 
 /**
  * class for verifying a digital signature pack of an npm
