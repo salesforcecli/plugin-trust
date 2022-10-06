@@ -9,13 +9,14 @@ import * as sinon from 'sinon';
 
 import { stubMethod } from '@salesforce/ts-sinon';
 
+import { Prompter } from '@salesforce/sf-plugins-core';
 import { InstallationVerification, VerificationConfig } from '../../src/shared/installationVerification';
-import { hook, VerificationConfigBuilder } from '../../src/hooks/verifyInstallSignature';
+import { hook } from '../../src/hooks/verifyInstallSignature';
 
 describe('plugin install hook', () => {
   let sandbox: sinon.SinonSandbox;
   let vConfig: VerificationConfig;
-  let buildFromRepoStub: sinon.SinonStub;
+  let promptSpy: sinon.SinonSpy;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -29,11 +30,7 @@ describe('plugin install hook', () => {
     });
     stubMethod(sandbox, vConfig.verifier, 'isAllowListed').callsFake(async () => false);
 
-    vConfig.prompt = async () => 'N';
-    buildFromRepoStub = sandbox.stub().returns(vConfig);
-    VerificationConfigBuilder.build = () => vConfig;
-
-    VerificationConfigBuilder.buildForRepo = buildFromRepoStub;
+    promptSpy = stubMethod(sandbox, Prompter.prototype, 'prompt').resolves({ confirm: false });
   });
 
   afterEach(() => {
@@ -65,7 +62,7 @@ describe('plugin install hook', () => {
       );
     } catch (error) {
       expect(error).to.have.property('name', 'InstallationCanceledError');
-      expect(buildFromRepoStub.called).to.be.true;
+      expect(promptSpy.called).to.be.true;
     }
   });
 });

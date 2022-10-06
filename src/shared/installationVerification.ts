@@ -21,6 +21,8 @@ import { Logger, SfError } from '@salesforce/core';
 import got from 'got';
 import * as ProxyAgent from 'proxy-agent';
 import { getProxyForUrl } from 'proxy-from-env';
+import { Prompter } from '@salesforce/sf-plugins-core';
+import { CliUx } from '@oclif/core';
 import { NpmModule, NpmMeta } from '../shared/npmCommand';
 import { NpmName } from './NpmName';
 
@@ -445,8 +447,6 @@ export class InstallationVerification implements Verifier {
 
 export class VerificationConfig {
   private verifierMember: Verifier;
-  private logMember: (message: string) => void;
-  private promptMember: (message: string) => Promise<string>;
 
   public get verifier(): Verifier {
     return this.verifierMember;
@@ -456,37 +456,24 @@ export class VerificationConfig {
     this.verifierMember = value;
   }
 
-  public get log(): (message: string) => void {
-    return this.logMember;
-  }
-
-  public set log(value: (message: string) => void) {
-    this.logMember = value;
-  }
-
-  public get prompt(): (message: string) => Promise<string> {
-    return this.promptMember;
-  }
-
-  public set prompt(value: (message: string) => Promise<string>) {
-    this.promptMember = value;
+  public log(message: string): void {
+    CliUx.ux.log(message);
   }
 }
 
-export async function doPrompt(vconfig: VerificationConfig): Promise<void> {
-  const shouldContinue = await vconfig.prompt(
-    'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation y/n?'
-  );
-  switch (shouldContinue.toLowerCase()) {
-    case 'y':
-      return;
-    default: {
-      const err = new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'InstallationCanceledError';
-      throw err;
-    }
+export async function doPrompt(): Promise<void> {
+  const prompter = new Prompter();
+  const { confirm } = await prompter.prompt<{ confirm: boolean }>([
+    {
+      type: 'confirm',
+      name: 'confirm',
+      message: 'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation?',
+      default: false,
+    },
+  ]);
+
+  if (!confirm) {
+    throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
   }
 }
 
@@ -514,7 +501,7 @@ export async function doInstallationCodeSigningVerification(
         verificationConfig.log(`The plugin [${plugin.plugin}] is not digitally signed but it is allow-listed.`);
         return;
       } else {
-        return await doPrompt(verificationConfig);
+        return await doPrompt();
       }
     } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
       const e = new SfError(err.message || 'The user canceled the plugin installation.');
