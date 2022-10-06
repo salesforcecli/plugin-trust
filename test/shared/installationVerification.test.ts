@@ -13,6 +13,7 @@ import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
 import Sinon = require('sinon');
+import { Prompter } from '@salesforce/sf-plugins-core';
 import {
   ConfigContext,
   DEFAULT_REGISTRY,
@@ -158,6 +159,7 @@ describe('InstallationVerification Tests', () => {
     }
     pollForAvailabilityStub.restore();
     gotStub.restore();
+    sandbox.restore();
   });
 
   after(() => {
@@ -546,7 +548,7 @@ describe('InstallationVerification Tests', () => {
       });
   });
 
-  it('404 for public key', () => {
+  it('404 for public key', async () => {
     const npmMetadata: NpmShowResults = {
       versions: ['1.0.0', '1.0.1'],
       'dist-tags': {
@@ -600,15 +602,13 @@ describe('InstallationVerification Tests', () => {
 
     const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
 
-    return verification
-      .verify()
-      .then(() => {
-        throw new Error("This shouldn't happen. Failure expected");
-      })
-      .catch((err: Error) => {
-        expect(err).to.have.property('name', 'ErrorGettingContent');
-        expect(err.message).to.include('404');
-      });
+    try {
+      await verification.verify();
+      throw new Error("This shouldn't happen. Failure expected");
+    } catch (err) {
+      expect(err).to.have.property('name', 'ErrorGettingContent');
+      expect(err.message).to.include('404');
+    }
   });
 
   describe('isAllowListed', () => {
@@ -678,7 +678,7 @@ describe('InstallationVerification Tests', () => {
       expect(message).to.include('digital signature');
     });
 
-    it('FailedDigitalSignatureVerification', () => {
+    it('FailedDigitalSignatureVerification', async () => {
       const vConfig = new VerificationConfig();
       vConfig.verifier = {
         async verify() {
@@ -688,12 +688,14 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      return doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig).catch((err) => {
+      try {
+        return await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+      } catch (err) {
         expect(err).to.have.property('name', 'FailedDigitalSignatureVerification');
-      });
+      }
     });
 
-    it('Canceled by user', () => {
+    it('Canceled by user', async () => {
       const vConfig = new VerificationConfig();
       vConfig.verifier = {
         async verify() {
@@ -706,20 +708,17 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      vConfig.prompt = async () => {
-        return 'N';
-      };
+      stubMethod(sandbox, Prompter.prototype, 'prompt').resolves({ confirm: false });
 
-      return doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig)
-        .then(() => {
-          throw new Error('Failure: This should never happen');
-        })
-        .catch((err) => {
-          expect(err).to.have.property('name', 'InstallationCanceledError');
-        });
+      try {
+        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+        throw new Error('Failure: This should never happen');
+      } catch (err) {
+        expect(err).to.have.property('name', 'InstallationCanceledError');
+      }
     });
 
-    it('continue installation general error', () => {
+    it('continue installation general error', async () => {
       const vConfig = new VerificationConfig();
       vConfig.verifier = {
         async verify() {
@@ -732,17 +731,14 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      vConfig.prompt = async () => {
-        return 'Y';
-      };
+      stubMethod(sandbox, Prompter.prototype, 'prompt').resolves({ confirm: true });
 
-      return doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig)
-        .then(() => {
-          throw new Error('Failure: This should never happen');
-        })
-        .catch((err) => {
-          expect(err).to.have.property('name', 'UnexpectedHost');
-        });
+      try {
+        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+        throw new Error('Failure: This should never happen');
+      } catch (err) {
+        expect(err).to.have.property('name', 'UnexpectedHost');
+      }
     });
 
     it('continue installation name not signed', async () => {
@@ -758,9 +754,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      vConfig.prompt = async () => {
-        return 'Y';
-      };
+      stubMethod(sandbox, Prompter.prototype, 'prompt').resolves({ confirm: true });
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);

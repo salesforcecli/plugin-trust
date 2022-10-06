@@ -25,18 +25,6 @@ export class VerificationConfigBuilder {
   public static build(npmName: NpmName, configContext: ConfigContext): VerificationConfig {
     const vConfig = new VerificationConfig();
     vConfig.verifier = new InstallationVerification().setPluginNpmName(npmName).setConfig(configContext);
-
-    vConfig.log = (msg: string): void => {
-      CliUx.ux.log(msg);
-    };
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    vConfig.prompt = CliUx.ux.prompt.bind(CliUx);
-    return vConfig;
-  }
-  public static buildForRepo(): VerificationConfig {
-    const vConfig = new VerificationConfig();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    vConfig.prompt = CliUx.ux.prompt.bind(CliUx);
     return vConfig;
   }
 }
@@ -76,7 +64,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
       this.error(err);
     }
   } else {
-    await doPrompt(VerificationConfigBuilder.buildForRepo());
+    await doPrompt();
   }
 };
 
