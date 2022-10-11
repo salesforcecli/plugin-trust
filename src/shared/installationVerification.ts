@@ -54,6 +54,7 @@ export class CodeVerifierInfo {
     this.data = value;
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public get signatureStream(): Readable {
     return this.signature;
   }
@@ -62,6 +63,7 @@ export class CodeVerifierInfo {
     this.signature = value;
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public get publicKeyStream(): Readable {
     return this.publicKey;
   }
@@ -155,8 +157,8 @@ export class InstallationVerification implements Verifier {
   public constructor(fsImpl?: unknown) {
     // why? dependency injection is better than sinon
     this.fsImpl = fsImpl ? fsImpl : fs;
-    this.readFileAsync = utilPromisify(this.fsImpl.readFile);
-    this.unlinkAsync = utilPromisify(this.fsImpl.unlink);
+    this.readFileAsync = utilPromisify(this.fsImpl.readFile as () => void);
+    this.unlinkAsync = utilPromisify(this.fsImpl.unlink as () => void);
   }
 
   /**
@@ -248,7 +250,7 @@ export class InstallationVerification implements Verifier {
       fileContent = await this.readFileAsync(allowListedFilePath);
       const allowlistArray = JSON.parse(fileContent);
       logger.debug('isAllowListed | Successfully parsed allowlist.');
-      return allowlistArray && allowlistArray.includes(this.pluginNpmName.toString());
+      return allowlistArray?.includes(this.pluginNpmName.toString());
     } catch (err) {
       if (err.code === 'ENOENT') {
         return false;
@@ -263,6 +265,7 @@ export class InstallationVerification implements Verifier {
    *
    * @param url host url.
    */
+  // eslint-disable-next-line class-methods-use-this
   public async getSigningContent(url: string): Promise<Readable> {
     const res = await got.get({
       url,
@@ -448,6 +451,7 @@ export class VerificationConfig {
     this.verifierMember = value;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public log(message: string): void {
     CliUx.ux.log(message);
   }
@@ -488,24 +492,26 @@ export async function doInstallationCodeSigningVerification(
     }
     verificationConfig.log(`Successfully validated digital signature for ${plugin.plugin}.`);
   } catch (err) {
-    if (err.name === 'NotSigned') {
-      if (await verificationConfig.verifier.isAllowListed()) {
-        verificationConfig.log(`The plugin [${plugin.plugin}] is not digitally signed but it is allow-listed.`);
-        return;
-      } else {
-        return await doPrompt();
+    if (err instanceof Error) {
+      if (err.name === 'NotSigned') {
+        if (await verificationConfig.verifier.isAllowListed()) {
+          verificationConfig.log(`The plugin [${plugin.plugin}] is not digitally signed but it is allow-listed.`);
+          return;
+        } else {
+          return await doPrompt();
+        }
+      } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
+        const e = new SfError(err.message || 'The user canceled the plugin installation.');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore override readonly .name field
+        e.name = '';
+        throw e;
       }
-    } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
-      const e = new SfError(err.message || 'The user canceled the plugin installation.');
+      const sfErr = SfError.wrap(err);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore override readonly .name field
-      e.name = '';
-      throw e;
+      sfErr.name = err.name;
+      throw sfErr;
     }
-    const sfErr = SfError.wrap(err);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore override readonly .name field
-    sfErr.name = err.name;
-    throw sfErr;
   }
 }

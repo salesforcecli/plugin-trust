@@ -186,11 +186,13 @@ export class NpmModule {
     try {
       return JSON.parse(showCmd.stdout) as NpmShowResults;
     } catch (error) {
-      const err = new SfError(error, 'ShellParseError');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'ShellParseError';
-      throw err;
+      if (error instanceof Error) {
+        const err = new SfError(error.message, 'ShellParseError');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore override readonly .name field
+        err.name = 'ShellParseError';
+        throw err;
+      }
     }
   }
 
@@ -202,12 +204,14 @@ export class NpmModule {
         cliRoot: this.cliRoot,
       });
     } catch (err) {
-      const sfErr = SfError.wrap(err);
-      const e = new SfError(`Failed to fetch tarball from the registry: \n${sfErr.message}`, 'NpmError');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      e.name = 'NpmError';
-      throw e;
+      if (err instanceof Error) {
+        const sfErr = SfError.wrap(err);
+        const e = new SfError(`Failed to fetch tarball from the registry: \n${sfErr.message}`, 'NpmError');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore override readonly .name field
+        e.name = 'NpmError';
+        throw e;
+      }
     }
     return;
   }
@@ -219,6 +223,8 @@ export class NpmModule {
     this.pack(registry, options);
   }
 
+  // leave it because it's stubbed in the test
+  // eslint-disable-next-line class-methods-use-this
   public async pollForAvailability(checkFn: () => void): Promise<void> {
     const ux = await UX.create();
     const isNonTTY = process.env.CI !== undefined || process.env.CIRCLECI !== undefined;
@@ -245,6 +251,7 @@ export class NpmModule {
         found = false;
       }
 
+      // eslint-disable-next-line no-await-in-loop
       await sleep(1000);
     }
     stop(attempts >= maxAttempts ? 'failed' : 'done');
