@@ -37,10 +37,14 @@ export class Verify extends SfdxCommand {
     }),
   };
 
+  private static getVerifier(npmName: NpmName, config: ConfigContext): InstallationVerification {
+    return new InstallationVerification().setPluginNpmName(npmName).setConfig(config);
+  }
+
   public async run(): Promise<VerifyResponse> {
     this.ux.log('Checking for digital signature.');
 
-    const npmName: NpmName = NpmName.parse(this.flags.npm);
+    const npmName: NpmName = NpmName.parse(this.flags.npm as string);
 
     this.logger.debug(`running verify command for npm: ${npmName.name}`);
 
@@ -57,7 +61,7 @@ export class Verify extends SfdxCommand {
     this.logger.debug(`configDir: ${configContext.configDir}`);
     this.logger.debug(`dataDir: ${configContext.dataDir}`);
 
-    vConfig.verifier = this.getVerifier(npmName, configContext);
+    vConfig.verifier = Verify.getVerifier(npmName, configContext);
 
     vConfig.log = this.ux.log.bind(this.ux) as (msg: string) => void;
 
@@ -106,9 +110,5 @@ export class Verify extends SfdxCommand {
       }
       throw SfError.wrap(err);
     }
-  }
-
-  private getVerifier(npmName: NpmName, config: ConfigContext): InstallationVerification {
-    return new InstallationVerification().setPluginNpmName(npmName).setConfig(config);
   }
 }

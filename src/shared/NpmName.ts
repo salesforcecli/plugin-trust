@@ -52,20 +52,14 @@ export class NpmName {
     // salesforce/jj
     if (components.length === 1) {
       NpmName.setNameAndScope(components[0], returnNpmName);
+    } else if (components[0].includes('/')) {
+      NpmName.setNameAndScope(components[0], returnNpmName);
+    } else if (components[1].includes('/')) {
+      NpmName.setNameAndScope(components[1], returnNpmName);
     } else {
-      // salesforce/jj@tag
-      if (components[0].includes('/')) {
-        NpmName.setNameAndScope(components[0], returnNpmName);
-      } else {
-        // @salesforce/jj@tag
-        if (components[1].includes('/')) {
-          NpmName.setNameAndScope(components[1], returnNpmName);
-        } else {
-          // Allow something like salesforcedx/pre-release
-          NpmName.setNameAndScope(components[0], returnNpmName);
-          returnNpmName.tag = components[1];
-        }
-      }
+      // Allow something like salesforcedx/pre-release
+      NpmName.setNameAndScope(components[0], returnNpmName);
+      returnNpmName.tag = components[1];
     }
 
     if (components.length > 2) {
