@@ -1,6 +1,6 @@
 # plugin-trust
 
-[![NPM](https://img.shields.io/npm/v/@salesforce/plugin-trust.svg?label=@salesforce/plugin-trust)](https://www.npmjs.com/package/@salesforce/plugin-trust) [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-trust/tree/main.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-trust/tree/main) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-trust.svg)](https://npmjs.org/package/@salesforce/plugin-trust) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-trust/main/LICENSE.txt)
+[![NPM](https://img.shields.io/npm/v/@salesforce/plugin-trust.svg?label=@salesforce/plugin-trust)](https://www.npmjs.com/package/@salesforce/plugin-trust) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-trust.svg)](https://npmjs.org/package/@salesforce/plugin-trust) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-trust/main/LICENSE.txt)
 
 Verify the authenticity of a plugin being installed with `plugins:install`.
 
