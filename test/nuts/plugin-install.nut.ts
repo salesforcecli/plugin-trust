@@ -10,14 +10,13 @@ import * as fs from 'fs/promises';
 import { expect } from 'chai';
 import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesforce/cli-plugins-testkit';
 
-const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
-const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
-
 describe('plugins:install commands', () => {
+  const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
+  const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
   let session: TestSession;
 
   before(async () => {
-    session = await TestSession.create();
+    session = await TestSession.create({ devhubAuthStrategy: 'NONE' });
     await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
 
     const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
@@ -74,42 +73,17 @@ describe('plugins:install commands', () => {
     expect(result.stdout).to.contain('This plugin is not digitally signed and its authenticity cannot be verified.');
     expect(result.stdout).to.contain('Continue installation?');
     expect(result.stdout).to.contain('Finished digital signature check');
+    // remove it so we can install again
+    execCmd(`plugins:uninstall ${UNSIGNED_MODULE_NAME}`, { ensureExitCode: 0, cli: 'sfdx' });
   });
-});
 
-describe('plugins:install commands', () => {
-  let session: TestSession;
-
-  before(async () => {
-    session = await TestSession.create();
-    await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
-
-    const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
-    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
-
+  it('plugins:install unsigned plugin in the allow list', async () => {
     const configDir = path.join(session.homeDir, '.config', 'sfdx');
     await fs.mkdir(configDir, { recursive: true });
 
     const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME], null, 2);
     await fs.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod);
 
-    execCmd('plugins:link .', {
-      cwd: path.dirname(session.dir),
-      ensureExitCode: 0,
-      cli: 'sfdx',
-    });
-  });
-
-  after(async () => {
-    await session?.zip(undefined, 'artifacts');
-    try {
-      await session?.clean();
-    } catch (error) {
-      // ignore
-    }
-  });
-
-  it('plugins:install unsigned plugin in the allow list', () => {
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
       ensureExitCode: 0,
       cli: 'sfdx',
