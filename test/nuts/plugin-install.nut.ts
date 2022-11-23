@@ -21,6 +21,12 @@ describe('plugins:install commands', () => {
 
     const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
     await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
+    // ensure that this version of the plugin is used and NOT the one that shipped with the CLI
+    execCmd('plugins:link .', {
+      cwd: path.dirname(session.dir),
+      ensureExitCode: 0,
+      cli: 'sfdx',
+    });
   });
 
   after(async () => {
