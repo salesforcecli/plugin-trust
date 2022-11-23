@@ -13,6 +13,7 @@ import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesfor
 describe('plugins:install commands', () => {
   const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
   const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
+  const UNSIGNED_MODULE_NAME2 = '@mshanemc/sfdx-sosl';
   let session: TestSession;
 
   before(async () => {
@@ -73,23 +74,21 @@ describe('plugins:install commands', () => {
     expect(result.stdout).to.contain('This plugin is not digitally signed and its authenticity cannot be verified.');
     expect(result.stdout).to.contain('Continue installation?');
     expect(result.stdout).to.contain('Finished digital signature check');
-    // remove it so we can install again
-    execCmd(`plugins:uninstall ${UNSIGNED_MODULE_NAME}`, { ensureExitCode: 0, cli: 'sfdx' });
   });
 
   it('plugins:install unsigned plugin in the allow list', async () => {
     const configDir = path.join(session.homeDir, '.config', 'sfdx');
     await fs.mkdir(configDir, { recursive: true });
 
-    const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME], null, 2);
+    const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME2], null, 2);
     await fs.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod);
 
-    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
+    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
       cli: 'sfdx',
     });
     expect(result.shellOutput.stdout).to.contain(
-      `The plugin [${UNSIGNED_MODULE_NAME}] is not digitally signed but it is allow-listed.`
+      `The plugin [${UNSIGNED_MODULE_NAME2}] is not digitally signed but it is allow-listed.`
     );
   });
 });
