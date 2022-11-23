@@ -12,9 +12,10 @@ import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesfor
 
 const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
 const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
-let session: TestSession;
 
 describe('plugins:install commands', () => {
+  let session: TestSession;
+
   before(async () => {
     session = await TestSession.create();
     await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
@@ -77,6 +78,8 @@ describe('plugins:install commands', () => {
 });
 
 describe('plugins:install commands', () => {
+  let session: TestSession;
+
   before(async () => {
     session = await TestSession.create();
     await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
