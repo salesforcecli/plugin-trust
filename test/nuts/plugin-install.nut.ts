@@ -88,8 +88,6 @@ describe('plugins:install commands', () => {
       ensureExitCode: 0,
       cli: 'sfdx',
     });
-    // eslint-disable-next-line no-console
-    console.log(result);
     expect(result.shellOutput.stdout).to.contain(
       `The plugin [${UNSIGNED_MODULE_NAME2}] is not digitally signed but it is allow-listed.`
     );
