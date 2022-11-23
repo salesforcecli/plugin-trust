@@ -22,7 +22,14 @@ describe('plugins:install commands', () => {
 
     const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
     await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
-    // ensure that this version of the plugin is used and NOT the one that shipped with the CLI
+
+    const configDir = path.join(session.homeDir, '.config', 'sfdx');
+    await fs.mkdir(configDir, { recursive: true });
+
+    const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME2], null, 2);
+    await fs.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod);
+
+    // ensure that this repo's version of the plugin is used and NOT the one that shipped with the CLI
     execCmd('plugins:link .', {
       cwd: path.dirname(session.dir),
       ensureExitCode: 0,
@@ -77,12 +84,6 @@ describe('plugins:install commands', () => {
   });
 
   it('plugins:install unsigned plugin in the allow list', async () => {
-    const configDir = path.join(session.homeDir, '.config', 'sfdx');
-    await fs.mkdir(configDir, { recursive: true });
-
-    const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME2], null, 2);
-    await fs.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod);
-
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
       cli: 'sfdx',
