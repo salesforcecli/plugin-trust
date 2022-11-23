@@ -12,10 +12,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import npmRunPath from 'npm-run-path';
 import * as shelljs from 'shelljs';
-
 import { SfError } from '@salesforce/core';
-import { UX } from '@salesforce/command';
 import { sleep, parseJson } from '@salesforce/kit';
+import { Ux } from '@salesforce/sf-plugins-core';
 
 export type NpmMeta = {
   tarballUrl?: string;
@@ -226,15 +225,15 @@ export class NpmModule {
   // leave it because it's stubbed in the test
   // eslint-disable-next-line class-methods-use-this
   public async pollForAvailability(checkFn: () => void): Promise<void> {
-    const ux = await UX.create();
     const isNonTTY = process.env.CI !== undefined || process.env.CIRCLECI !== undefined;
     let found = false;
     let attempts = 0;
     const maxAttempts = 300;
 
-    const start = isNonTTY ? (msg: string): UX => ux.log(msg) : (msg: string): void => ux.startSpinner(msg);
-    const update = isNonTTY ? (msg: string): UX => ux.log(msg) : (msg: string): void => ux.setSpinnerStatus(msg);
-    const stop = isNonTTY ? (msg: string): UX => ux.log(msg) : (msg: string): void => ux.stopSpinner(msg);
+    const ux = new Ux({ jsonEnabled: isNonTTY });
+    const start = isNonTTY ? (msg: string): void => ux.log(msg) : (msg: string): void => ux.spinner.start(msg);
+    const update = isNonTTY ? (msg: string): void => ux.log(msg) : (msg: string): string => (ux.spinner.status = msg);
+    const stop = isNonTTY ? (msg: string): void => ux.log(msg) : (msg: string): void => ux.spinner.stop(msg);
 
     start('Polling for new version(s) to become available on npm');
     while (!found && attempts < maxAttempts) {

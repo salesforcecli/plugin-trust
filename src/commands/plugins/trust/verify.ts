@@ -5,10 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as os from 'os';
 import { get } from '@salesforce/ts-types';
-import { flags, FlagsConfig, SfdxCommand } from '@salesforce/command';
-import { Messages, SfError } from '@salesforce/core';
+import { SfCommand, Flags, loglevel } from '@salesforce/sf-plugins-core';
+import { Messages, SfError, Logger } from '@salesforce/core';
 import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../shared/installationVerification';
 import { NpmName } from '../../../shared/NpmName';
 
@@ -20,21 +19,22 @@ export interface VerifyResponse {
   verified: boolean;
 }
 
-export class Verify extends SfdxCommand {
+export class Verify extends SfCommand<VerifyResponse> {
+  public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
-  public static readonly examples = messages.getMessage('examples').split(os.EOL);
+  public static readonly examples = messages.getMessages('examples');
   public static readonly hidden: true;
-  protected static readonly flagsConfig: FlagsConfig = {
-    npm: flags.string({
+  public static flags = {
+    npm: Flags.string({
       char: 'n',
       required: true,
-      description: messages.getMessage('flags.npm'),
+      summary: messages.getMessage('flags.npm'),
     }),
-    registry: flags.string({
+    registry: Flags.string({
       char: 'r',
-      required: false,
-      description: messages.getMessage('flags.registry'),
+      summary: messages.getMessage('flags.registry'),
     }),
+    loglevel,
   };
 
   private static getVerifier(npmName: NpmName, config: ConfigContext): InstallationVerification {
@@ -42,11 +42,13 @@ export class Verify extends SfdxCommand {
   }
 
   public async run(): Promise<VerifyResponse> {
-    this.ux.log('Checking for digital signature.');
+    const { flags } = await this.parse(Verify);
+    const logger = await Logger.child('verify');
+    this.log('Checking for digital signature.');
 
-    const npmName: NpmName = NpmName.parse(this.flags.npm as string);
+    const npmName: NpmName = NpmName.parse(flags.npm);
 
-    this.logger.debug(`running verify command for npm: ${npmName.name}`);
+    logger.debug(`running verify command for npm: ${npmName.name}`);
 
     const vConfig = new VerificationConfig();
 
@@ -57,21 +59,22 @@ export class Verify extends SfdxCommand {
       cliRoot: get(this.config, 'root') as string,
     };
 
-    this.logger.debug(`cacheDir: ${configContext.cacheDir}`);
-    this.logger.debug(`configDir: ${configContext.configDir}`);
-    this.logger.debug(`dataDir: ${configContext.dataDir}`);
+    logger.debug(`cacheDir: ${configContext.cacheDir}`);
+    logger.debug(`configDir: ${configContext.configDir}`);
+    logger.debug(`dataDir: ${configContext.dataDir}`);
 
     vConfig.verifier = Verify.getVerifier(npmName, configContext);
 
-    vConfig.log = this.ux.log.bind(this.ux) as (msg: string) => void;
+    // TODO: how to pass the new logger to it
+    // vConfig.log = this.ux.log.bind(this.ux) as (msg: string) => void;
 
-    if (this.flags.registry) {
-      process.env.SFDX_NPM_REGISTRY = this.flags.registry as string;
+    if (flags.registry) {
+      process.env.SFDX_NPM_REGISTRY = flags.registry;
     }
 
     try {
       const meta = await vConfig.verifier.verify();
-      this.logger.debug(`meta.verified: ${meta.verified}`);
+      logger.debug(`meta.verified: ${meta.verified}`);
 
       if (!meta.verified) {
         const e = messages.createError('FailedDigitalSignatureVerification');
@@ -82,14 +85,14 @@ export class Verify extends SfdxCommand {
       }
       const message = `Successfully validated digital signature for ${npmName.name}.`;
 
-      if (!this.flags.json) {
+      if (!flags.json) {
         vConfig.log(message);
       } else {
         return { message, verified: true };
       }
     } catch (error) {
       const err = error as SfError;
-      this.logger.debug(`err reported: ${JSON.stringify(err, null, 4)}`);
+      logger.debug(`err reported: ${JSON.stringify(err, null, 4)}`);
       const response: VerifyResponse = {
         verified: false,
         message: err.message,
