@@ -83,7 +83,7 @@ describe('plugins:install commands', () => {
     expect(result.stdout).to.contain('Finished digital signature check');
   });
 
-  it('plugins:install unsigned plugin in the allow list', () => {
+  it.skip('plugins:install unsigned plugin in the allow list', () => {
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
       cli: 'sfdx',
