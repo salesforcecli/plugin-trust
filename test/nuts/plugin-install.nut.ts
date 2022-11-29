@@ -83,7 +83,7 @@ describe('plugins:install commands', () => {
     expect(result.stdout).to.contain('Finished digital signature check');
   });
 
-  it.only('plugins:install unsigned plugin in the allow list', () => {
+  it('plugins:install unsigned plugin in the allow list', () => {
     expect(fs.existsSync(path.join(session.homeDir, '.config', 'sfdx'))).to.be.true;
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
