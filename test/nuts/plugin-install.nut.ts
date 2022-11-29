@@ -88,7 +88,10 @@ describe('plugins:install commands', () => {
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
       cli: 'sfdx',
-      env: { HOME: session.homeDir, XDG_CONFIG_HOME: path.join(session.homeDir, '.config') },
+      env: {
+        SFDX_CONFIG_DIR: path.join(session.homeDir, '.config', 'sfdx'),
+        HOME: session.homeDir,
+      },
     });
     expect(result.shellOutput.stdout).to.contain(
       `The plugin [${UNSIGNED_MODULE_NAME2}] is not digitally signed but it is allow-listed.`
