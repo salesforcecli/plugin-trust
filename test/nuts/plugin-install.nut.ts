@@ -83,12 +83,12 @@ describe('plugins:install commands', () => {
     expect(result.stdout).to.contain('Finished digital signature check');
   });
 
-  it('plugins:install unsigned plugin in the allow list', () => {
+  it.only('plugins:install unsigned plugin in the allow list', () => {
     expect(fs.existsSync(path.join(session.homeDir, '.config', 'sfdx'))).to.be.true;
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
       cli: 'sfdx',
-      env: { SFDX_CONFIG_DIR: session.homeDir },
+      env: { XDG_CONFIG_HOME: path.join(session.homeDir, '.config') },
     });
     expect(result.shellOutput.stdout).to.contain(
       `The plugin [${UNSIGNED_MODULE_NAME2}] is not digitally signed but it is allow-listed.`
