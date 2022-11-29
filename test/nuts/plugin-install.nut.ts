@@ -7,6 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
+import * as os from 'os';
 import { expect } from 'chai';
 import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesforce/cli-plugins-testkit';
 
@@ -83,7 +84,9 @@ describe('plugins:install commands', () => {
     expect(result.stdout).to.contain('Finished digital signature check');
   });
 
-  it('plugins:install unsigned plugin in the allow list', () => {
+  // yes, macos.  oclif sometimes uses XDG, which also exists on gha's ubuntu and windows runners, but isn't handled by testkit
+  // see https://salesforce-internal.slack.com/archives/G02K6C90RBJ/p1669664263661369
+  (os.platform() === 'darwin' ? it : it.skip)('plugins:install unsigned plugin in the allow list', () => {
     expect(fs.existsSync(path.join(session.homeDir, '.config', 'sfdx'))).to.be.true;
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,

@@ -20,9 +20,7 @@ jobs:
     secrets: inherit
     strategy:
       matrix:
-        # yes, macos.  oclif sometimes uses XDG, which also exists on gha/ubuntu, but isn't handled by testkit
-        # see https://salesforce-internal.slack.com/archives/G02K6C90RBJ/p1669664263661369
-        os: [windows-latest, macos-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
       fail-fast: false
     with:
       os: ${{ matrix.os }}
