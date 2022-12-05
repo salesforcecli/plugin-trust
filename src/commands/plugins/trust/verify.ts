@@ -65,9 +65,6 @@ export class Verify extends SfCommand<VerifyResponse> {
 
     vConfig.verifier = Verify.getVerifier(npmName, configContext);
 
-    // TODO: how to pass the new logger to it
-    // vConfig.log = this.ux.log.bind(this.ux) as (msg: string) => void;
-
     if (flags.registry) {
       process.env.SFDX_NPM_REGISTRY = flags.registry;
     }
