@@ -5,7 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { get } from '@salesforce/ts-types';
 import { SfCommand, Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { Messages, SfError, Logger } from '@salesforce/core';
 import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../shared/installationVerification';
@@ -53,10 +52,10 @@ export class Verify extends SfCommand<VerifyResponse> {
     const vConfig = new VerificationConfig();
 
     const configContext: ConfigContext = {
-      cacheDir: get(this.config, 'cacheDir') as string,
-      configDir: get(this.config, 'configDir') as string,
-      dataDir: get(this.config, 'dataDir') as string,
-      cliRoot: get(this.config, 'root') as string,
+      cacheDir: this.config.cacheDir,
+      configDir: this.config.configDir,
+      dataDir: this.config.dataDir,
+      cliRoot: this.config.root,
     };
 
     logger.debug(`cacheDir: ${configContext.cacheDir}`);

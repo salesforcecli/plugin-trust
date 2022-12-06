@@ -707,7 +707,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      stubMethod(sandbox, Prompter.prototype, 'prompt').resolves({ confirm: false });
+      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(false);
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
@@ -730,7 +730,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      stubMethod(sandbox, Prompter.prototype, 'prompt').resolves({ confirm: true });
+      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(true);
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
@@ -753,7 +753,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      stubMethod(sandbox, Prompter.prototype, 'prompt').resolves({ confirm: true });
+      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(true);
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);

@@ -458,17 +458,11 @@ export class VerificationConfig {
 }
 
 export async function doPrompt(): Promise<void> {
-  const prompter = new Prompter();
-  const { confirm } = await prompter.prompt<{ confirm: boolean }>([
-    {
-      type: 'confirm',
-      name: 'confirm',
-      message: 'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation?',
-      default: false,
-    },
-  ]);
-
-  if (!confirm) {
+  if (
+    !(await new Prompter().confirm(
+      'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation?'
+    ))
+  ) {
     throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
   }
 }

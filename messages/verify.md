@@ -1,10 +1,10 @@
 # summary
 
-Validate a digital signature for a npm package.
+Validate a digital signature.
 
 # description
 
-Validate a digital signature for a npm package.
+Verifies the digital signature on an npm package matches the signature and key stored at the expected URLs.
 
 # examples
 

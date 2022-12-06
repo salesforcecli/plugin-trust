@@ -69,11 +69,7 @@ export class NpmCommand {
       env: npmRunPath.env({ env: process.env }),
     });
     if (npmCmdResult.code !== 0) {
-      const err = new SfError(npmCmdResult.stderr, 'ShellExecError');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'ShellExecError';
-      throw err;
+      throw new SfError(npmCmdResult.stderr, 'ShellExecError');
     }
 
     return npmCmdResult;
