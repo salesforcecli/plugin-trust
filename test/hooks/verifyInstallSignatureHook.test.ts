@@ -30,7 +30,7 @@ describe('plugin install hook', () => {
     });
     stubMethod(sandbox, vConfig.verifier, 'isAllowListed').callsFake(async () => false);
 
-    promptSpy = stubMethod(sandbox, Prompter.prototype, 'prompt').resolves({ confirm: false });
+    promptSpy = stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(false);
   });
 
   afterEach(() => {

@@ -6,21 +6,36 @@
  */
 
 import * as path from 'path';
-import * as fs from 'fs/promises';
+import * as fs from 'fs';
+import * as os from 'os';
 import { expect } from 'chai';
 import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesforce/cli-plugins-testkit';
 
-const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
-const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
-let session: TestSession;
-
 describe('plugins:install commands', () => {
+  const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
+  const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
+  const UNSIGNED_MODULE_NAME2 = '@mshanemc/sfdx-sosl';
+  let session: TestSession;
+
   before(async () => {
-    session = await TestSession.create();
-    await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
+    session = await TestSession.create({ devhubAuthStrategy: 'NONE' });
+    await fs.promises.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
 
     const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
-    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
+    await fs.promises.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
+
+    const configDir = path.join(session.homeDir, '.config', 'sfdx');
+    await fs.promises.mkdir(configDir, { recursive: true });
+
+    const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME2], null, 2);
+    await fs.promises.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod);
+
+    // ensure that this repo's version of the plugin is used and NOT the one that shipped with the CLI
+    execCmd('plugins:link .', {
+      cwd: path.dirname(session.dir),
+      ensureExitCode: 0,
+      cli: 'sfdx',
+    });
   });
 
   after(async () => {
@@ -68,45 +83,17 @@ describe('plugins:install commands', () => {
     expect(result.stdout).to.contain('Continue installation?');
     expect(result.stdout).to.contain('Finished digital signature check');
   });
-});
 
-describe('plugins:install commands', () => {
-  before(async () => {
-    session = await TestSession.create();
-    await fs.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
-
-    const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
-    await fs.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
-
-    const configDir = path.join(session.homeDir, '.config', 'sfdx');
-    await fs.mkdir(configDir, { recursive: true });
-
-    const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME], null, 2);
-    await fs.writeFile(path.join(configDir, 'unsignedPluginAllowList.json'), unsignedMod);
-
-    execCmd('plugins:link .', {
-      cwd: path.dirname(session.dir),
-      ensureExitCode: 0,
-      cli: 'sfdx',
-    });
-  });
-
-  after(async () => {
-    await session?.zip(undefined, 'artifacts');
-    try {
-      await session?.clean();
-    } catch (error) {
-      // ignore
-    }
-  });
-
-  it('plugins:install unsigned plugin in the allow list', () => {
-    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME}`, {
+  // yes, macos.  oclif sometimes uses XDG, which also exists on gha's ubuntu and windows runners, but isn't handled by testkit
+  // see https://salesforce-internal.slack.com/archives/G02K6C90RBJ/p1669664263661369
+  (os.platform() === 'darwin' ? it : it.skip)('plugins:install unsigned plugin in the allow list', () => {
+    expect(fs.existsSync(path.join(session.homeDir, '.config', 'sfdx'))).to.be.true;
+    const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
       cli: 'sfdx',
     });
     expect(result.shellOutput.stdout).to.contain(
-      `The plugin [${UNSIGNED_MODULE_NAME}] is not digitally signed but it is allow-listed.`
+      `The plugin [${UNSIGNED_MODULE_NAME2}] is not digitally signed but it is allow-listed.`
     );
   });
 });
