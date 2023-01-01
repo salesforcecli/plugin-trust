@@ -1,3 +1,12 @@
+## [2.2.4](https://github.com/salesforcecli/plugin-trust/compare/2.2.3...2.2.4) (2023-01-01)
+
+
+### Bug Fixes
+
+* **deps:** bump got from 11.8.5 to 11.8.6 ([7efb3e6](https://github.com/salesforcecli/plugin-trust/commit/7efb3e653cd56af18d71f2c068ade871dbdba02f))
+
+
+
 ## [2.2.3](https://github.com/salesforcecli/plugin-trust/compare/2.2.2...2.2.3) (2022-12-18)
 
 
