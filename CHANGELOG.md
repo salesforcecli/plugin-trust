@@ -1,3 +1,12 @@
+## [2.2.6](https://github.com/salesforcecli/plugin-trust/compare/2.2.5...2.2.6) (2023-01-08)
+
+
+### Bug Fixes
+
+* **deps:** bump json5 from 1.0.1 to 1.0.2 ([4480d4e](https://github.com/salesforcecli/plugin-trust/commit/4480d4ed77359b90596456220431ad7fdcc468f3))
+
+
+
 ## [2.2.5](https://github.com/salesforcecli/plugin-trust/compare/2.2.4...2.2.5) (2023-01-07)
 
 
