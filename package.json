@@ -80,7 +80,8 @@
     "hooks": {
       "plugins:preinstall:verify:signature": [
         "./lib/hooks/verifyInstallSignature.js"
-      ]
+      ],
+      "jit_plugin_not_installed": "./lib/hooks/jitPluginInstall.js"
     },
     "devPlugins": [
       "@oclif/plugin-help",
