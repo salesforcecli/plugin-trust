@@ -7,7 +7,11 @@
 import * as os from 'os';
 import { Hook } from '@oclif/core';
 import { SfError } from '@salesforce/core';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import { TelemetryGlobal } from '@salesforce/plugin-telemetry/lib/telemetryGlobal';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import { AppInsights } from '@salesforce/telemetry/lib/appInsights';
 
 declare const global: TelemetryGlobal;
