@@ -1,3 +1,12 @@
+## [2.2.8](https://github.com/salesforcecli/plugin-trust/compare/2.2.7...2.2.8) (2023-01-15)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/sf-plugins-core from 1.20.0 to 1.22.1 ([6abbc10](https://github.com/salesforcecli/plugin-trust/commit/6abbc106cd56fd54c9a043a15ad1b6ab123c7ea2))
+
+
+
 ## [2.2.7](https://github.com/salesforcecli/plugin-trust/compare/2.2.6...2.2.7) (2023-01-15)
 
 
