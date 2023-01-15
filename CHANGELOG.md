@@ -1,3 +1,12 @@
+## [2.2.7](https://github.com/salesforcecli/plugin-trust/compare/2.2.6...2.2.7) (2023-01-15)
+
+
+### Bug Fixes
+
+* **deps:** bump npm from 8.15.1 to 8.19.3 ([1236c6b](https://github.com/salesforcecli/plugin-trust/commit/1236c6bcf4ab73c24c85df4dbd8afeff50a20a19))
+
+
+
 ## [2.2.6](https://github.com/salesforcecli/plugin-trust/compare/2.2.5...2.2.6) (2023-01-08)
 
 
