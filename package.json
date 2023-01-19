@@ -9,9 +9,11 @@
   },
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
-    "@oclif/core": "^1.22.0",
+    "@oclif/core": "^1.25.0",
     "@salesforce/core": "^3.32.12",
+    "@salesforce/plugin-telemetry": "^2.0.5",
     "@salesforce/sf-plugins-core": "^1.22.1",
+    "@salesforce/telemetry": "^3.2.13",
     "got": "^11",
     "npm": "^8.19.3",
     "npm-run-path": "^4.0.1",
@@ -80,7 +82,8 @@
     "hooks": {
       "plugins:preinstall:verify:signature": [
         "./lib/hooks/verifyInstallSignature.js"
-      ]
+      ],
+      "jit_plugin_not_installed": "./lib/hooks/jitPluginInstall.js"
     },
     "devPlugins": [
       "@oclif/plugin-help",
