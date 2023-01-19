@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-trust",
   "description": "validate a digital signature for a npm package",
-  "version": "2.2.6",
+  "version": "2.2.8",
   "author": "Salesforce",
   "main": "lib/index.js",
   "bin": {
@@ -15,7 +15,7 @@
     "@salesforce/sf-plugins-core": "^1.22.1",
     "@salesforce/telemetry": "^3.2.13",
     "got": "^11",
-    "npm": "^8.12.1",
+    "npm": "^8.19.3",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^5.0.0",
     "proxy-from-env": "^1.1.0",
@@ -29,7 +29,7 @@
     "@salesforce/dev-scripts": "^3.1.0",
     "@salesforce/plugin-command-reference": "^2.2.8",
     "@salesforce/prettier-config": "^0.0.2",
-    "@salesforce/ts-sinon": "^1.4.2",
+    "@salesforce/ts-sinon": "^1.4.4",
     "@swc/core": "^1.3.24",
     "@types/proxy-from-env": "^1.0.1",
     "@types/shelljs": "^0.8.9",
