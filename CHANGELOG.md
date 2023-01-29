@@ -1,3 +1,12 @@
+## [2.3.2](https://github.com/salesforcecli/plugin-trust/compare/2.3.1...2.3.2) (2023-01-29)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/core from 3.33.0 to 3.33.1 ([f9921ec](https://github.com/salesforcecli/plugin-trust/commit/f9921ecf48b2df626a2cd6cb9ff993e6196d0a6c))
+
+
+
 ## [2.3.1](https://github.com/salesforcecli/plugin-trust/compare/2.3.0...2.3.1) (2023-01-28)
 
 
