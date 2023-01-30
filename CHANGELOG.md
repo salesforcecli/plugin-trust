@@ -1,3 +1,12 @@
+# [2.4.0](https://github.com/salesforcecli/plugin-trust/compare/2.3.2...2.4.0) (2023-01-30)
+
+
+### Features
+
+* bump sf-plugins-core and core ([#396](https://github.com/salesforcecli/plugin-trust/issues/396)) ([e11d757](https://github.com/salesforcecli/plugin-trust/commit/e11d75773d5cfc85eb546306bd971a9776792b7c))
+
+
+
 ## [2.3.2](https://github.com/salesforcecli/plugin-trust/compare/2.3.1...2.3.2) (2023-01-29)
 
 
