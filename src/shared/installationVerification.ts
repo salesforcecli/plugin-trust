@@ -22,7 +22,7 @@ import got from 'got';
 import * as ProxyAgent from 'proxy-agent';
 import { getProxyForUrl } from 'proxy-from-env';
 import { Prompter } from '@salesforce/sf-plugins-core';
-import { CliUx } from '@oclif/core';
+import { ux } from '@oclif/core';
 import { NpmModule, NpmMeta } from '../shared/npmCommand';
 import { NpmName } from './NpmName';
 
@@ -453,7 +453,7 @@ export class VerificationConfig {
 
   // eslint-disable-next-line class-methods-use-this
   public log(message: string): void {
-    CliUx.ux.log(message);
+    ux.log(message);
   }
 }
 
