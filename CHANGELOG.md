@@ -1,3 +1,12 @@
+## [2.4.1](https://github.com/salesforcecli/plugin-trust/compare/2.4.0...2.4.1) (2023-02-04)
+
+
+### Bug Fixes
+
+* **deps:** bump http-cache-semantics from 4.1.0 to 4.1.1 ([76e9a65](https://github.com/salesforcecli/plugin-trust/commit/76e9a65a536379fe19a29df6a8e4aff20c7e8123))
+
+
+
 # [2.4.0](https://github.com/salesforcecli/plugin-trust/compare/2.3.2...2.4.0) (2023-01-30)
 
 
