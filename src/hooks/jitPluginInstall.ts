@@ -18,7 +18,7 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
     global.cliTelemetry?.record({
       eventName: 'JIT_INSTALL_STARTED',
       type: 'EVENT',
-      version: opts.config.version,
+      version: opts.pluginVersion,
       plugin: opts.command.pluginName,
       command: opts.command.id,
     });
@@ -29,7 +29,7 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
     global.cliTelemetry?.record({
       eventName: 'JIT_INSTALL_SUCCESS',
       type: 'EVENT',
-      version: opts.config.version,
+      version: opts.pluginVersion,
       plugin: opts.command.pluginName,
       command: opts.command.id,
     });
@@ -43,7 +43,7 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
       message: err.message,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       stackTrace: err?.stack?.replace(new RegExp(os.homedir(), 'g'), AppInsights.GDPR_HIDDEN),
-      version: opts.config.version,
+      version: opts.pluginVersion,
       plugin: opts.command.pluginName,
       command: opts.command.id,
     });
