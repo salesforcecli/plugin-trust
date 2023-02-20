@@ -1,3 +1,12 @@
+## [2.4.2](https://github.com/salesforcecli/plugin-trust/compare/2.4.1...2.4.2) (2023-02-20)
+
+
+### Bug Fixes
+
+* send plugin version to telemetry ([#407](https://github.com/salesforcecli/plugin-trust/issues/407)) ([104a2ce](https://github.com/salesforcecli/plugin-trust/commit/104a2ce15dfcda6711008f360fd10ae4feb90ac1))
+
+
+
 ## [2.4.1](https://github.com/salesforcecli/plugin-trust/compare/2.4.0...2.4.1) (2023-02-04)
 
 
