@@ -11,7 +11,7 @@
   "dependencies": {
     "@oclif/core": "^2.3.0",
     "@salesforce/core": "^3.33.4",
-    "@salesforce/plugin-telemetry": "^2.0.5",
+    "@salesforce/plugin-telemetry": "^2.1.3",
     "@salesforce/sf-plugins-core": "^2",
     "@salesforce/telemetry": "^3.2.13",
     "got": "^11",
