@@ -792,7 +792,7 @@
     supports-color "^8.1.1"
     tslib "^2"
 
-"@oclif/core@^1.20.3", "@oclif/core@^1.20.4", "@oclif/core@^1.21.0", "@oclif/core@^1.8.0":
+"@oclif/core@^1.20.3", "@oclif/core@^1.20.4", "@oclif/core@^1.21.0":
   version "1.26.1"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-1.26.1.tgz#26e46c96143d3e2b1dd9bd558ae1653fe9a4f3fa"
   integrity sha512-g+OWJcM7JOVI53caTEtq0BB1nPotWctRLUyFODPgvDqXhVR7QED+Qz3LwFAMD8dt7/Ar2ZNq15U3bnpnOv453A==
@@ -826,10 +826,10 @@
     widest-line "^3.1.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^2.0.7", "@oclif/core@^2.0.8", "@oclif/core@^2.3.0", "@oclif/core@^2.4.0":
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-2.6.2.tgz#6ec15faf0c1e0e01e3c13c1c33827c12baaf0c88"
-  integrity sha512-roxcBLr4BuoOEDEkMQk4Yy0Tolr39n6i+A63qPLa19vrgxjZZJygh2HpThsn69/UPuEzMq051FnvJ9tNln3Y5g==
+"@oclif/core@^2.0.7", "@oclif/core@^2.0.8", "@oclif/core@^2.3.0", "@oclif/core@^2.4.0", "@oclif/core@^2.5.0":
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-2.6.4.tgz#40a35355fece01cdedecaf8d8d523d92d47a408b"
+  integrity sha512-QkmPEdMsC8z/9d02bQvYZuviJhvK92YD/GJ5LlUk7cc8hEZ1JOLSwFg3i2EjlLNXn8OtOQHoe+EeOEaRWROuVA==
   dependencies:
     "@types/cli-progress" "^3.11.0"
     ansi-escapes "^4.3.2"
@@ -1136,12 +1136,12 @@
     mkdirp "^1.0.4"
     tslib "^2"
 
-"@salesforce/plugin-telemetry@^2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.0.5.tgz#214cfdfad8204127836ae315828c9c65c602720e"
-  integrity sha512-PqxGQPnmao0dx+ZsaorAC9jKVcUIgVaXivOpRAE6QnErF+/QsgcjL9Okh7osyPumDp9hRO1dxo8InNu0KMkLow==
+"@salesforce/plugin-telemetry@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.1.3.tgz#0952f52a74311248de543409b98deeb79eaaf4a3"
+  integrity sha512-IvVsJQ3cXKbJmmX7xPoAy9LUC8kjLmblLoJXNV8JB09/DgfoEANQBkc/F52AJZvt6olUm+swHT6mLIQy95kImA==
   dependencies:
-    "@oclif/core" "^1.8.0"
+    "@oclif/core" "^2.5.0"
     "@salesforce/core" "^3.32.2"
     "@salesforce/telemetry" "^3.2.5"
     debug "^4.3.4"
