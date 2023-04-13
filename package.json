@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-trust",
   "description": "validate a digital signature for a npm package",
-  "version": "2.4.7",
+  "version": "2.4.8",
   "author": "Salesforce",
   "main": "lib/index.js",
   "bin": {
