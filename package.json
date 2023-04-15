@@ -15,7 +15,7 @@
     "@salesforce/sf-plugins-core": "^2",
     "@salesforce/telemetry": "^3.2.13",
     "got": "^11",
-    "npm": "^8.19.3",
+    "npm": "^8.19.4",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^5.0.0",
     "proxy-from-env": "^1.1.0",
