@@ -9,7 +9,7 @@
   },
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
-    "@oclif/core": "^2.3.0",
+    "@oclif/core": "^2.8.2",
     "@salesforce/core": "^3.33.4",
     "@salesforce/plugin-telemetry": "^2.1.3",
     "@salesforce/sf-plugins-core": "^2",
