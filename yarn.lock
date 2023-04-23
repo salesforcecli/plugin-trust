@@ -838,7 +838,7 @@
     widest-line "^3.1.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^2.0.7", "@oclif/core@^2.4.0", "@oclif/core@^2.5.0", "@oclif/core@^2.6.4", "@oclif/core@^2.8.0", "@oclif/core@^2.8.2":
+"@oclif/core@^2.0.7", "@oclif/core@^2.4.0", "@oclif/core@^2.6.4", "@oclif/core@^2.8.0", "@oclif/core@^2.8.2":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-2.8.2.tgz#86fc31f20419dbb3cd25f89f4f1d83760c60f7c0"
   integrity sha512-g50NrCdEcFlBfuwZb9RxLmxPNQ9wIaBPOiwbxlGYRkHMnsC6LNHcvVtyDnmndU8qoXrmCOZ6ocSZenOMlG+G1w==
@@ -1054,7 +1054,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.7.0"
 
-"@salesforce/core@^3.32.12", "@salesforce/core@^3.32.2", "@salesforce/core@^3.33.4", "@salesforce/core@^3.33.6", "@salesforce/core@^3.34.1", "@salesforce/core@^3.34.6":
+"@salesforce/core@^3.32.12", "@salesforce/core@^3.33.4", "@salesforce/core@^3.33.6", "@salesforce/core@^3.34.1", "@salesforce/core@^3.34.6":
   version "3.34.6"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.34.6.tgz#816031d3aab098d56165d876db626a3610d86c6e"
   integrity sha512-9Nd+bQRSvCYDiZo97bhseajLhr7d51J9gsPUnfN3nHy1/TBQXjN+upRAPAeldvzU8G3L98WGDMtEpSTOG/PxkQ==
@@ -1148,13 +1148,13 @@
     mkdirp "^1.0.4"
     tslib "^2"
 
-"@salesforce/plugin-telemetry@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.1.3.tgz#0952f52a74311248de543409b98deeb79eaaf4a3"
-  integrity sha512-IvVsJQ3cXKbJmmX7xPoAy9LUC8kjLmblLoJXNV8JB09/DgfoEANQBkc/F52AJZvt6olUm+swHT6mLIQy95kImA==
+"@salesforce/plugin-telemetry@^2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.1.5.tgz#561484bb78e9938dab1c0f901909936c9a659697"
+  integrity sha512-wqeqotdSXIV9SZwAlMEaGP4JLg6lS678DBxOLDcYz19+snh4ud3L/kA3Jx3HBKCERrmEIlxFxR6R75miO03eUw==
   dependencies:
-    "@oclif/core" "^2.5.0"
-    "@salesforce/core" "^3.32.2"
+    "@oclif/core" "^2.8.2"
+    "@salesforce/core" "^3.34.6"
     "@salesforce/telemetry" "^3.2.5"
     debug "^4.3.4"
     tslib "^2"
