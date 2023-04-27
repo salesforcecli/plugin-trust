@@ -17,13 +17,14 @@ describe('plugin install hook', () => {
   let sandbox: sinon.SinonSandbox;
   let vConfig: VerificationConfig;
   let promptSpy: sinon.SinonSpy;
+  let verifySpy: sinon.SinonSpy;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     vConfig = new VerificationConfig();
 
     vConfig.verifier = new InstallationVerification();
-    stubMethod(sandbox, vConfig.verifier, 'verify').callsFake(async () => {
+    verifySpy = stubMethod(sandbox, vConfig.verifier, 'verify').callsFake(async () => {
       const err = new Error();
       err.name = 'NotSigned';
       throw err;
@@ -64,5 +65,17 @@ describe('plugin install hook', () => {
       expect(error).to.have.property('name', 'InstallationCanceledError');
       expect(promptSpy.called).to.be.true;
     }
+  });
+
+  it('should skip signature verification for JIT plugins with matching version', async () => {
+    await hook.call(
+      {},
+      {
+        plugin: { name: '@ns/test', type: 'npm', tag: '1.2.3' },
+        config: { pjson: { oclif: { jitPlugins: { '@ns/test': '1.2.3' } } } },
+      }
+    );
+    expect(promptSpy.called).to.be.false;
+    expect(verifySpy.called).to.be.false;
   });
 });
