@@ -34,6 +34,15 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
     const logger = await Logger.child('verifyInstallSignature');
     const plugin = options.plugin;
 
+    // skip if the plugin version being installed is listed in the CLI's JIT config
+    if (
+      plugin.tag &&
+      plugin.name in options.config.pjson.oclif.jitPlugins &&
+      options.config.pjson.oclif.jitPlugins?.[plugin.name] === plugin.tag
+    ) {
+      logger.debug(`Skipping verification for ${options.plugin.name} because it is listed in the CLI's JIT config.`);
+      return;
+    }
     logger.debug('parsing npm name');
     const npmName = NpmName.parse(plugin.name);
     logger.debug(`npmName components: ${JSON.stringify(npmName, null, 4)}`);
