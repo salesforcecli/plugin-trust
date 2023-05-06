@@ -1,3 +1,25 @@
+## [2.4.15](https://github.com/salesforcecli/plugin-trust/compare/2.4.14...2.4.15) (2023-05-06)
+
+
+### Bug Fixes
+
+* **deps:** bump @oclif/core from 2.8.2 to 2.8.5 ([253d3c0](https://github.com/salesforcecli/plugin-trust/commit/253d3c0b1d70766c11beeac0d566b124b1600fa3))
+
+
+
+## [2.4.14](https://github.com/salesforcecli/plugin-trust/compare/2.5.0-qa.1...2.4.14) (2023-05-02)
+
+
+
+# [2.5.0-qa.1](https://github.com/salesforcecli/plugin-trust/compare/2.4.12...2.5.0-qa.1) (2023-04-27)
+
+
+### Bug Fixes
+
+* skip sig verification for JIT plugins ([d9c8496](https://github.com/salesforcecli/plugin-trust/commit/d9c849695de29c1457e344d9c061f330d8da1c3a))
+
+
+
 ## [2.4.12](https://github.com/salesforcecli/plugin-trust/compare/2.4.11...2.4.12) (2023-04-23)
 
 
