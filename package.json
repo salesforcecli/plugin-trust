@@ -11,7 +11,6 @@
   "dependencies": {
     "@oclif/core": "^2.8.5",
     "@salesforce/core": "^3.33.4",
-    "@salesforce/plugin-telemetry": "^2.1.5",
     "@salesforce/sf-plugins-core": "^2",
     "@salesforce/telemetry": "^3.2.13",
     "got": "^11",
@@ -24,6 +23,7 @@
   },
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^3.3.9",
+    "@salesforce/plugin-telemetry": "^2.1.5",
     "@salesforce/cli-plugins-testkit": "^3.3.5",
     "@salesforce/dev-config": "^3.0.0",
     "@salesforce/dev-scripts": "^4.3.1",
