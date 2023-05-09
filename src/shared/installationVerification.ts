@@ -5,11 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 import * as path from 'path';
 import { Readable } from 'stream';
 import { URL } from 'url';
@@ -233,20 +228,6 @@ export class InstallationVerification implements Verifier {
       logger.debug(err);
     }
     return npmMeta;
-
-    // .catch((e) => {
-    //   if (e.code === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
-    //     const err = new SfError(
-    //       'Encountered a self signed certificated. To enable "export NODE_TLS_REJECT_UNAUTHORIZED=0"',
-    //       'SelfSignedCert'
-    //     );
-    //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //     // @ts-ignore override readonly .name field
-    //     err.name = 'SelfSignedCert';
-    //     throw err;
-    //   }
-    //   throw e;
-    // });
   }
 
   public async isAllowListed(): Promise<boolean> {
@@ -256,9 +237,10 @@ export class InstallationVerification implements Verifier {
     let fileContent: string;
     try {
       fileContent = await fs.promises.readFile(allowListedFilePath, 'utf8');
-      const allowlistArray = JSON.parse(fileContent);
+      const allowlistArray = JSON.parse(fileContent) as string[];
       logger.debug('isAllowListed | Successfully parsed allowlist.');
-      return this.pluginNpmName && allowlistArray?.includes(this.pluginNpmName?.toString());
+      const nameToFind = this.pluginNpmName?.toString();
+      return nameToFind ? allowlistArray.includes(nameToFind) : false;
     } catch (err) {
       if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
         return false;
