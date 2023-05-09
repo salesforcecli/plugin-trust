@@ -34,15 +34,15 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
       command: opts.command.id,
     });
   } catch (error) {
-    const err = error as Error;
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     global.cliTelemetry?.record({
       eventName: 'JIT_INSTALL_FAILED',
       type: 'EVENT',
-      message: err.message,
+      message: error instanceof Error ? error.message : 'malformed error',
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-      stackTrace: err?.stack?.replace(new RegExp(os.homedir(), 'g'), AppInsights.GDPR_HIDDEN),
+      stackTrace:
+        error instanceof Error
+          ? error?.stack?.replace(new RegExp(os.homedir(), 'g'), AppInsights.GDPR_HIDDEN)
+          : undefined,
       version: opts.pluginVersion,
       plugin: opts.command.pluginName,
       command: opts.command.id,

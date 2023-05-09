@@ -86,15 +86,17 @@ export class Verify extends SfCommand<VerifyResponse> {
       }
       return { message, verified: true };
     } catch (error) {
-      const err = error as SfError;
-      logger.debug(`err reported: ${JSON.stringify(err, null, 4)}`);
+      if (!(error instanceof Error)) {
+        throw error;
+      }
+      logger.debug(`err reported: ${JSON.stringify(error, null, 4)}`);
       const response: VerifyResponse = {
         verified: false,
-        message: err.message,
+        message: error.message,
       };
 
-      if (err.name === 'NotSigned') {
-        let message: string = err.message;
+      if (error.name === 'NotSigned') {
+        let message: string = error.message;
         if (await vConfig.verifier.isAllowListed()) {
           message = `The plugin [${npmName.name}] is not digitally signed but it is allow-listed.`;
           vConfig.log(message);
@@ -106,7 +108,7 @@ export class Verify extends SfCommand<VerifyResponse> {
         }
         return response;
       }
-      throw SfError.wrap(err);
+      throw SfError.wrap(error);
     }
   }
 }

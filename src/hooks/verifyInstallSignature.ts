@@ -6,7 +6,7 @@
  */
 
 import { Hook } from '@oclif/core';
-import { Logger, SfError } from '@salesforce/core';
+import { Logger } from '@salesforce/core';
 import { ux } from '@oclif/core';
 import {
   ConfigContext,
@@ -58,9 +58,11 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
       await doInstallationCodeSigningVerification(configContext, { plugin: plugin.name, tag: plugin.tag }, vConfig);
       ux.log('Finished digital signature check.');
     } catch (error) {
-      const err = error as SfError;
-      logger.debug(err.message);
-      this.error(err);
+      if (!(error instanceof Error)) {
+        throw error;
+      }
+      logger.debug(error.message);
+      this.error(error);
     }
   } else {
     await doPrompt();
