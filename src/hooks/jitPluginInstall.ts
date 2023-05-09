@@ -14,7 +14,6 @@ declare const global: TelemetryGlobal;
 
 const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     global.cliTelemetry?.record({
       eventName: 'JIT_INSTALL_STARTED',
       type: 'EVENT',
@@ -25,7 +24,6 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
 
     await opts.config.runCommand('plugins:install', [`${opts.command.pluginName}@${opts.pluginVersion}`]);
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     global.cliTelemetry?.record({
       eventName: 'JIT_INSTALL_SUCCESS',
       type: 'EVENT',
@@ -38,7 +36,6 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
       eventName: 'JIT_INSTALL_FAILED',
       type: 'EVENT',
       message: error instanceof Error ? error.message : 'malformed error',
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       stackTrace:
         error instanceof Error
           ? error?.stack?.replace(new RegExp(os.homedir(), 'g'), AppInsights.GDPR_HIDDEN)

@@ -19,6 +19,7 @@ import { Prompter } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
 import { NpmModule, NpmMeta } from '../shared/npmCommand';
 import { NpmName } from './NpmName';
+import { setErrorName } from './errors';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
 const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
@@ -164,11 +165,7 @@ export class InstallationVerification implements Verifier {
       this.config = _config;
       return this;
     }
-    const err = new SfError('the cli engine config cannot be null', 'InvalidParam');
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore override readonly .name field
-    err.name = 'InvalidParam';
-    throw err;
+    throw setErrorName(new SfError('the cli engine config cannot be null', 'InvalidParam'), 'InvalidParam');
   }
 
   /**
@@ -181,11 +178,7 @@ export class InstallationVerification implements Verifier {
       this.pluginNpmName = _pluginName;
       return this;
     }
-    const err = new SfError('pluginName must be specified.', 'InvalidParam');
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore override readonly .name field
-    err.name = 'InvalidParam';
-    throw err;
+    throw setErrorName(new SfError('the plugin name cannot be null', 'InvalidParam'), 'InvalidParam');
   }
 
   /**
@@ -358,10 +351,7 @@ export class InstallationVerification implements Verifier {
         `The npm metadata for plugin ${this.pluginNpmName.name} is missing the versions attribute.`,
         'InvalidNpmMetadata'
       );
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'InvalidNpmMetadata';
-      throw err;
+      throw setErrorName(err, 'InvalidNpmMetadata');
     }
 
     // Assume the tag is version tag.
@@ -387,38 +377,27 @@ export class InstallationVerification implements Verifier {
             `The dist tag ${this.pluginNpmName.tag} was not found for plugin: ${this.pluginNpmName.name}`,
             'NpmTagNotFound'
           );
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore override readonly .name field
-          err.name = 'NpmTagNotFound';
-          throw err;
+          throw setErrorName(err, 'NpmTagNotFound');
         }
       } else {
-        const err = new SfError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        err.name = 'UnexpectedNpmFormat';
-        throw err;
+        throw setErrorName(
+          new SfError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat'),
+          'UnexpectedNpmFormat'
+        );
       }
     }
 
     npmModule.npmMeta.version = versionNumber;
 
     if (!npmMetadata.sfdx) {
-      const err = new SfError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'NotSigned';
-      throw err;
+      throw setErrorName(new SfError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned'), 'NotSigned');
     } else {
       if (!validSalesforceHostname(npmMetadata.sfdx.publicKeyUrl)) {
         const err = new SfError(
           `The host is not allowed to provide signing information. [${npmMetadata.sfdx.publicKeyUrl}]`,
           'UnexpectedHost'
         );
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        err.name = 'UnexpectedHost';
-        throw err;
+        throw setErrorName(err, 'UnexpectedHost');
       } else {
         logger.debug(`retrieveNpmMeta | versionObject.sfdx.publicKeyUrl: ${npmMetadata.sfdx.publicKeyUrl}`);
         npmModule.npmMeta.publicKeyUrl = npmMetadata.sfdx.publicKeyUrl;
@@ -429,10 +408,7 @@ export class InstallationVerification implements Verifier {
           `The host is not allowed to provide signing information. [${npmMetadata.sfdx.signatureUrl}]`,
           'UnexpectedHost'
         );
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        err.name = 'UnexpectedHost';
-        throw err;
+        throw setErrorName(err, 'UnexpectedHost');
       } else {
         logger.debug(`retrieveNpmMeta | versionObject.sfdx.signatureUrl: ${npmMetadata.sfdx.signatureUrl}`);
         npmModule.npmMeta.signatureUrl = npmMetadata.sfdx.signatureUrl;
@@ -497,10 +473,7 @@ export async function doInstallationCodeSigningVerification(
         "A digital signature is specified for this plugin but it didn't verify against the certificate.",
         'FailedDigitalSignatureVerification'
       );
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'FailedDigitalSignatureVerification';
-      throw err;
+      throw setErrorName(err, 'FailedDigitalSignatureVerification');
     }
     verificationConfig.log(`Successfully validated digital signature for ${plugin.plugin}.`);
   } catch (err) {
@@ -516,17 +489,9 @@ export async function doInstallationCodeSigningVerification(
           return await doPrompt();
         }
       } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
-        const e = new SfError(err.message || 'The user canceled the plugin installation.');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        e.name = '';
-        throw e;
+        throw setErrorName(new SfError(err.message ?? 'The user canceled the plugin installation.'), '');
       }
-      const sfErr = SfError.wrap(err);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      sfErr.name = err.name;
-      throw sfErr;
+      throw setErrorName(SfError.wrap(err), err.name);
     }
   }
 }

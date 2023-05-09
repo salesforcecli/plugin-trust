@@ -9,6 +9,7 @@ import { SfCommand, Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { Messages, SfError, Logger } from '@salesforce/core';
 import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../shared/installationVerification';
 import { NpmName } from '../../../shared/NpmName';
+import { setErrorName } from '../../../shared/errors';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
@@ -74,10 +75,7 @@ export class Verify extends SfCommand<VerifyResponse> {
 
       if (!meta.verified) {
         const e = messages.createError('FailedDigitalSignatureVerification');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        e.name = 'FailedDigitalSignatureVerification';
-        throw e;
+        throw setErrorName(e, 'FailedDigitalSignatureVerification');
       }
       const message = `Successfully validated digital signature for ${npmName.name}.`;
 
