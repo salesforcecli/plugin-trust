@@ -20,9 +20,11 @@ interface NpmNameInfo {
  */
 export class NpmName {
   public static readonly DEFAULT_TAG = 'latest';
-  public scope: string;
   public tag: string;
-  public name: string;
+  // next 2 props won't exist until after parse is called
+  // TODO: make this more functional and deterministic
+  public scope!: string;
+  public name!: string;
 
   /**
    * Private ctor. Use static parse method.

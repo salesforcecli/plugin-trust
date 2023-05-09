@@ -37,6 +37,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
     // skip if the plugin version being installed is listed in the CLI's JIT config
     if (
       plugin.tag &&
+      options.config.pjson.oclif.jitPlugins &&
       plugin.name in options.config.pjson.oclif.jitPlugins &&
       options.config.pjson.oclif.jitPlugins?.[plugin.name] === plugin.tag
     ) {

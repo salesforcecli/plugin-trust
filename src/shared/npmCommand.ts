@@ -103,7 +103,7 @@ export class NpmCommand {
    *
    * @private
    */
-  private static findNode(root: string = undefined): string {
+  private static findNode(root?: string): string {
     const isExecutable = (filepath: string): boolean => {
       if (osType() === 'Windows_NT') return filepath.endsWith('node.exe');
 
@@ -131,7 +131,7 @@ export class NpmCommand {
     }
 
     // Check to see if node is installed
-    const nodeShellString: shelljs.ShellString = shelljs.which('node');
+    const nodeShellString = shelljs.which('node');
     if (nodeShellString?.code === 0 && nodeShellString?.stdout) return nodeShellString.stdout;
 
     const err = new SfError('Cannot locate node executable.', 'CannotFindNodeExecutable');
@@ -156,7 +156,7 @@ export class NpmCommand {
 
 export class NpmModule {
   public npmMeta: NpmMeta;
-  public constructor(private module: string, private version: string = 'latest', private cliRoot: string = undefined) {
+  public constructor(private module: string, private version: string = 'latest', private cliRoot?: string) {
     this.npmMeta = {
       moduleName: module,
     };
@@ -188,6 +188,7 @@ export class NpmModule {
         err.name = 'ShellParseError';
         throw err;
       }
+      throw error;
     }
   }
 

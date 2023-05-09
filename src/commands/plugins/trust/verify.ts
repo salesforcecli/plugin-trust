@@ -83,9 +83,8 @@ export class Verify extends SfCommand<VerifyResponse> {
 
       if (!flags.json) {
         vConfig.log(message);
-      } else {
-        return { message, verified: true };
       }
+      return { message, verified: true };
     } catch (error) {
       const err = error as SfError;
       logger.debug(`err reported: ${JSON.stringify(err, null, 4)}`);
