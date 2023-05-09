@@ -55,7 +55,7 @@ type NpmPackage = {
   };
 };
 
-export class NpmCommand {
+class NpmCommand {
   private static npmPkgPath = require.resolve('npm/package.json');
 
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {

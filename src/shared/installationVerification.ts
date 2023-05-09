@@ -26,7 +26,7 @@ import { NpmModule, NpmMeta } from '../shared/npmCommand';
 import { NpmName } from './NpmName';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
-export const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
+const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 
 export interface ConfigContext {
@@ -40,7 +40,7 @@ export interface Verifier {
   isAllowListed(): Promise<boolean>;
 }
 
-export class CodeVerifierInfo {
+class CodeVerifierInfo {
   private signature?: Readable;
   private publicKey?: Readable;
   private data?: Readable;
@@ -81,7 +81,7 @@ export class CodeVerifierInfo {
   }
 }
 
-export function validSalesforceHostname(url: string | null): boolean {
+function validSalesforceHostname(url: string | null): boolean {
   if (!url) {
     return false;
   }

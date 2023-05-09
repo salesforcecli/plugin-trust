@@ -18,17 +18,6 @@ import {
 
 import { NpmName } from '../shared/NpmName';
 
-/**
- * Build a VerificationConfig. Useful for testing.
- */
-export class VerificationConfigBuilder {
-  public static build(npmName: NpmName, configContext: ConfigContext): VerificationConfig {
-    const vConfig = new VerificationConfig();
-    vConfig.verifier = new InstallationVerification().setPluginNpmName(npmName).setConfig(configContext);
-    return vConfig;
-  }
-}
-
 export const hook: Hook.PluginsPreinstall = async function (options) {
   if (options.plugin && options.plugin.type === 'npm') {
     const logger = await Logger.child('verifyInstallSignature');
@@ -61,7 +50,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
       cliRoot: options.config.root,
     };
 
-    const vConfig = VerificationConfigBuilder.build(npmName, configContext);
+    const vConfig = buildVerificationConfig(npmName, configContext);
     logger.debug('finished building the VerificationConfigBuilder');
 
     try {
@@ -79,3 +68,12 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
 };
 
 export default hook;
+
+/**
+ * Build a VerificationConfig. Useful for testing.
+ */
+const buildVerificationConfig = (npmName: NpmName, configContext: ConfigContext): VerificationConfig => {
+  const vConfig = new VerificationConfig();
+  vConfig.verifier = new InstallationVerification().setPluginNpmName(npmName).setConfig(configContext);
+  return vConfig;
+};
