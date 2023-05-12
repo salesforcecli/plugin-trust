@@ -117,6 +117,7 @@ export async function verify(codeVerifierInfo: CodeVerifierInfo): Promise<boolea
   const signApi = crypto.createVerify(CRYPTO_LEVEL);
 
   return new Promise<boolean>((resolve, reject) => {
+    codeVerifierInfo.dataToVerify.on('error', (err) => reject(errorHandlerForVerify(err)));
     codeVerifierInfo.dataToVerify.pipe(signApi);
 
     codeVerifierInfo.dataToVerify.on('end', () => {
@@ -135,12 +136,20 @@ export async function verify(codeVerifierInfo: CodeVerifierInfo): Promise<boolea
         }
       });
 
-      codeVerifierInfo.signatureStream.on('error', (err) => reject(err));
+      codeVerifierInfo.signatureStream.on('error', (err) => reject(errorHandlerForVerify(err)));
     });
-
-    codeVerifierInfo.dataToVerify.on('error', (err) => reject(err));
   });
 }
+
+const errorHandlerForVerify = (err: Error): Error => {
+  if ('code' in err && err.code === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
+    return setErrorName(
+      new SfError('Encountered a self signed certificated. To enable "export NODE_TLS_REJECT_UNAUTHORIZED=0"'),
+      'SelfSignedCert'
+    );
+  }
+  return err;
+};
 
 export const getNpmRegistry = (): URL => new URL(process.env.SFDX_NPM_REGISTRY ?? DEFAULT_REGISTRY);
 
@@ -248,6 +257,7 @@ export class InstallationVerification implements Verifier {
    *
    * @param url host url.
    */
+  // left to preserve public API
   // eslint-disable-next-line class-methods-use-this
   public async getSigningContent(url: string): Promise<Readable> {
     const res = await got.get({
@@ -415,6 +425,7 @@ export class InstallationVerification implements Verifier {
       }
 
       npmModule.npmMeta.tarballUrl = npmMetadata.dist?.tarball;
+
       logger.debug(`retrieveNpmMeta | meta.tarballUrl: ${npmModule.npmMeta.tarballUrl}`);
 
       return npmModule.npmMeta;
