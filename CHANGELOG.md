@@ -1,3 +1,12 @@
+## [2.4.17](https://github.com/salesforcecli/plugin-trust/compare/2.4.16...2.4.17) (2023-05-14)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/plugin-telemetry from 2.1.5 to 2.2.0 ([8476b85](https://github.com/salesforcecli/plugin-trust/commit/8476b851e99382af1029d4a980ff903e8fa88e8a))
+
+
+
 ## [2.4.16](https://github.com/salesforcecli/plugin-trust/compare/2.4.15...2.4.16) (2023-05-07)
 
 
