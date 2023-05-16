@@ -1,3 +1,12 @@
+## [2.4.18](https://github.com/salesforcecli/plugin-trust/compare/2.4.17...2.4.18) (2023-05-16)
+
+
+### Bug Fixes
+
+* **deps:** bump vm2 from 3.9.17 to 3.9.18 ([93d2e74](https://github.com/salesforcecli/plugin-trust/commit/93d2e7472d78bda2a032e3e455a17ffd185571fc))
+
+
+
 ## [2.4.17](https://github.com/salesforcecli/plugin-trust/compare/2.4.16...2.4.17) (2023-05-14)
 
 
