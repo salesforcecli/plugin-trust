@@ -4,9 +4,9 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { Readable, Writable } from 'stream';
+import { Readable } from 'stream';
 import * as fs from 'fs';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import got from 'got';
 import { OptionsOfTextResponseBody } from 'got';
 import * as shelljs from 'shelljs';
@@ -168,7 +168,7 @@ describe('InstallationVerification Tests', () => {
   });
 
   it('falsy engine config', () => {
-    expect(() => new InstallationVerification().setConfig(null))
+    expect(() => new InstallationVerification().setConfig(undefined))
       .to.throw(Error)
       .and.have.property('name', 'InvalidParam');
   });
@@ -208,27 +208,11 @@ describe('InstallationVerification Tests', () => {
       }
     });
 
-    const fsImpl = {
-      readFile() {},
-      createWriteStream() {
-        return new Writable({
-          write() {},
-        });
-      },
-      createReadStream() {
-        return new Readable({
-          read() {
-            this.push(TEST_DATA);
-            this.push(null);
-          },
-        });
-      },
-      unlink() {
-        throw new Error('this should still resolve.');
-      },
-    };
+    stubMethod(sandbox, fs.promises, 'readFile').resolves();
+    stubMethod(sandbox, fs, 'createReadStream').returns(Readable.from([TEST_DATA]));
+    stubMethod(sandbox, fs.promises, 'rm').rejects(new Error('this should still resolve.'));
 
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification().setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -278,28 +262,12 @@ describe('InstallationVerification Tests', () => {
       }
     });
 
-    const fsImpl = {
-      readFile() {},
-      createWriteStream() {
-        return new Writable({
-          write() {},
-        });
-      },
-      createReadStream() {
-        return new Readable({
-          read() {
-            this.push(TEST_DATA);
-            this.push(null);
-          },
-        });
-      },
-      unlink() {
-        throw new Error('this should still resolve.');
-      },
-    };
+    stubMethod(sandbox, fs.promises, 'readFile').resolves();
+    stubMethod(sandbox, fs, 'createReadStream').returns(Readable.from(TEST_DATA));
+    stubMethod(sandbox, fs.promises, 'rm').rejects(new Error('this should still resolve.'));
 
     plugin.tag = '1.0.0';
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification().setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -341,29 +309,13 @@ describe('InstallationVerification Tests', () => {
       }
     });
 
-    const fsImpl = {
-      readFile() {},
-      createWriteStream() {
-        return new Writable({
-          write() {},
-        });
-      },
-      createReadStream() {
-        return new Readable({
-          read() {
-            this.push(TEST_DATA);
-            this.push(null);
-          },
-        });
-      },
-      unlink() {
-        throw new Error('this should still resolve.');
-      },
-    };
+    stubMethod(sandbox, fs.promises, 'readFile').resolves();
+    stubMethod(sandbox, fs, 'createReadStream').returns(Readable.from(TEST_DATA));
+    stubMethod(sandbox, fs.promises, 'rm').rejects(new Error('this should still resolve.'));
 
     plugin.tag = 'gozer';
     // For the key and signature to line up gozer must map to 1.2.3
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification().setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -409,29 +361,13 @@ describe('InstallationVerification Tests', () => {
       }
     });
 
-    const fsImpl = {
-      readFile() {},
-      createWriteStream() {
-        return new Writable({
-          write() {},
-        });
-      },
-      createReadStream() {
-        return new Readable({
-          read() {
-            this.push(TEST_DATA);
-            this.push(null);
-          },
-        });
-      },
-      unlink() {
-        throw new Error('this should still resolve.');
-      },
-    };
+    stubMethod(sandbox, fs.promises, 'readFile').resolves();
+    stubMethod(sandbox, fs, 'createReadStream').returns(Readable.from(TEST_DATA));
+    stubMethod(sandbox, fs.promises, 'rm').rejects(new Error('this should still resolve.'));
 
     plugin.tag = 'gozer';
     // For the key and signature to line up gozer must map to 1.2.3
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification().setPluginNpmName(plugin).setConfig(config);
 
     return verification.verify().then((meta: NpmMeta) => {
       expect(meta).to.have.property('verified', true);
@@ -461,12 +397,10 @@ describe('InstallationVerification Tests', () => {
       }
     });
 
-    const fsImpl = {
-      readFile() {},
-      unlink() {},
-    };
+    stubMethod(sandbox, fs.promises, 'readFile').resolves();
+    stubMethod(sandbox, fs.promises, 'rm').resolves();
 
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification().setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -510,12 +444,10 @@ describe('InstallationVerification Tests', () => {
       }
     });
 
-    const fsImpl = {
-      readFile() {},
-      unlink() {},
-    };
+    stubMethod(sandbox, fs.promises, 'readFile').resolves();
+    stubMethod(sandbox, fs.promises, 'rm').resolves();
 
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification().setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -530,12 +462,9 @@ describe('InstallationVerification Tests', () => {
   it('npm show fails to find a package', async () => {
     shelljsExecStub = getShelljsExecStub(sandbox, {} as NpmShowResults, 1, 'command execution error');
 
-    const fsImpl = {
-      readFile() {},
-      unlink() {},
-    };
-
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
+    stubMethod(sandbox, fs.promises, 'readFile').resolves();
+    stubMethod(sandbox, fs.promises, 'rm').resolves();
+    const verification = new InstallationVerification().setPluginNpmName(plugin).setConfig(config);
 
     return verification
       .verify()
@@ -581,30 +510,17 @@ describe('InstallationVerification Tests', () => {
       }
     });
 
-    const fsImpl = {
-      readFile() {},
-      unlink() {},
-      createWriteStream() {
-        return new Writable({
-          write() {},
-        });
-      },
-      createReadStream() {
-        return new Readable({
-          read() {
-            this.push(TEST_DATA);
-            this.push(null);
-          },
-        });
-      },
-    };
+    stubMethod(sandbox, fs.promises, 'readFile').resolves();
+    stubMethod(sandbox, fs.promises, 'rm').resolves();
+    stubMethod(sandbox, fs, 'createReadStream').returns(Readable.from(TEST_DATA));
 
-    const verification = new InstallationVerification(fsImpl).setPluginNpmName(plugin).setConfig(config);
+    const verification = new InstallationVerification().setPluginNpmName(plugin).setConfig(config);
 
     try {
       await verification.verify();
       throw new Error("This shouldn't happen. Failure expected");
     } catch (err) {
+      assert(err instanceof Error);
       expect(err).to.have.property('name', 'ErrorGettingContent');
       expect(err.message).to.include('404');
     }
@@ -613,13 +529,10 @@ describe('InstallationVerification Tests', () => {
   describe('isAllowListed', () => {
     it('steel thread with scope', async () => {
       const TEST_VALUE1 = '@salesforce/FOO';
-      const fsImpl = {
-        readFile(path, cb) {
-          cb(null, `["${TEST_VALUE1}"]`);
-        },
-        unlink() {},
-      };
-      const verification1 = new InstallationVerification(fsImpl)
+
+      stubMethod(sandbox, fs.promises, 'rm').resolves();
+      stubMethod(sandbox, fs.promises, 'readFile').resolves(`["${TEST_VALUE1}"]`);
+      const verification1 = new InstallationVerification()
         .setPluginNpmName(NpmName.parse(TEST_VALUE1))
         .setConfig(config);
       expect(await verification1.isAllowListed()).to.be.equal(true);
@@ -627,31 +540,24 @@ describe('InstallationVerification Tests', () => {
 
     it('steel thread without scope', async () => {
       const TEST_VALUE2 = 'FOO';
-      const fsImpl = {
-        readFile(path, cb) {
-          cb(null, `["${TEST_VALUE2}"]`);
-        },
-        unlink() {},
-      };
-      const verification2 = new InstallationVerification(fsImpl)
+
+      stubMethod(sandbox, fs.promises, 'rm').resolves();
+      stubMethod(sandbox, fs.promises, 'readFile').resolves(`["${TEST_VALUE2}"]`);
+
+      const verification2 = new InstallationVerification()
         .setPluginNpmName(NpmName.parse(TEST_VALUE2))
         .setConfig(config);
       expect(await verification2.isAllowListed()).to.be.equal(true);
     });
 
     it("file doesn't exist", async () => {
-      const fsImpl = {
-        readFile(path, cb) {
-          const error = new SfError('ENOENT', 'ENOENT');
-          error['code'] = 'ENOENT';
-          cb(error);
-        },
-        unlink() {},
-      };
+      const error = new SfError('ENOENT', 'ENOENT');
+      error['code'] = 'ENOENT';
 
-      const verification = new InstallationVerification(fsImpl)
-        .setPluginNpmName(NpmName.parse('BAR'))
-        .setConfig(config);
+      stubMethod(sandbox, fs.promises, 'rm').resolves();
+      stubMethod(sandbox, fs.promises, 'readFile').rejects(error);
+
+      const verification = new InstallationVerification().setPluginNpmName(NpmName.parse('BAR')).setConfig(config);
       expect(await verification.isAllowListed()).to.be.equal(false);
     });
   });
@@ -758,6 +664,7 @@ describe('InstallationVerification Tests', () => {
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
       } catch (e) {
+        assert(e instanceof Error);
         const err = new Error("this test shouldn't fail.");
         err.stack = e.stack;
         throw err;

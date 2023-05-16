@@ -5,15 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 import * as path from 'path';
 import { Readable } from 'stream';
-import { parse as parseUrl, URL, UrlWithStringQuery } from 'url';
-import { promisify as utilPromisify } from 'util';
+import { URL } from 'url';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import { mkdir } from 'fs/promises';
@@ -25,9 +19,10 @@ import { Prompter } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
 import { NpmModule, NpmMeta } from '../shared/npmCommand';
 import { NpmName } from './NpmName';
+import { setErrorName } from './errors';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
-export const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
+const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 
 export interface ConfigContext {
@@ -41,12 +36,15 @@ export interface Verifier {
   isAllowListed(): Promise<boolean>;
 }
 
-export class CodeVerifierInfo {
-  private signature: Readable;
-  private publicKey: Readable;
-  private data: Readable;
+class CodeVerifierInfo {
+  private signature?: Readable;
+  private publicKey?: Readable;
+  private data?: Readable;
 
   public get dataToVerify(): Readable {
+    if (!this.data) {
+      throw new Error('CodeVerifierInfo: Verifier has no data because it has not be set');
+    }
     return this.data;
   }
 
@@ -56,6 +54,9 @@ export class CodeVerifierInfo {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public get signatureStream(): Readable {
+    if (!this.signature) {
+      throw new Error('CodeVerifierInfo: signatureStream has no value because it has not be set');
+    }
     return this.signature;
   }
 
@@ -65,6 +66,9 @@ export class CodeVerifierInfo {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public get publicKeyStream(): Readable {
+    if (!this.publicKey) {
+      throw new Error('CodeVerifierInfo: publicKey has no value because it has not be set');
+    }
     return this.publicKey;
   }
 
@@ -73,16 +77,20 @@ export class CodeVerifierInfo {
   }
 }
 
-export function validSalesforceHostname(url: string | null): boolean {
+function validSalesforceHostname(url: string | null): boolean {
   if (!url) {
     return false;
   }
-  const parsedUrl: UrlWithStringQuery = parseUrl(url);
+  const parsedUrl = new URL(url);
 
   if (process.env.SFDX_ALLOW_ALL_SALESFORCE_CERTSIG_HOSTING === 'true') {
-    return parsedUrl.hostname && /(\.salesforce\.com)$/.test(parsedUrl.hostname);
+    return Boolean(parsedUrl.hostname) && /(\.salesforce\.com)$/.test(parsedUrl.hostname);
   } else {
-    return parsedUrl.protocol === 'https:' && parsedUrl.hostname && parsedUrl.hostname === 'developer.salesforce.com';
+    return (
+      parsedUrl.protocol === 'https:' &&
+      Boolean(parsedUrl.hostname) &&
+      parsedUrl.hostname === 'developer.salesforce.com'
+    );
   }
 }
 
@@ -109,6 +117,7 @@ export async function verify(codeVerifierInfo: CodeVerifierInfo): Promise<boolea
   const signApi = crypto.createVerify(CRYPTO_LEVEL);
 
   return new Promise<boolean>((resolve, reject) => {
+    codeVerifierInfo.dataToVerify.on('error', (err) => reject(errorHandlerForVerify(err)));
     codeVerifierInfo.dataToVerify.pipe(signApi);
 
     codeVerifierInfo.dataToVerify.on('end', () => {
@@ -127,39 +136,33 @@ export async function verify(codeVerifierInfo: CodeVerifierInfo): Promise<boolea
         }
       });
 
-      codeVerifierInfo.signatureStream.on('error', (err) => reject(err));
+      codeVerifierInfo.signatureStream.on('error', (err) => reject(errorHandlerForVerify(err)));
     });
-
-    codeVerifierInfo.dataToVerify.on('error', (err) => reject(err));
   });
 }
 
-export const getNpmRegistry = (): URL => new URL(process.env.SFDX_NPM_REGISTRY || DEFAULT_REGISTRY);
+const errorHandlerForVerify = (err: Error): Error => {
+  if ('code' in err && err.code === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
+    return setErrorName(
+      new SfError('Encountered a self signed certificated. To enable "export NODE_TLS_REJECT_UNAUTHORIZED=0"'),
+      'SelfSignedCert'
+    );
+  }
+  return err;
+};
+
+export const getNpmRegistry = (): URL => new URL(process.env.SFDX_NPM_REGISTRY ?? DEFAULT_REGISTRY);
 
 /**
  * class for verifying a digital signature pack of an npm
  */
 export class InstallationVerification implements Verifier {
   // The name of the published plugin
-  private pluginNpmName: NpmName;
+  private pluginNpmName?: NpmName;
 
   // config derived from the cli environment
-  private config: ConfigContext;
-
-  // Reference for fs
-  private fsImpl;
-
-  private readonly readFileAsync;
-  private readonly unlinkAsync;
-
-  private logger: Logger;
-
-  public constructor(fsImpl?: unknown) {
-    // why? dependency injection is better than sinon
-    this.fsImpl = fsImpl ? fsImpl : fs;
-    this.readFileAsync = utilPromisify(this.fsImpl.readFile as () => void);
-    this.unlinkAsync = utilPromisify(this.fsImpl.unlink as () => void);
-  }
+  private config?: ConfigContext;
+  private logger?: Logger;
 
   /**
    * setter for the cli engine config
@@ -171,11 +174,7 @@ export class InstallationVerification implements Verifier {
       this.config = _config;
       return this;
     }
-    const err = new SfError('the cli engine config cannot be null', 'InvalidParam');
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore override readonly .name field
-    err.name = 'InvalidParam';
-    throw err;
+    throw setErrorName(new SfError('the cli engine config cannot be null', 'InvalidParam'), 'InvalidParam');
   }
 
   /**
@@ -188,11 +187,7 @@ export class InstallationVerification implements Verifier {
       this.pluginNpmName = _pluginName;
       return this;
     }
-    const err = new SfError('pluginName must be specified.', 'InvalidParam');
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore override readonly .name field
-    err.name = 'InvalidParam';
-    throw err;
+    throw setErrorName(new SfError('the plugin name cannot be null', 'InvalidParam'), 'InvalidParam');
   }
 
   /**
@@ -202,57 +197,54 @@ export class InstallationVerification implements Verifier {
     const logger = await this.getLogger();
 
     const npmMeta = await this.streamTagGz();
+    if (!npmMeta.tarballLocalPath) {
+      throw new SfError('The npmMeta does not contain a tarball path');
+    }
+    if (!npmMeta.signatureUrl) {
+      throw new SfError('The npmMeta does not contain a signatureUrl');
+    }
+    if (!npmMeta.publicKeyUrl) {
+      throw new SfError('The npmMeta does not contain a publicKeyUrl');
+    }
+
     logger.debug(`verify | Found npmMeta? ${!!npmMeta}`);
 
     logger.debug(`verify | creating a read stream for path - npmMeta.tarballLocalPath: ${npmMeta.tarballLocalPath}`);
-    const info = new CodeVerifierInfo();
-    info.dataToVerify = this.fsImpl.createReadStream(npmMeta.tarballLocalPath, { encoding: 'binary' });
 
     logger.debug(`verify | npmMeta.signatureUrl: ${npmMeta.signatureUrl}`);
     logger.debug(`verify | npmMeta.publicKeyUrl: ${npmMeta.publicKeyUrl}`);
 
-    return Promise.all([this.getSigningContent(npmMeta.signatureUrl), this.getSigningContent(npmMeta.publicKeyUrl)])
-      .then((result) => {
-        info.signatureStream = result[0];
-        info.publicKeyStream = result[1];
-        return verify(info);
-      })
-      .then((result) => {
-        npmMeta.verified = result;
-        return this.unlinkAsync(npmMeta.tarballLocalPath)
-          .catch((err) => {
-            logger.debug(`error occurred deleting cache tgz at path: ${npmMeta.tarballLocalPath}`);
-            logger.debug(err);
-          })
-          .then(() => npmMeta);
-      })
-      .catch((e) => {
-        if (e.code === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
-          const err = new SfError(
-            'Encountered a self signed certificated. To enable "export NODE_TLS_REJECT_UNAUTHORIZED=0"',
-            'SelfSignedCert'
-          );
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore override readonly .name field
-          err.name = 'SelfSignedCert';
-          throw err;
-        }
-        throw e;
-      });
+    const [signatureStream, publicKeyStream] = await Promise.all([
+      this.getSigningContent(npmMeta.signatureUrl),
+      this.getSigningContent(npmMeta.publicKeyUrl),
+    ]);
+    const info = new CodeVerifierInfo();
+    info.dataToVerify = fs.createReadStream(npmMeta.tarballLocalPath, { encoding: 'binary' });
+    info.publicKeyStream = publicKeyStream;
+    info.signatureStream = signatureStream;
+    npmMeta.verified = await verify(info);
+    try {
+      await fs.promises.rm(npmMeta.tarballLocalPath);
+    } catch (err) {
+      logger.debug(`error occurred deleting cache tgz at path: ${npmMeta.tarballLocalPath}`);
+      logger.debug(err);
+    }
+    return npmMeta;
   }
 
   public async isAllowListed(): Promise<boolean> {
     const logger = await this.getLogger();
-    const allowListedFilePath = path.join(this.getConfigPath(), ALLOW_LIST_FILENAME);
+    const allowListedFilePath = path.join(this.getConfigPath() ?? '', ALLOW_LIST_FILENAME);
     logger.debug(`isAllowListed | allowlistFilePath: ${allowListedFilePath}`);
     let fileContent: string;
     try {
-      fileContent = await this.readFileAsync(allowListedFilePath);
-      const allowlistArray = JSON.parse(fileContent);
+      fileContent = await fs.promises.readFile(allowListedFilePath, 'utf8');
+      const allowlistArray = JSON.parse(fileContent) as string[];
       logger.debug('isAllowListed | Successfully parsed allowlist.');
-      return allowlistArray?.includes(this.pluginNpmName.toString());
+      const nameToFind = this.pluginNpmName?.toString();
+      return nameToFind ? allowlistArray.includes(nameToFind) : false;
     } catch (err) {
-      if (err.code === 'ENOENT') {
+      if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
         return false;
       } else {
         throw err;
@@ -265,6 +257,7 @@ export class InstallationVerification implements Verifier {
    *
    * @param url host url.
    */
+  // left to preserve public API
   // eslint-disable-next-line class-methods-use-this
   public async getSigningContent(url: string): Promise<Readable> {
     const res = await got.get({
@@ -284,9 +277,12 @@ export class InstallationVerification implements Verifier {
   public async streamTagGz(): Promise<NpmMeta> {
     const logger = await this.getLogger();
     const npmMeta = await this.retrieveNpmMeta();
+    if (!npmMeta.tarballUrl) {
+      throw new Error('tarballUrl is not defined in the npmMeta object');
+    }
     const urlObject: URL = new URL(npmMeta.tarballUrl);
     const urlPathsAsArray = urlObject.pathname.split('/');
-    npmMeta.tarballFilename = npmMeta.moduleName.replace(/@/g, '');
+    npmMeta.tarballFilename = npmMeta.moduleName?.replace(/@/g, '');
     logger.debug(`streamTagGz | urlPathsAsArray: ${urlPathsAsArray.join(',')}`);
 
     const fileNameStr: string = urlPathsAsArray[urlPathsAsArray.length - 1];
@@ -294,14 +290,23 @@ export class InstallationVerification implements Verifier {
 
     // Make sure the cache path exists.
     try {
+      if (!npmMeta.moduleName) {
+        throw new Error('moduleName is not defined in the npmMeta object');
+      }
+      if (!npmMeta.version) {
+        throw new Error('version is not defined in the npmMeta object');
+      }
       await mkdir(this.getCachePath(), { recursive: true });
-      const npmModule = new NpmModule(npmMeta.moduleName, npmMeta.version, this.config.cliRoot);
+      const npmModule = new NpmModule(npmMeta.moduleName, npmMeta.version, this.config?.cliRoot);
       await npmModule.fetchTarball(getNpmRegistry().href, {
         cwd: this.getCachePath(),
       });
       const tarBallFile = fs
         .readdirSync(this.getCachePath(), { withFileTypes: true })
-        .find((entry) => entry.isFile() && entry.name.includes(npmMeta.version));
+        .find((entry) => entry.isFile() && npmMeta.version && entry.name.includes(npmMeta.version));
+      if (!tarBallFile) {
+        throw new Error(`Unable to find retrieved tarball file for ${npmMeta.moduleName} version ${npmMeta.version}`);
+      }
       npmMeta.tarballLocalPath = path.join(this.getCachePath(), tarBallFile.name);
     } catch (err) {
       logger.debug(err);
@@ -313,11 +318,17 @@ export class InstallationVerification implements Verifier {
 
   // this is generally $HOME/.config/sfdx
   private getConfigPath(): string {
+    if (!this.config?.configDir) {
+      throw new Error('configDir is not defined in the config object');
+    }
     return this.config.configDir;
   }
 
   // this is generally $HOME/Library/Caches/sfdx on mac
   private getCachePath(): string {
+    if (!this.config?.cacheDir) {
+      throw new Error('cacheDir is not defined in the config object');
+    }
     return this.config.cacheDir;
   }
 
@@ -328,6 +339,11 @@ export class InstallationVerification implements Verifier {
     const logger = await this.getLogger();
     const npmRegistry = getNpmRegistry();
 
+    if (!this.pluginNpmName) {
+      throw new Error(
+        'pluginNpmName is not defined on the InstallationVerification class.  setPluginNpmName should have been called before this method.'
+      );
+    }
     logger.debug(`retrieveNpmMeta | npmRegistry: ${npmRegistry.href}`);
     logger.debug(`retrieveNpmMeta | this.pluginNpmName.name: ${this.pluginNpmName.name}`);
     logger.debug(`retrieveNpmMeta | this.pluginNpmName.scope: ${this.pluginNpmName.scope}`);
@@ -337,7 +353,7 @@ export class InstallationVerification implements Verifier {
       ? `@${this.pluginNpmName.scope}/${this.pluginNpmName.name}`
       : this.pluginNpmName.name;
 
-    const npmModule = new NpmModule(npmShowModule, this.pluginNpmName.tag, this.config.cliRoot);
+    const npmModule = new NpmModule(npmShowModule, this.pluginNpmName.tag, this.config?.cliRoot);
     const npmMetadata = npmModule.show(npmRegistry.href);
     logger.debug('retrieveNpmMeta | Found npm meta information.');
     if (!npmMetadata.versions) {
@@ -345,14 +361,11 @@ export class InstallationVerification implements Verifier {
         `The npm metadata for plugin ${this.pluginNpmName.name} is missing the versions attribute.`,
         'InvalidNpmMetadata'
       );
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'InvalidNpmMetadata';
-      throw err;
+      throw setErrorName(err, 'InvalidNpmMetadata');
     }
 
     // Assume the tag is version tag.
-    let versionNumber = npmMetadata.versions.find((version) => version === this.pluginNpmName.tag);
+    let versionNumber = npmMetadata.versions.find((version) => version === this.pluginNpmName?.tag);
 
     logger.debug(`retrieveNpmMeta | versionObject: ${JSON.stringify(versionNumber)}`);
 
@@ -374,38 +387,27 @@ export class InstallationVerification implements Verifier {
             `The dist tag ${this.pluginNpmName.tag} was not found for plugin: ${this.pluginNpmName.name}`,
             'NpmTagNotFound'
           );
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore override readonly .name field
-          err.name = 'NpmTagNotFound';
-          throw err;
+          throw setErrorName(err, 'NpmTagNotFound');
         }
       } else {
-        const err = new SfError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        err.name = 'UnexpectedNpmFormat';
-        throw err;
+        throw setErrorName(
+          new SfError('The deployed NPM is missing dist-tags.', 'UnexpectedNpmFormat'),
+          'UnexpectedNpmFormat'
+        );
       }
     }
 
     npmModule.npmMeta.version = versionNumber;
 
     if (!npmMetadata.sfdx) {
-      const err = new SfError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'NotSigned';
-      throw err;
+      throw setErrorName(new SfError('This plugin is not signed by Salesforce.com, Inc.', 'NotSigned'), 'NotSigned');
     } else {
       if (!validSalesforceHostname(npmMetadata.sfdx.publicKeyUrl)) {
         const err = new SfError(
           `The host is not allowed to provide signing information. [${npmMetadata.sfdx.publicKeyUrl}]`,
           'UnexpectedHost'
         );
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        err.name = 'UnexpectedHost';
-        throw err;
+        throw setErrorName(err, 'UnexpectedHost');
       } else {
         logger.debug(`retrieveNpmMeta | versionObject.sfdx.publicKeyUrl: ${npmMetadata.sfdx.publicKeyUrl}`);
         npmModule.npmMeta.publicKeyUrl = npmMetadata.sfdx.publicKeyUrl;
@@ -416,16 +418,14 @@ export class InstallationVerification implements Verifier {
           `The host is not allowed to provide signing information. [${npmMetadata.sfdx.signatureUrl}]`,
           'UnexpectedHost'
         );
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        err.name = 'UnexpectedHost';
-        throw err;
+        throw setErrorName(err, 'UnexpectedHost');
       } else {
         logger.debug(`retrieveNpmMeta | versionObject.sfdx.signatureUrl: ${npmMetadata.sfdx.signatureUrl}`);
         npmModule.npmMeta.signatureUrl = npmMetadata.sfdx.signatureUrl;
       }
 
-      npmModule.npmMeta.tarballUrl = npmMetadata.dist.tarball;
+      npmModule.npmMeta.tarballUrl = npmMetadata.dist?.tarball;
+
       logger.debug(`retrieveNpmMeta | meta.tarballUrl: ${npmModule.npmMeta.tarballUrl}`);
 
       return npmModule.npmMeta;
@@ -441,13 +441,13 @@ export class InstallationVerification implements Verifier {
 }
 
 export class VerificationConfig {
-  private verifierMember: Verifier;
+  private verifierMember?: Verifier | undefined;
 
-  public get verifier(): Verifier {
+  public get verifier(): Verifier | undefined {
     return this.verifierMember;
   }
 
-  public set verifier(value: Verifier) {
+  public set verifier(value: Verifier | undefined) {
     this.verifierMember = value;
   }
 
@@ -475,21 +475,24 @@ export async function doInstallationCodeSigningVerification(
   verificationConfig: VerificationConfig
 ): Promise<void> {
   try {
+    if (!verificationConfig.verifier) {
+      throw new Error('VerificationConfig.verifier is not set.');
+    }
     const meta = await verificationConfig.verifier.verify();
     if (!meta.verified) {
       const err = new SfError(
         "A digital signature is specified for this plugin but it didn't verify against the certificate.",
         'FailedDigitalSignatureVerification'
       );
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'FailedDigitalSignatureVerification';
-      throw err;
+      throw setErrorName(err, 'FailedDigitalSignatureVerification');
     }
     verificationConfig.log(`Successfully validated digital signature for ${plugin.plugin}.`);
   } catch (err) {
     if (err instanceof Error) {
       if (err.name === 'NotSigned') {
+        if (!verificationConfig.verifier) {
+          throw new Error('VerificationConfig.verifier is not set.');
+        }
         if (await verificationConfig.verifier.isAllowListed()) {
           verificationConfig.log(`The plugin [${plugin.plugin}] is not digitally signed but it is allow-listed.`);
           return;
@@ -497,17 +500,9 @@ export async function doInstallationCodeSigningVerification(
           return await doPrompt();
         }
       } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
-        const e = new SfError(err.message || 'The user canceled the plugin installation.');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        e.name = '';
-        throw e;
+        throw setErrorName(new SfError(err.message ?? 'The user canceled the plugin installation.'), '');
       }
-      const sfErr = SfError.wrap(err);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      sfErr.name = err.name;
-      throw sfErr;
+      throw setErrorName(SfError.wrap(err), err.name);
     }
   }
 }
