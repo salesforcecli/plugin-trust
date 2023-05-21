@@ -1,3 +1,12 @@
+## [2.4.19](https://github.com/salesforcecli/plugin-trust/compare/2.4.18...2.4.19) (2023-05-21)
+
+
+### Bug Fixes
+
+* **deps:** bump tslib from 2.5.0 to 2.5.2 ([b953f1e](https://github.com/salesforcecli/plugin-trust/commit/b953f1ef764e057ab0d21bc8c402dca8f83c6749))
+
+
+
 ## [2.4.18](https://github.com/salesforcecli/plugin-trust/compare/2.4.17...2.4.18) (2023-05-16)
 
 
