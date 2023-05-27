@@ -13,7 +13,7 @@
     "@salesforce/core": "^3.33.4",
     "@salesforce/plugin-telemetry": "^2.2.0",
     "@salesforce/sf-plugins-core": "^2",
-    "@salesforce/telemetry": "^3.2.13",
+    "@salesforce/telemetry": "^3.2.29",
     "got": "^11",
     "npm": "^8.19.4",
     "npm-run-path": "^4.0.1",
