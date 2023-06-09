@@ -13,8 +13,7 @@ import * as fs from 'fs';
 import { mkdir } from 'fs/promises';
 import { Logger, SfError } from '@salesforce/core';
 import got from 'got';
-import * as ProxyAgent from 'proxy-agent';
-import { getProxyForUrl } from 'proxy-from-env';
+import { ProxyAgent } from 'proxy-agent';
 import { Prompter } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
 import { NpmModule, NpmMeta } from '../shared/npmCommand';
@@ -263,7 +262,7 @@ export class InstallationVerification implements Verifier {
     const res = await got.get({
       url,
       timeout: { request: 10000 },
-      agent: { https: ProxyAgent(getProxyForUrl(url)) },
+      agent: { https: new ProxyAgent() },
     });
     if (res.statusCode !== 200) {
       throw new SfError(`A request to url ${url} failed with error code: [${res.statusCode}]`, 'ErrorGettingContent');
