@@ -16,6 +16,7 @@ describe('plugins:install commands', () => {
   const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
   const UNSIGNED_MODULE_NAME2 = '@mshanemc/sfdx-sosl';
   let session: TestSession;
+  let configDir: string;
 
   before(async () => {
     session = await TestSession.create({ devhubAuthStrategy: 'NONE' });
@@ -24,7 +25,7 @@ describe('plugins:install commands', () => {
     const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
     await fs.promises.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
 
-    const configDir = path.join(session.homeDir, '.config', 'sfdx');
+    configDir = path.join(session.homeDir, '.config', 'sfdx');
     await fs.promises.mkdir(configDir, { recursive: true });
 
     const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME2], null, 2);
@@ -87,7 +88,8 @@ describe('plugins:install commands', () => {
   // yes, macos.  oclif sometimes uses XDG, which also exists on gha's ubuntu and windows runners, but isn't handled by testkit
   // see https://salesforce-internal.slack.com/archives/G02K6C90RBJ/p1669664263661369
   (os.platform() === 'darwin' ? it : it.skip)('plugins:install unsigned plugin in the allow list', () => {
-    expect(fs.existsSync(path.join(session.homeDir, '.config', 'sfdx'))).to.be.true;
+    expect(fs.existsSync(configDir)).to.be.true;
+    expect(fs.existsSync(path.join(configDir, 'unsignedPluginAllowList.json'))).to.be.true;
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
       cli: 'sfdx',
