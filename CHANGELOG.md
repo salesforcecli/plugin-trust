@@ -1,3 +1,12 @@
+## [2.4.21](https://github.com/salesforcecli/plugin-trust/compare/2.4.20...2.4.21) (2023-06-12)
+
+
+### Bug Fixes
+
+* bump proxy-agent to new major version ([#500](https://github.com/salesforcecli/plugin-trust/issues/500)) ([2caef1e](https://github.com/salesforcecli/plugin-trust/commit/2caef1e27d88727413d288819841426818a4c114))
+
+
+
 ## [2.4.20](https://github.com/salesforcecli/plugin-trust/compare/2.4.19...2.4.20) (2023-05-27)
 
 
