@@ -13,8 +13,7 @@ import * as fs from 'fs';
 import { mkdir } from 'fs/promises';
 import { Logger, SfError } from '@salesforce/core';
 import got from 'got';
-import * as ProxyAgent from 'proxy-agent';
-import { getProxyForUrl } from 'proxy-from-env';
+import { ProxyAgent } from 'proxy-agent';
 import { Prompter } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
 import { NpmModule, NpmMeta } from '../shared/npmCommand';
@@ -215,8 +214,8 @@ export class InstallationVerification implements Verifier {
     logger.debug(`verify | npmMeta.publicKeyUrl: ${npmMeta.publicKeyUrl}`);
 
     const [signatureStream, publicKeyStream] = await Promise.all([
-      this.getSigningContent(npmMeta.signatureUrl),
-      this.getSigningContent(npmMeta.publicKeyUrl),
+      getSigningContent(npmMeta.signatureUrl),
+      getSigningContent(npmMeta.publicKeyUrl),
     ]);
     const info = new CodeVerifierInfo();
     info.dataToVerify = fs.createReadStream(npmMeta.tarballLocalPath, { encoding: 'binary' });
@@ -250,25 +249,6 @@ export class InstallationVerification implements Verifier {
         throw err;
       }
     }
-  }
-
-  /**
-   * Retrieve url content for a host
-   *
-   * @param url host url.
-   */
-  // left to preserve public API
-  // eslint-disable-next-line class-methods-use-this
-  public async getSigningContent(url: string): Promise<Readable> {
-    const res = await got.get({
-      url,
-      timeout: { request: 10000 },
-      agent: { https: ProxyAgent(getProxyForUrl(url)) },
-    });
-    if (res.statusCode !== 200) {
-      throw new SfError(`A request to url ${url} failed with error code: [${res.statusCode}]`, 'ErrorGettingContent');
-    }
-    return Readable.from(Buffer.from(res.body));
   }
 
   /**
@@ -506,3 +486,20 @@ export async function doInstallationCodeSigningVerification(
     }
   }
 }
+
+/**
+ * Retrieve url content for a host
+ *
+ * @param url host url.
+ */
+const getSigningContent = async (url: string): Promise<Readable> => {
+  const res = await got.get({
+    url,
+    timeout: { request: 10000 },
+    agent: { https: new ProxyAgent() },
+  });
+  if (res.statusCode !== 200) {
+    throw new SfError(`A request to url ${url} failed with error code: [${res.statusCode}]`, 'ErrorGettingContent');
+  }
+  return Readable.from(Buffer.from(res.body));
+};

@@ -16,15 +16,16 @@ describe('plugins:install commands', () => {
   const UNSIGNED_MODULE_NAME = '@mshanemc/plugin-streaming';
   const UNSIGNED_MODULE_NAME2 = '@mshanemc/sfdx-sosl';
   let session: TestSession;
+  let configDir: string;
 
   before(async () => {
     session = await TestSession.create({ devhubAuthStrategy: 'NONE' });
-    await fs.promises.mkdir(path.join(session.homeDir, '.sfdx'), { recursive: true });
+    await fs.promises.mkdir(path.join(session.homeDir, '.sf'), { recursive: true });
 
     const fileData: string = JSON.stringify({ acknowledged: true }, null, 2);
-    await fs.promises.writeFile(path.join(session.homeDir, '.sfdx', 'acknowledgedUsageCollection.json'), fileData);
+    await fs.promises.writeFile(path.join(session.homeDir, '.sf', 'acknowledgedUsageCollection.json'), fileData);
 
-    const configDir = path.join(session.homeDir, '.config', 'sfdx');
+    configDir = path.join(session.homeDir, '.config', 'sf');
     await fs.promises.mkdir(configDir, { recursive: true });
 
     const unsignedMod: string = JSON.stringify([UNSIGNED_MODULE_NAME2], null, 2);
@@ -34,7 +35,7 @@ describe('plugins:install commands', () => {
     execCmd('plugins:link .', {
       cwd: path.dirname(session.dir),
       ensureExitCode: 0,
-      cli: 'sfdx',
+      cli: 'sf',
     });
   });
 
@@ -50,7 +51,7 @@ describe('plugins:install commands', () => {
   it('plugins:install signed plugin', () => {
     const result = execCmd(`plugins:install ${SIGNED_MODULE_NAME}`, {
       ensureExitCode: 0,
-      cli: 'sfdx',
+      cli: 'sf',
     });
     expect(result.shellOutput.stdout).to.contain(`Successfully validated digital signature for ${SIGNED_MODULE_NAME}`);
   });
@@ -61,7 +62,7 @@ describe('plugins:install commands', () => {
       { 'Continue installation': Interaction.No },
       {
         ensureExitCode: 2, // code 2 is the output code for the NO answer
-        cli: 'sfdx',
+        cli: 'sf',
       }
     );
 
@@ -76,7 +77,7 @@ describe('plugins:install commands', () => {
       { 'Continue installation': Interaction.Yes },
       {
         ensureExitCode: 0,
-        cli: 'sfdx',
+        cli: 'sf',
       }
     );
     expect(result.stdout).to.contain('This plugin is not digitally signed and its authenticity cannot be verified.');
@@ -87,10 +88,11 @@ describe('plugins:install commands', () => {
   // yes, macos.  oclif sometimes uses XDG, which also exists on gha's ubuntu and windows runners, but isn't handled by testkit
   // see https://salesforce-internal.slack.com/archives/G02K6C90RBJ/p1669664263661369
   (os.platform() === 'darwin' ? it : it.skip)('plugins:install unsigned plugin in the allow list', () => {
-    expect(fs.existsSync(path.join(session.homeDir, '.config', 'sfdx'))).to.be.true;
+    expect(fs.existsSync(configDir)).to.be.true;
+    expect(fs.existsSync(path.join(configDir, 'unsignedPluginAllowList.json'))).to.be.true;
     const result = execCmd(`plugins:install ${UNSIGNED_MODULE_NAME2}`, {
       ensureExitCode: 0,
-      cli: 'sfdx',
+      cli: 'sf',
     });
     expect(result.shellOutput.stdout).to.contain(
       `The plugin [${UNSIGNED_MODULE_NAME2}] is not digitally signed but it is allow-listed.`
