@@ -1,3 +1,12 @@
+## [2.4.29](https://github.com/salesforcecli/plugin-trust/compare/2.4.28...2.4.29) (2023-07-11)
+
+
+### Bug Fixes
+
+* **deps:** bump semver from 5.7.1 to 5.7.2 ([ca96947](https://github.com/salesforcecli/plugin-trust/commit/ca96947854ca1ee8868a6d67112f4e4e3cc2e0f3))
+
+
+
 ## [2.4.28](https://github.com/salesforcecli/plugin-trust/compare/2.4.27...2.4.28) (2023-07-09)
 
 
