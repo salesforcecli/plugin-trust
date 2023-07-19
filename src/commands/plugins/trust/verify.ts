@@ -9,6 +9,7 @@ import { SfCommand, Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { Messages, SfError, Logger } from '@salesforce/core';
 import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../shared/installationVerification';
 import { NpmName } from '../../../shared/NpmName';
+import { setErrorName } from '../../../shared/errors';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
@@ -74,28 +75,26 @@ export class Verify extends SfCommand<VerifyResponse> {
 
       if (!meta.verified) {
         const e = messages.createError('FailedDigitalSignatureVerification');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        e.name = 'FailedDigitalSignatureVerification';
-        throw e;
+        throw setErrorName(e, 'FailedDigitalSignatureVerification');
       }
       const message = `Successfully validated digital signature for ${npmName.name}.`;
 
       if (!flags.json) {
         vConfig.log(message);
-      } else {
-        return { message, verified: true };
       }
+      return { message, verified: true };
     } catch (error) {
-      const err = error as SfError;
-      logger.debug(`err reported: ${JSON.stringify(err, null, 4)}`);
+      if (!(error instanceof Error)) {
+        throw error;
+      }
+      logger.debug(`err reported: ${JSON.stringify(error, null, 4)}`);
       const response: VerifyResponse = {
         verified: false,
-        message: err.message,
+        message: error.message,
       };
 
-      if (err.name === 'NotSigned') {
-        let message: string = err.message;
+      if (error.name === 'NotSigned') {
+        let message: string = error.message;
         if (await vConfig.verifier.isAllowListed()) {
           message = `The plugin [${npmName.name}] is not digitally signed but it is allow-listed.`;
           vConfig.log(message);
@@ -107,7 +106,7 @@ export class Verify extends SfCommand<VerifyResponse> {
         }
         return response;
       }
-      throw SfError.wrap(err);
+      throw SfError.wrap(error);
     }
   }
 }

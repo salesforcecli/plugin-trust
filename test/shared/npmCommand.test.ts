@@ -8,11 +8,12 @@
 import { fail } from 'assert';
 import * as os from 'os';
 import * as fs from 'fs';
-import { expect, use as chaiUse } from 'chai';
+import { expect, use as chaiUse, assert } from 'chai';
 import * as Sinon from 'sinon';
 import * as SinonChai from 'sinon-chai';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
+import { SfError } from '@salesforce/core';
 import { NpmModule } from '../../src/shared/npmCommand';
 
 chaiUse(SinonChai);
@@ -258,6 +259,8 @@ describe('should find the node executable', () => {
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
+      assert(error instanceof SfError);
+
       expect(error.code).to.equal('CannotFindNodeExecutable');
     }
   });
@@ -308,6 +311,7 @@ describe('should run npm commands with execution errors', () => {
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
+      assert(error instanceof SfError);
       expect(error.code).to.equal('ShellExecError');
     }
   });
@@ -317,6 +321,7 @@ describe('should run npm commands with execution errors', () => {
       new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
       fail('Error');
     } catch (error) {
+      assert(error instanceof SfError);
       expect(error.code).to.equal('NpmError');
     }
   });
@@ -365,6 +370,7 @@ describe('should run npm commands with parse errors', () => {
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
+      assert(error instanceof SfError);
       expect(error.code).to.equal('ShellParseError');
     }
   });
@@ -401,6 +407,7 @@ describe('should run npm commands with npm errors', () => {
     try {
       new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
     } catch (error) {
+      assert(error instanceof SfError);
       expect(error.code).to.equal('NpmError');
       expect(error.message).to.equal('Failed to find @salesforce/plugin-source@1.0.0 in the registry');
     }
@@ -410,6 +417,7 @@ describe('should run npm commands with npm errors', () => {
     try {
       new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY);
     } catch (error) {
+      assert(error instanceof SfError);
       expect(error.code).to.equal('NpmError');
       expect(error.message).to.equal('Failed to fetch tarball from the registry: \nnpm err');
     }

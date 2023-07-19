@@ -5,6 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { SfError } from '@salesforce/core';
+import { setErrorName } from './errors';
 
 interface NpmNameInfo {
   scope: string;
@@ -20,9 +21,11 @@ interface NpmNameInfo {
  */
 export class NpmName {
   public static readonly DEFAULT_TAG = 'latest';
-  public scope: string;
   public tag: string;
-  public name: string;
+  // next 2 props won't exist until after parse is called
+  // TODO: make this more functional and deterministic
+  public scope!: string;
+  public name!: string;
 
   /**
    * Private ctor. Use static parse method.
@@ -38,11 +41,10 @@ export class NpmName {
    */
   public static parse(npmName: string): NpmName {
     if (!npmName || npmName.length < 1) {
-      const err = new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'MissingOrInvalidNpmName';
-      throw err;
+      throw setErrorName(
+        new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
+        'MissingOrInvalidNpmName'
+      );
     }
 
     const returnNpmName = new NpmName();
@@ -83,11 +85,7 @@ export class NpmName {
     } else if (subComponents.length === 1) {
       returnNpmName.name = NpmName.validateComponentString(subComponents[0]);
     } else {
-      const err = new SfError('The npm name is invalid.', 'InvalidNpmName');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'InvalidNpmName';
-      throw err;
+      throw setErrorName(new SfError('The npm name is invalid.', 'InvalidNpmName'), 'InvalidNpmName');
     }
   }
 
@@ -102,11 +100,10 @@ export class NpmName {
     if (trimmedName && trimmedName.length > 0) {
       return trimmedName;
     } else {
-      const err = new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'MissingOrInvalidNpmName';
-      throw err;
+      throw setErrorName(
+        new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
+        'MissingOrInvalidNpmName'
+      );
     }
   }
 

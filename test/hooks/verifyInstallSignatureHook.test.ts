@@ -41,6 +41,7 @@ describe('plugin install hook', () => {
   it('exits by calling this.error', async () => {
     let calledError = false;
     await hook.call(
+      // @ts-expect-error not a valid mock for context
       {
         error: () => (calledError = true),
       },
@@ -55,6 +56,7 @@ describe('plugin install hook', () => {
   it('should prompt for repo urls', async () => {
     try {
       await hook.call(
+        // @ts-expect-error not a valid mock for context
         {},
         {
           plugin: { name: 'test', type: 'repo' },
@@ -69,6 +71,7 @@ describe('plugin install hook', () => {
 
   it('should skip signature verification for JIT plugins with matching version', async () => {
     await hook.call(
+      // @ts-expect-error not a valid mock for context
       {},
       {
         plugin: { name: '@ns/test', type: 'npm', tag: '1.2.3' },

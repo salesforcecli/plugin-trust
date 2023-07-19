@@ -4,7 +4,6 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { type as osType } from 'os';
 import * as path from 'path';
@@ -15,6 +14,7 @@ import * as shelljs from 'shelljs';
 import { SfError } from '@salesforce/core';
 import { sleep, parseJson } from '@salesforce/kit';
 import { Ux } from '@salesforce/sf-plugins-core';
+import { setErrorName } from './errors';
 
 export type NpmMeta = {
   tarballUrl?: string;
@@ -55,7 +55,7 @@ type NpmPackage = {
   };
 };
 
-export class NpmCommand {
+class NpmCommand {
   private static npmPkgPath = require.resolve('npm/package.json');
 
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
@@ -103,7 +103,7 @@ export class NpmCommand {
    *
    * @private
    */
-  private static findNode(root: string = undefined): string {
+  private static findNode(root?: string): string {
     const isExecutable = (filepath: string): boolean => {
       if (osType() === 'Windows_NT') return filepath.endsWith('node.exe');
 
@@ -131,14 +131,13 @@ export class NpmCommand {
     }
 
     // Check to see if node is installed
-    const nodeShellString: shelljs.ShellString = shelljs.which('node');
+    const nodeShellString = shelljs.which('node');
     if (nodeShellString?.code === 0 && nodeShellString?.stdout) return nodeShellString.stdout;
 
-    const err = new SfError('Cannot locate node executable.', 'CannotFindNodeExecutable');
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore override readonly .name field
-    err.name = 'CannotFindNodeExecutable';
-    throw err;
+    throw setErrorName(
+      new SfError('Cannot locate node executable.', 'CannotFindNodeExecutable'),
+      'CannotFindNodeExecutable'
+    );
   }
 
   /**
@@ -156,7 +155,7 @@ export class NpmCommand {
 
 export class NpmModule {
   public npmMeta: NpmMeta;
-  public constructor(private module: string, private version: string = 'latest', private cliRoot: string = undefined) {
+  public constructor(private module: string, private version: string = 'latest', private cliRoot?: string) {
     this.npmMeta = {
       moduleName: module,
     };
@@ -171,23 +170,19 @@ export class NpmModule {
     // `npm show` doesn't return exit code 1 when it fails to get a specific package version
     // If `stdout` is empty then no info was found in the registry.
     if (showCmd.stdout === '') {
-      const err = new SfError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore override readonly .name field
-      err.name = 'NpmError';
-      throw err;
+      throw setErrorName(
+        new SfError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError'),
+        'NpmError'
+      );
     }
 
     try {
       return JSON.parse(showCmd.stdout) as NpmShowResults;
     } catch (error) {
       if (error instanceof Error) {
-        const err = new SfError(error.message, 'ShellParseError');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        err.name = 'ShellParseError';
-        throw err;
+        throw setErrorName(new SfError(error.message, 'ShellParseError'), 'ShellParseError');
       }
+      throw error;
     }
   }
 
@@ -202,10 +197,7 @@ export class NpmModule {
       if (err instanceof Error) {
         const sfErr = SfError.wrap(err);
         const e = new SfError(`Failed to fetch tarball from the registry: \n${sfErr.message}`, 'NpmError');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore override readonly .name field
-        e.name = 'NpmError';
-        throw e;
+        throw setErrorName(e, 'NpmError');
       }
     }
     return;
