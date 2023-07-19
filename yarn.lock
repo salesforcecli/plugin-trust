@@ -1345,10 +1345,10 @@
     handlebars "^4.7.7"
     tslib "^2"
 
-"@salesforce/plugin-telemetry@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.2.1.tgz#1e9e6dc3f3db43dea37ce2200897ef40ac724ece"
-  integrity sha512-flMSrFI4wcbwnOqBGIfGHplaoWd/ThiLOYtOusZsuduxg6ocLx85UYhB9QIFFnIDHjo1I9+QKX5Lt2N0XWZ9vw==
+"@salesforce/plugin-telemetry@^2.1.5":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.2.3.tgz#6d6e12e6866906f06c887a0f41e43f7aea5b81f8"
+  integrity sha512-f6QEeO4TkkDRFsn/qK6ginZmSemcb98s3mSR8IgpKA1AQGej+GXB5OwXLNJyF653boONR7K0iDPzJ+Q+ZmTWgQ==
   dependencies:
     "@oclif/core" "^2.8.5"
     "@salesforce/core" "^4.2.1"
