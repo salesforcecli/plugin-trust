@@ -1,3 +1,12 @@
+## [2.4.32](https://github.com/salesforcecli/plugin-trust/compare/2.4.31...2.4.32) (2023-07-19)
+
+
+### Bug Fixes
+
+* **deps:** bump word-wrap from 1.2.3 to 1.2.4 ([c529be5](https://github.com/salesforcecli/plugin-trust/commit/c529be5d0b4c70ec2d94561e74d92461c66f3fd8))
+
+
+
 ## [2.4.31](https://github.com/salesforcecli/plugin-trust/compare/2.4.30...2.4.31) (2023-07-16)
 
 
