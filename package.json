@@ -16,7 +16,7 @@
     "got": "^11",
     "npm": "^8.19.4",
     "npm-run-path": "^4.0.1",
-    "proxy-agent": "^6.2.2",
+    "proxy-agent": "^6.3.0",
     "shelljs": "^0.8.4",
     "tslib": "^2"
   },
