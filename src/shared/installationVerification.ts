@@ -447,6 +447,10 @@ export async function doPrompt(): Promise<void> {
   ) {
     throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
   }
+  // they approved the plugin.  Let them know how to automate this.
+  ux.log(
+    'To avoid installation confirmation, configure unsignedPluginAllowList.json.  https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_allowlist.htm'
+  );
 }
 
 export async function doInstallationCodeSigningVerification(
