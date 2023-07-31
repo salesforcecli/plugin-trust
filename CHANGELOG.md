@@ -1,3 +1,12 @@
+# [2.5.0](https://github.com/salesforcecli/plugin-trust/compare/2.4.35...2.5.0) (2023-07-31)
+
+
+### Features
+
+* let people know about plugin allowList ([4c000b6](https://github.com/salesforcecli/plugin-trust/commit/4c000b6f5ccd0c5d37ce9cf3ee409174c088422d))
+
+
+
 ## [2.4.35](https://github.com/salesforcecli/plugin-trust/compare/2.4.34...2.4.35) (2023-07-29)
 
 
