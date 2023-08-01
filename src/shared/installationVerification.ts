@@ -449,7 +449,7 @@ export async function doPrompt(): Promise<void> {
   }
   // they approved the plugin.  Let them know how to automate this.
   ux.log(
-    'To avoid installation confirmation, configure unsignedPluginAllowList.json.  https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_allowlist.htm'
+    'Because you approved this plugin, you can avoid future installation confirmations by adding the plugin to the unsignedPluginAllowList.json file. For details, see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_allowlist.htm.'
   );
 }
 
