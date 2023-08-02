@@ -1,3 +1,12 @@
+## [2.5.1](https://github.com/salesforcecli/plugin-trust/compare/2.5.0...2.5.1) (2023-08-02)
+
+
+### Bug Fixes
+
+* improve message ([#546](https://github.com/salesforcecli/plugin-trust/issues/546)) ([46db6e3](https://github.com/salesforcecli/plugin-trust/commit/46db6e3089eeed49786c489d4f367ea2af3cf66e))
+
+
+
 # [2.5.0](https://github.com/salesforcecli/plugin-trust/compare/2.4.35...2.5.0) (2023-07-31)
 
 
