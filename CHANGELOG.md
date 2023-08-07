@@ -1,3 +1,12 @@
+## [2.5.3](https://github.com/salesforcecli/plugin-trust/compare/2.5.2...2.5.3) (2023-08-07)
+
+
+### Bug Fixes
+
+* **deps:** core 5 ([db02411](https://github.com/salesforcecli/plugin-trust/commit/db02411bfb3e5295a59b077994ea1def9a415f1e))
+
+
+
 ## [2.5.2](https://github.com/salesforcecli/plugin-trust/compare/2.5.1...2.5.2) (2023-08-06)
 
 
