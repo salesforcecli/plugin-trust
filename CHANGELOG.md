@@ -1,3 +1,12 @@
+## [2.5.4](https://github.com/salesforcecli/plugin-trust/compare/2.5.3...2.5.4) (2023-08-07)
+
+
+### Bug Fixes
+
+* deps including telemetry for core5 ([#553](https://github.com/salesforcecli/plugin-trust/issues/553)) ([081c588](https://github.com/salesforcecli/plugin-trust/commit/081c588b65222e85784395f360ed2fa1fc75ec31))
+
+
+
 ## [2.5.3](https://github.com/salesforcecli/plugin-trust/compare/2.5.2...2.5.3) (2023-08-07)
 
 
