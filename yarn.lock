@@ -973,7 +973,7 @@
     supports-color "^8.1.1"
     tslib "^2"
 
-"@oclif/core@^2.11.1", "@oclif/core@^2.11.4", "@oclif/core@^2.11.7", "@oclif/core@^2.8.5":
+"@oclif/core@^2.11.1", "@oclif/core@^2.11.4", "@oclif/core@^2.11.7":
   version "2.11.7"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-2.11.7.tgz#7781a4dc65597ed9d8fda39cb1b209efca1c2d24"
   integrity sha512-0jbHePVekndUTd+Wee0+pnCpRhuHJrKiG9OtMqf4JSBCxp5Q8V+ACf8QKN4gNH9ppbGORfnTIYtXWh60+DcIiw==
@@ -1248,7 +1248,7 @@
     jsonwebtoken "9.0.0"
     ts-retry-promise "^0.7.0"
 
-"@salesforce/core@^4.2.1", "@salesforce/core@^4.3.11":
+"@salesforce/core@^4.3.11":
   version "4.3.11"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-4.3.11.tgz#3fde6affd77f56ee1915b4a2d594ea424ce84817"
   integrity sha512-rjrS0VoDlNaB4RYKLNZQ8+7QayWh5yTV79apCU9fYe0fR1D1p5tb+GAXe4B7AaOReQ8JOQhPBRMx1uzF3Lqn4A==
@@ -1368,14 +1368,14 @@
     handlebars "^4.7.8"
     tslib "^2"
 
-"@salesforce/plugin-telemetry@^2.1.5":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.2.3.tgz#6d6e12e6866906f06c887a0f41e43f7aea5b81f8"
-  integrity sha512-f6QEeO4TkkDRFsn/qK6ginZmSemcb98s3mSR8IgpKA1AQGej+GXB5OwXLNJyF653boONR7K0iDPzJ+Q+ZmTWgQ==
+"@salesforce/plugin-telemetry@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.2.4.tgz#a4e49146a8437c13e32ff0df279f7b6853b40486"
+  integrity sha512-bPVrX8dAbkpM+JoBhXi5m28CEAaDsNwb9LZfI1oVOORqZDsAMs2M1achvA7nNZKmuElFdjk2Pg681pR+n0rlmA==
   dependencies:
-    "@oclif/core" "^2.8.5"
-    "@salesforce/core" "^4.2.1"
-    "@salesforce/sf-plugins-core" "^3.0.2"
+    "@oclif/core" "^2.11.7"
+    "@salesforce/core" "^5.2.0"
+    "@salesforce/sf-plugins-core" "^3.1.14"
     "@salesforce/telemetry" "^3.2.29"
     debug "^4.3.4"
     tslib "^2"
@@ -1390,7 +1390,7 @@
   resolved "https://registry.yarnpkg.com/@salesforce/schemas/-/schemas-1.6.0.tgz#14505ebad2fb2d4f7b14837545d662766d293561"
   integrity sha512-SwhDTLucj/GRbPpxlEoDZeqlX22o+G6fiebTXTu1cZKmd1oE0W2L7SlTTgJnWck8bhTeBIgQi9cpD8c2t5ISKA==
 
-"@salesforce/sf-plugins-core@^3.0.2", "@salesforce/sf-plugins-core@^3.1.14":
+"@salesforce/sf-plugins-core@^3.1.14":
   version "3.1.14"
   resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-3.1.14.tgz#b2ca3bacfdfe338ccceafc2b92b968aa0780be4b"
   integrity sha512-8tVZoJdTrE77ZEqj3Nh2T0oXB8AEB5o22ffYraeSrUZtGh6lH8feZ8bxAVN1z6wIT9vXW3GhXrqR22UZYDl4ng==
@@ -1411,6 +1411,17 @@
     "@salesforce/ts-types" "^1.7.3"
     applicationinsights "^2.6.0"
     axios "^1.4.0"
+
+"@salesforce/telemetry@^4.0.16":
+  version "4.0.16"
+  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-4.0.16.tgz#7c2168ff1f9838c87be044e7419f260f30b90aad"
+  integrity sha512-W1cBQdS7Mu78IyyVzLWucdoqLHDy5ZJ49Q6Oo1LLHi2gYD3o5zvDY/Sj6euy4Skms3OrFfOuusxBxu5NG6H3NQ==
+  dependencies:
+    "@salesforce/core" "^5.2.0"
+    "@salesforce/ts-types" "^2.0.6"
+    applicationinsights "^2.7.0"
+    got "^11"
+    proxy-agent "^6.3.0"
 
 "@salesforce/ts-sinon@^1.4.6":
   version "1.4.8"
@@ -2059,7 +2070,7 @@ append-transform@^2.0.0:
   dependencies:
     default-require-extensions "^3.0.0"
 
-applicationinsights@^2.6.0:
+applicationinsights@^2.6.0, applicationinsights@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/applicationinsights/-/applicationinsights-2.7.0.tgz#b397b750e788c010d564c3ef7f5ce6e62227b425"
   integrity sha512-/vV5X6M4TlRA5NxNZAdCE0gukzfK24mb3z18D5Kl/CyIfSVIkafsIji3mK+Zi5q+7dn6H1CkFazlcnLf40anHw==
