@@ -12,7 +12,7 @@
     "@oclif/core": "^2.11.8",
     "@salesforce/core": "^5.2.0",
     "@salesforce/sf-plugins-core": "^3.1.14",
-    "@salesforce/telemetry": "^4.0.16",
+    "@salesforce/telemetry": "^4.1.0",
     "got": "^11",
     "npm": "^8.19.4",
     "npm-run-path": "^4.0.1",

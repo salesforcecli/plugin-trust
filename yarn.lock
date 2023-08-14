@@ -1390,10 +1390,10 @@
     applicationinsights "^2.6.0"
     axios "^1.4.0"
 
-"@salesforce/telemetry@^4.0.16":
-  version "4.0.16"
-  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-4.0.16.tgz#7c2168ff1f9838c87be044e7419f260f30b90aad"
-  integrity sha512-W1cBQdS7Mu78IyyVzLWucdoqLHDy5ZJ49Q6Oo1LLHi2gYD3o5zvDY/Sj6euy4Skms3OrFfOuusxBxu5NG6H3NQ==
+"@salesforce/telemetry@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-4.1.0.tgz#7ba69cb5c00fe108fa179e6a3ac8a0534c649ab8"
+  integrity sha512-Z5zg1l0yLoRRDJF3aR3bdicDNe2KoSizg4BCaTQe7WAhJErfRpv+7QcTs4LZkD2jxtJnl7RiBR9DYx2fTLcQaQ==
   dependencies:
     "@salesforce/core" "^5.2.0"
     "@salesforce/ts-types" "^2.0.6"
