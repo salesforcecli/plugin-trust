@@ -1,3 +1,12 @@
+# [2.6.0](https://github.com/salesforcecli/plugin-trust/compare/2.5.5...2.6.0) (2023-08-14)
+
+
+### Features
+
+* **deps:** bump telemetry ([#560](https://github.com/salesforcecli/plugin-trust/issues/560)) ([d6dfa10](https://github.com/salesforcecli/plugin-trust/commit/d6dfa1018142c1c2e1ac223fcd1d541ccfd77d65))
+
+
+
 ## [2.5.5](https://github.com/salesforcecli/plugin-trust/compare/2.5.4...2.5.5) (2023-08-13)
 
 
