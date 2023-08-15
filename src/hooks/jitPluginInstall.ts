@@ -8,7 +8,6 @@ import * as os from 'os';
 import { Hook } from '@oclif/core';
 import { SfError } from '@salesforce/core';
 import { TelemetryGlobal } from '@salesforce/plugin-telemetry/lib/telemetryGlobal';
-import { AppInsights } from '@salesforce/telemetry/lib/appInsights';
 
 declare const global: TelemetryGlobal;
 
@@ -37,9 +36,7 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
       type: 'EVENT',
       message: error instanceof Error ? error.message : 'malformed error',
       stackTrace:
-        error instanceof Error
-          ? error?.stack?.replace(new RegExp(os.homedir(), 'g'), AppInsights.GDPR_HIDDEN)
-          : undefined,
+        error instanceof Error ? error?.stack?.replace(new RegExp(os.homedir(), 'g'), '<GDPR_HIDDEN>') : undefined,
       version: opts.pluginVersion,
       plugin: opts.command.pluginName,
       command: opts.command.id,
