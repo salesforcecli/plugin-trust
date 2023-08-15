@@ -1,3 +1,12 @@
+## [2.6.1](https://github.com/salesforcecli/plugin-trust/compare/2.6.0...2.6.1) (2023-08-15)
+
+
+### Bug Fixes
+
+* don't import all of telemetry just for a string ([#561](https://github.com/salesforcecli/plugin-trust/issues/561)) ([7396e19](https://github.com/salesforcecli/plugin-trust/commit/7396e19c60f0ab3044cb77a257d570fe811fe095))
+
+
+
 # [2.6.0](https://github.com/salesforcecli/plugin-trust/compare/2.5.5...2.6.0) (2023-08-14)
 
 
