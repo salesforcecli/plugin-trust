@@ -1,3 +1,12 @@
+## [2.6.2](https://github.com/salesforcecli/plugin-trust/compare/2.6.1...2.6.2) (2023-08-20)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/core from 5.2.0 to 5.2.1 ([586628d](https://github.com/salesforcecli/plugin-trust/commit/586628d8fbca5499eb860d866125f7e51d21e8fa))
+
+
+
 ## [2.6.1](https://github.com/salesforcecli/plugin-trust/compare/2.6.0...2.6.1) (2023-08-15)
 
 
