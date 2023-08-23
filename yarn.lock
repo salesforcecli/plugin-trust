@@ -1219,14 +1219,14 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@salesforce/cli-plugins-testkit@^4.2.9":
-  version "4.2.9"
-  resolved "https://registry.yarnpkg.com/@salesforce/cli-plugins-testkit/-/cli-plugins-testkit-4.2.9.tgz#813bbb6a7926d17d5d0becd664e08f1c115680d1"
-  integrity sha512-v71dFmhlgwtmehK2QJ8+toeCYc39WQFu7R2wmhsHQeVA1UuYcx3uue5JnC392PIXddxQtjdR6eazk52tQg4nyA==
+"@salesforce/cli-plugins-testkit@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@salesforce/cli-plugins-testkit/-/cli-plugins-testkit-4.3.1.tgz#cc22eec56c3663f5f1687b525f7e35b356b21ade"
+  integrity sha512-/oNBXFA1hBZlKR+6TrUVgTEPLxpP61Le4D+HoGRofF4e+pQgGn8zdVKFHPAHMmRT95mJovPwMT+hwF0zVF1S/Q==
   dependencies:
-    "@salesforce/core" "^5.2.0"
+    "@salesforce/core" "^5.2.1"
     "@salesforce/kit" "^3.0.9"
-    "@salesforce/ts-types" "^2.0.2"
+    "@salesforce/ts-types" "^2.0.6"
     "@types/shelljs" "^0.8.12"
     debug "^4.3.1"
     jszip "^3.10.1"
@@ -1377,7 +1377,7 @@
     sinon "^5.1.1"
     tslib "^2.5.3"
 
-"@salesforce/ts-types@^2.0.1", "@salesforce/ts-types@^2.0.2", "@salesforce/ts-types@^2.0.5", "@salesforce/ts-types@^2.0.6":
+"@salesforce/ts-types@^2.0.1", "@salesforce/ts-types@^2.0.5", "@salesforce/ts-types@^2.0.6":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@salesforce/ts-types/-/ts-types-2.0.6.tgz#659590ee6ece45213bbdb23c9e244d206a2f912e"
   integrity sha512-hGSU3pwZKItAw567cD2hf+nwe4yPVANonb1E28bLVaRjYAI6FmdxjjTxA+wZRrTpTCpjd5TY67Lq2X1X1lY8bA==
