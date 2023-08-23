@@ -1,3 +1,12 @@
+## [2.6.4](https://github.com/salesforcecli/plugin-trust/compare/2.6.3...2.6.4) (2023-08-23)
+
+
+### Reverts
+
+* Revert "chore: npm update workflow" ([34d6c2a](https://github.com/salesforcecli/plugin-trust/commit/34d6c2a91d10a703c34fcf51d1a482527bd60bed))
+
+
+
 ## [2.6.3](https://github.com/salesforcecli/plugin-trust/compare/2.6.2...2.6.3) (2023-08-20)
 
 
