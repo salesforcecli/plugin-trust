@@ -11,7 +11,7 @@
   "dependencies": {
     "@oclif/core": "^2.11.10",
     "@salesforce/core": "^5.2.1",
-    "@salesforce/sf-plugins-core": "^3.1.15",
+    "@salesforce/sf-plugins-core": "^3.1.18",
     "got": "^11",
     "npm": "^8.19.4",
     "npm-run-path": "^4.0.1",
