@@ -1323,15 +1323,15 @@
     handlebars "^4.7.8"
     tslib "^2"
 
-"@salesforce/plugin-telemetry@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.3.0.tgz#5e9c94eb490d85a1af6a91aea7a29da1ff501881"
-  integrity sha512-syTtwnpND5leBAz0LUuocV6alhcxrMwt50+MrzqW5UzOme3iWQRwPMyhuaLjqyHYE8ccPf4apgovIJAwRhLpQQ==
+"@salesforce/plugin-telemetry@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-2.3.1.tgz#8202496c717f156eb4e77d3a7b5e8a98ff9d3b23"
+  integrity sha512-AZg5OYanEF3ATqO7dsvpXNY7+fRLGF2cSKKcLJtioI95XBpKmO1RqmRs4cafGi4bN6+MVCmBgUwcIyzbIv2Ohw==
   dependencies:
     "@oclif/core" "^2.11.7"
     "@salesforce/core" "^5.2.0"
     "@salesforce/sf-plugins-core" "^3.1.14"
-    "@salesforce/telemetry" "^4.1.0"
+    "@salesforce/telemetry" "^4.1.2"
     debug "^4.3.4"
     tslib "^2"
 
@@ -1357,12 +1357,12 @@
     chalk "^4"
     inquirer "^8.2.5"
 
-"@salesforce/telemetry@^4.1.0":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-4.1.1.tgz#8ff4a3c65f26640b53694fa1b840ca796716e4c1"
-  integrity sha512-suYKVUAD64yqt9/UUlpeFOGERi9w8SlOVmX9rvrkU4fODbYc15UMnFSbWMG6RpNDpmdNJaT+G/E6zmvUbLuJiQ==
+"@salesforce/telemetry@^4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-4.1.2.tgz#40185f9ebf9184bcd11dad4f8999598d65674697"
+  integrity sha512-8DYVjem2EUfePJSVT/dxbLaOn0SmFFgeaY/OA3JiMUebsVQVUON1MvqHpcErYrmTJ30o3MOWLoTZ3RsbFt1SUQ==
   dependencies:
-    "@salesforce/core" "^5.2.0"
+    "@salesforce/core" "^5.2.1"
     "@salesforce/ts-types" "^2.0.6"
     applicationinsights "^2.7.3"
     got "^11"
