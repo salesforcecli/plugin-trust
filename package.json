@@ -13,7 +13,7 @@
     "@salesforce/core": "^5.2.1",
     "@salesforce/sf-plugins-core": "^3.1.18",
     "got": "^11",
-    "npm": "^8.19.4",
+    "npm": "9.6.7",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^6.3.0",
     "shelljs": "^0.8.4",
