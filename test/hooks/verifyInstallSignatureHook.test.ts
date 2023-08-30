@@ -4,7 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { expect } from 'chai';
+import { expect, config } from 'chai';
 import * as sinon from 'sinon';
 
 import { stubMethod } from '@salesforce/ts-sinon';
@@ -12,6 +12,8 @@ import { stubMethod } from '@salesforce/ts-sinon';
 import { Prompter } from '@salesforce/sf-plugins-core';
 import { InstallationVerification, VerificationConfig } from '../../src/shared/installationVerification';
 import { hook } from '../../src/hooks/verifyInstallSignature';
+
+config.truncateThreshold = 0;
 
 describe('plugin install hook', () => {
   let sandbox: sinon.SinonSandbox;

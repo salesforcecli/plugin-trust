@@ -5,13 +5,13 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as path from 'path';
-import { Readable } from 'stream';
-import { URL } from 'url';
-import * as crypto from 'crypto';
-import * as fs from 'fs';
-import { mkdir } from 'fs/promises';
-import { Logger, SfError } from '@salesforce/core';
+import * as path from 'node:path';
+import { Readable } from 'node:stream';
+import { URL } from 'node:url';
+import * as crypto from 'node:crypto';
+import * as fs from 'node:fs';
+import { mkdir } from 'node:fs/promises';
+import { Logger, SfError, Messages } from '@salesforce/core';
 import got from 'got';
 import { ProxyAgent } from 'proxy-agent';
 import { Prompter } from '@salesforce/sf-plugins-core';
@@ -23,6 +23,7 @@ import { setErrorName } from './errors';
 const CRYPTO_LEVEL = 'RSA-SHA256';
 const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
+Messages.importMessagesDirectory(__dirname);
 
 export interface ConfigContext {
   configDir?: string;
@@ -438,19 +439,12 @@ export class VerificationConfig {
 }
 
 export async function doPrompt(): Promise<void> {
-  if (
-    !(await new Prompter().confirm(
-      'This plugin is not digitally signed and its authenticity cannot be verified. Continue installation?',
-      30000,
-      false
-    ))
-  ) {
+  const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
+  if (!(await new Prompter().confirm(messages.getMessage('InstallConfirmation'), 30000, false))) {
     throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
   }
   // they approved the plugin.  Let them know how to automate this.
-  ux.log(
-    'Because you approved this plugin, you can avoid future installation confirmations by adding the plugin to the unsignedPluginAllowList.json file. For details, see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_allowlist.htm.'
-  );
+  ux.log(messages.getMessage('SuggestAllowList'));
 }
 
 export async function doInstallationCodeSigningVerification(
