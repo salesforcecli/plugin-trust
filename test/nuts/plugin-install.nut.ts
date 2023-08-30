@@ -8,8 +8,14 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
-import { expect } from 'chai';
+import { expect, config } from 'chai';
 import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesforce/cli-plugins-testkit';
+import { Messages } from '@salesforce/core';
+
+Messages.importMessagesDirectory(__dirname);
+const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
+
+config.truncateThreshold = 0;
 
 describe('plugins:install commands', () => {
   const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
@@ -66,7 +72,7 @@ describe('plugins:install commands', () => {
       }
     );
 
-    expect(result.stdout).to.contain('This plugin is not digitally signed and its authenticity cannot be verified.');
+    expect(result.stdout.replaceAll('\n', '')).to.contain(messages.getMessage('InstallConfirmation'));
     expect(result.stdout).to.contain('Continue installation?');
     expect(result.stderr).to.contain('The user canceled the plugin installation');
   });
@@ -80,7 +86,7 @@ describe('plugins:install commands', () => {
         cli: 'sf',
       }
     );
-    expect(result.stdout).to.contain('This plugin is not digitally signed and its authenticity cannot be verified.');
+    expect(result.stdout.replaceAll('\n', '')).to.contain(messages.getMessage('InstallConfirmation'));
     expect(result.stdout).to.contain('Continue installation?');
     expect(result.stdout).to.contain('Finished digital signature check');
   });
