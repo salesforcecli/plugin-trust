@@ -73,7 +73,7 @@ describe('plugins:install commands', () => {
     );
 
     expect(result.stdout.replaceAll('\n', '')).to.contain(messages.getMessage('InstallConfirmation'));
-    expect(result.stdout).to.contain('Continue installation?');
+    expect(result.stdout).to.contain('Do you want to continue the installation?');
     expect(result.stderr).to.contain('The user canceled the plugin installation');
   });
 
@@ -87,7 +87,7 @@ describe('plugins:install commands', () => {
       }
     );
     expect(result.stdout.replaceAll('\n', '')).to.contain(messages.getMessage('InstallConfirmation'));
-    expect(result.stdout).to.contain('Continue installation?');
+    expect(result.stdout).to.contain('Do you want to continue the installation?');
     expect(result.stdout).to.contain('Finished digital signature check');
   });
 
