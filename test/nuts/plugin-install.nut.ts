@@ -65,7 +65,7 @@ describe('plugins:install commands', () => {
   it('plugins:install prompts on unsigned plugin (denies)', async () => {
     const result = await execInteractiveCmd(
       `plugins:install ${UNSIGNED_MODULE_NAME}`,
-      { 'Continue installation': Interaction.No },
+      { 'continue the installation': Interaction.No },
       {
         ensureExitCode: 2, // code 2 is the output code for the NO answer
         cli: 'sf',
@@ -80,7 +80,7 @@ describe('plugins:install commands', () => {
   it('plugins:install prompts on unsigned plugin (accepts)', async () => {
     const result = await execInteractiveCmd(
       `plugins:install ${UNSIGNED_MODULE_NAME}`,
-      { 'Continue installation': Interaction.Yes },
+      { 'continue the installation': Interaction.Yes },
       {
         ensureExitCode: 0,
         cli: 'sf',
