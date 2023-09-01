@@ -1,3 +1,12 @@
+## [2.6.8](https://github.com/salesforcecli/plugin-trust/compare/2.6.7...2.6.8) (2023-09-01)
+
+
+### Bug Fixes
+
+* unsigned plugin message ([c435273](https://github.com/salesforcecli/plugin-trust/commit/c435273c08bc4c7f7c7cba336a3ac54b4aeb9778))
+
+
+
 ## [2.6.7](https://github.com/salesforcecli/plugin-trust/compare/2.6.6...2.6.7) (2023-08-28)
 
 
