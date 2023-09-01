@@ -28,11 +28,11 @@ export class Verify extends SfCommand<VerifyResponse> {
     npm: Flags.string({
       char: 'n',
       required: true,
-      summary: messages.getMessage('flags.npm'),
+      summary: messages.getMessage('flags.npm.summary'),
     }),
     registry: Flags.string({
       char: 'r',
-      summary: messages.getMessage('flags.registry'),
+      summary: messages.getMessage('flags.registry.summary'),
     }),
     loglevel,
   };

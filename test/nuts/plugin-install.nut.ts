@@ -8,8 +8,14 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
-import { expect } from 'chai';
+import { expect, config } from 'chai';
 import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesforce/cli-plugins-testkit';
+import { Messages } from '@salesforce/core';
+
+Messages.importMessagesDirectory(__dirname);
+const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
+
+config.truncateThreshold = 0;
 
 describe('plugins:install commands', () => {
   const SIGNED_MODULE_NAME = '@salesforce/plugin-user';
@@ -59,29 +65,29 @@ describe('plugins:install commands', () => {
   it('plugins:install prompts on unsigned plugin (denies)', async () => {
     const result = await execInteractiveCmd(
       `plugins:install ${UNSIGNED_MODULE_NAME}`,
-      { 'Continue installation': Interaction.No },
+      { 'continue the installation': Interaction.No },
       {
         ensureExitCode: 2, // code 2 is the output code for the NO answer
         cli: 'sf',
       }
     );
 
-    expect(result.stdout).to.contain('This plugin is not digitally signed and its authenticity cannot be verified.');
-    expect(result.stdout).to.contain('Continue installation?');
+    expect(result.stdout.replaceAll('\n', '')).to.contain(messages.getMessage('InstallConfirmation'));
+    expect(result.stdout).to.contain('Do you want to continue the installation?');
     expect(result.stderr).to.contain('The user canceled the plugin installation');
   });
 
   it('plugins:install prompts on unsigned plugin (accepts)', async () => {
     const result = await execInteractiveCmd(
       `plugins:install ${UNSIGNED_MODULE_NAME}`,
-      { 'Continue installation': Interaction.Yes },
+      { 'continue the installation': Interaction.Yes },
       {
         ensureExitCode: 0,
         cli: 'sf',
       }
     );
-    expect(result.stdout).to.contain('This plugin is not digitally signed and its authenticity cannot be verified.');
-    expect(result.stdout).to.contain('Continue installation?');
+    expect(result.stdout.replaceAll('\n', '')).to.contain(messages.getMessage('InstallConfirmation'));
+    expect(result.stdout).to.contain('Do you want to continue the installation?');
     expect(result.stdout).to.contain('Finished digital signature check');
   });
 

@@ -5,10 +5,10 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { type as osType } from 'os';
-import * as path from 'path';
+import { type as osType } from 'node:os';
+import * as path from 'node:path';
 
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import npmRunPath from 'npm-run-path';
 import * as shelljs from 'shelljs';
 import { SfError } from '@salesforce/core';

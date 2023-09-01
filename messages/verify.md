@@ -12,14 +12,22 @@ Verifies the digital signature on an npm package matches the signature and key s
 
 - <%= config.bin %> <%= command.id %> --npm @scope/npmName
 
-# flags.npm
+# flags.npm.summary
 
 Specify the npm name. This can include a tag/version.
 
-# flags.registry
+# flags.registry.summary
 
 The registry name. The behavior is the same as npm.
 
 # FailedDigitalSignatureVerification
 
 A digital signature is specified for this plugin but it didn't verify against the certificate.
+
+# InstallConfirmation
+
+This plugin isn't signed by Salesforce. Only install the plugin if you trust its creator. Do you want to continue the installation?,
+
+# SuggestAllowList
+
+Because you approved this plugin, you can avoid future installation confirmations by adding the plugin to the unsignedPluginAllowList.json file. For details, see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_allowlist.htm.
