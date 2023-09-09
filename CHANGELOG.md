@@ -1,3 +1,12 @@
+## [2.6.10](https://github.com/salesforcecli/plugin-trust/compare/2.6.9...2.6.10) (2023-09-09)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/sf-plugins-core from 3.1.21 to 3.1.22 ([f238f85](https://github.com/salesforcecli/plugin-trust/commit/f238f85bd878e277a01d126deee38f0013a230f6))
+
+
+
 ## [2.6.9](https://github.com/salesforcecli/plugin-trust/compare/2.6.8...2.6.9) (2023-09-03)
 
 
