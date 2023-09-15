@@ -10,7 +10,7 @@ We always recommend using the latest version of these commands bundled with the 
 
 ### Allowlisting
 
-If a plugin needs to be installed in a unattended fashion as is the case with automation. The plugin acceptance prompt can be avoided by placing the plugin name in \$HOME/.config/sfdx/unsignedPluginAllowList.json
+If a plugin needs to be installed in a unattended fashion as is the case with automation. The plugin acceptance prompt can be avoided by placing the plugin name in \$HOME/.config/sf/unsignedPluginAllowList.json
 
 ```json
 [
