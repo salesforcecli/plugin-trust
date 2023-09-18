@@ -1,3 +1,9 @@
+## [2.6.13](https://github.com/salesforcecli/plugin-trust/compare/2.6.12...2.6.13) (2023-09-18)
+
+### Bug Fixes
+
+- support 403 allowlist ([#595](https://github.com/salesforcecli/plugin-trust/issues/595)) ([78d474e](https://github.com/salesforcecli/plugin-trust/commit/78d474ee8a326e294da3b507b3f4400d074d91d8))
+
 ## [2.6.12](https://github.com/salesforcecli/plugin-trust/compare/2.6.11...2.6.12) (2023-09-17)
 
 ### Bug Fixes
