@@ -91,28 +91,27 @@ sfdx plugins
 
 <!-- commands -->
 
-- [`@salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#salesforceplugin-trust-pluginstrustverify--n-string--r-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+- [`@salesforce/plugin-trust plugins:trust:verify`](#salesforceplugin-trust-pluginstrustverify)
 
-## `@salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+## `@salesforce/plugin-trust plugins:trust:verify`
 
-Validate a digital signature for a npm package.
+Validate a digital signature.
 
 ```
 USAGE
-  $ @salesforce/plugin-trust plugins:trust:verify -n <string> [-r <string>] [--json] [--loglevel
-    trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+  $ @salesforce/plugin-trust plugins:trust:verify -n <value> [--json] [-r <value>]
 
 FLAGS
-  -n, --npm=<value>                                                                 (required) Specify the npm name.
-                                                                                    This can include a tag/version.
-  -r, --registry=<value>                                                            The registry name. The behavior is
-                                                                                    the same as npm.
-  --json                                                                            format output as json
-  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
-                                                                                    this command invocation
+  -n, --npm=<value>       (required) Specify the npm name. This can include a tag/version.
+  -r, --registry=<value>  The registry name. The behavior is the same as npm.
+
+GLOBAL FLAGS
+  --json  Format output as json.
 
 DESCRIPTION
-  Validate a digital signature for a npm package.
+  Validate a digital signature.
+
+  Verifies the digital signature on an npm package matches the signature and key stored at the expected URLs.
 
 EXAMPLES
   $ @salesforce/plugin-trust plugins:trust:verify --npm @scope/npmName --registry http://my.repo.org:4874
@@ -120,6 +119,6 @@ EXAMPLES
   $ @salesforce/plugin-trust plugins:trust:verify --npm @scope/npmName
 ```
 
-_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/v2.0.2/src/commands/plugins/trust/verify.ts)_
+_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/2.6.14/src/commands/plugins/trust/verify.ts)_
 
 <!-- commandsstop -->
