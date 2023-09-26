@@ -119,6 +119,6 @@ EXAMPLES
   $ @salesforce/plugin-trust plugins:trust:verify --npm @scope/npmName
 ```
 
-_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/2.6.14/src/commands/plugins/trust/verify.ts)_
+_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/2.6.15/src/commands/plugins/trust/verify.ts)_
 
 <!-- commandsstop -->
