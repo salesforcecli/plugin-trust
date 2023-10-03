@@ -23,7 +23,7 @@ jobs:
       - uses: salesforcecli/github-workflows/.github/actions/yarnInstallWithRetries@main
       - run: |
           # NOTE: Both @salesforce/plugin-trust and @oclif/plugin-plugins require npm.
-          #       In order to ensure that we are not duplicating pinned npm verions
+          #       In order to ensure that we are not duplicating pinned npm versions
           #       and increasing the CLI bundle size, we get the version from plugin-plugins
           NPM=$(curl https://raw.githubusercontent.com/oclif/plugin-plugins/main/package.json | jq -r '.dependencies.npm')
           echo "Current package.json npm version: $(jq '.dependencies.npm' package.json)"
