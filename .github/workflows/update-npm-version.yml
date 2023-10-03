@@ -7,8 +7,8 @@ name: update-npm-version
 on:
   workflow_dispatch:
   schedule:
-    # Tuesday 7a central (12 UTC)
-    - cron: '0 12 * * 2'
+    # Tuesday 9a central (14 UTC)
+    - cron: '0 14 * * 2'
 
 jobs:
   update-npm:
@@ -22,9 +22,13 @@ jobs:
           node-version: lts/*
       - uses: salesforcecli/github-workflows/.github/actions/yarnInstallWithRetries@main
       - run: |
-          echo "package.json npm version: $(jq '.dependencies.npm' package.json)"
-          echo "GHA Node LTS npm version: $(npm -v)"
-          yarn add npm@$(npm -v)
+          # NOTE: Both @salesforce/plugin-trust and @oclif/plugin-plugins require npm.
+          #       In order to ensure that we are not duplicating pinned npm versions
+          #       and increasing the CLI bundle size, we get the version from plugin-plugins
+          NPM=$(curl https://raw.githubusercontent.com/oclif/plugin-plugins/main/package.json | jq -r '.dependencies.npm')
+          echo "Current package.json npm version: $(jq '.dependencies.npm' package.json)"
+          echo "Version in @oclif/plugin-plugins: $NPM"
+          yarn add npm@$NPM
       - uses: salesforcecli/github-workflows/.github/actions/gitConfig@main
       # Push changes if 'git status' is not empty
       - run: |
