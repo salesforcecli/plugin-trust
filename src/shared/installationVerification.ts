@@ -151,7 +151,8 @@ const errorHandlerForVerify = (err: Error): Error => {
   return err;
 };
 
-export const getNpmRegistry = (): URL => new URL(process.env.SFDX_NPM_REGISTRY ?? DEFAULT_REGISTRY);
+export const getNpmRegistry = (): URL =>
+  new URL(process.env.SF_NPM_REGISTRY ?? process.env.SFDX_NPM_REGISTRY ?? DEFAULT_REGISTRY);
 
 /**
  * class for verifying a digital signature pack of an npm
