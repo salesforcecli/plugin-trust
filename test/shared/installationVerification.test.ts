@@ -88,13 +88,24 @@ const getShelljsExecStub = (
   });
 
 describe('getNpmRegistry', () => {
-  const currentRegistry = process.env.SFDX_NPM_REGISTRY;
+  const currentSFRegistry = process.env.SF_NPM_REGISTRY;
+  const currentSFDXRegistry = process.env.SFDX_NPM_REGISTRY;
   after(() => {
-    if (currentRegistry) {
-      process.env.SFDX_NPM_REGISTRY = currentRegistry;
+    if (currentSFRegistry) {
+      process.env.SF_NPM_REGISTRY = currentSFRegistry;
+    }
+    if (currentSFDXRegistry) {
+      process.env.SFDX_NPM_REGISTRY = currentSFDXRegistry;
     }
   });
-  it('set registry', () => {
+  it('set SF registry', () => {
+    const TEST_REG = 'https://registry.example.com/';
+    process.env.SF_NPM_REGISTRY = TEST_REG;
+    const reg = getNpmRegistry();
+    expect(reg.href).to.be.equal(TEST_REG);
+  });
+  it('set SFDX registry', () => {
+    delete process.env.SF_NPM_REGISTRY;
     const TEST_REG = 'https://registry.example.com/';
     process.env.SFDX_NPM_REGISTRY = TEST_REG;
     const reg = getNpmRegistry();

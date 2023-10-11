@@ -66,6 +66,7 @@ export class Verify extends SfCommand<VerifyResponse> {
     vConfig.verifier = Verify.getVerifier(npmName, configContext);
 
     if (flags.registry) {
+      process.env.SF_NPM_REGISTRY = flags.registry;
       process.env.SFDX_NPM_REGISTRY = flags.registry;
     }
 
