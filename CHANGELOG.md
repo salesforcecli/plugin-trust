@@ -1,3 +1,9 @@
+## [2.6.19](https://github.com/salesforcecli/plugin-trust/compare/2.6.18...2.6.19) (2023-10-11)
+
+### Bug Fixes
+
+- also look for SF_NPM_REGISTRY ([104f2f9](https://github.com/salesforcecli/plugin-trust/commit/104f2f9395f24909d9ad45ac889755a63d48813e))
+
 ## [2.6.18](https://github.com/salesforcecli/plugin-trust/compare/2.6.17...2.6.18) (2023-10-03)
 
 ### Bug Fixes
