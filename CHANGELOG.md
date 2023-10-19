@@ -1,3 +1,9 @@
+## [2.6.21](https://github.com/salesforcecli/plugin-trust/compare/2.6.20...2.6.21) (2023-10-19)
+
+### Bug Fixes
+
+- **deps:** bump @babel/traverse from 7.22.5 to 7.23.2 ([54df185](https://github.com/salesforcecli/plugin-trust/commit/54df1850b28dee52a5a3230e1481edb0861aa029))
+
 ## [2.6.20](https://github.com/salesforcecli/plugin-trust/compare/2.6.19...2.6.20) (2023-10-14)
 
 ### Bug Fixes
