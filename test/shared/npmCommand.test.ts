@@ -5,18 +5,15 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { fail } from 'assert';
-import * as os from 'os';
-import * as fs from 'fs';
-import { expect, use as chaiUse, assert } from 'chai';
+import { fail } from 'node:assert';
+import * as os from 'node:os';
+import * as fs from 'node:fs';
+import { expect, assert } from 'chai';
 import * as Sinon from 'sinon';
-import * as SinonChai from 'sinon-chai';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
-import { NpmModule } from '../../src/shared/npmCommand';
-
-chaiUse(SinonChai);
+import { NpmModule } from '../../src/shared/npmCommand.js';
 
 const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 const MODULE_NAME = '@salesforce/plugin-source';

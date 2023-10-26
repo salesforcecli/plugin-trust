@@ -14,7 +14,7 @@ import * as shelljs from 'shelljs';
 import { SfError } from '@salesforce/core';
 import { sleep, parseJson } from '@salesforce/kit';
 import { Ux } from '@salesforce/sf-plugins-core';
-import { setErrorName } from './errors';
+import { setErrorName } from './errors.js';
 
 export type NpmMeta = {
   tarballUrl?: string;

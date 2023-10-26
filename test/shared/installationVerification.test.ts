@@ -4,16 +4,16 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { Readable } from 'stream';
-import * as fs from 'fs';
+import { Readable } from 'node:stream';
+import * as fs from 'node:fs';
 import { assert, expect } from 'chai';
 import got from 'got';
 import { OptionsOfTextResponseBody } from 'got';
 import * as shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
-import Sinon = require('sinon');
 import { Prompter } from '@salesforce/sf-plugins-core';
+import Sinon from 'sinon';
 import {
   ConfigContext,
   DEFAULT_REGISTRY,
@@ -22,10 +22,10 @@ import {
   InstallationVerification,
   VerificationConfig,
   Verifier,
-} from '../../src/shared/installationVerification';
-import { NpmMeta, NpmModule, NpmShowResults } from '../../src/shared/npmCommand';
-import { NpmName } from '../../src/shared/NpmName';
-import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert';
+} from '../../src/shared/installationVerification.js';
+import { NpmMeta, NpmModule, NpmShowResults } from '../../src/shared/npmCommand.js';
+import { NpmName } from '../../src/shared/NpmName.js';
+import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert.js';
 
 const BLANK_PLUGIN = { plugin: '', tag: '' };
 const MODULE_NAME = '@salesforce/plugin-source';

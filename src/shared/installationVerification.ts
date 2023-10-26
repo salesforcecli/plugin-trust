@@ -16,9 +16,9 @@ import got from 'got';
 import { ProxyAgent } from 'proxy-agent';
 import { Prompter } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
-import { NpmModule, NpmMeta } from '../shared/npmCommand';
-import { NpmName } from './NpmName';
-import { setErrorName } from './errors';
+import { NpmModule, NpmMeta } from './npmCommand.js';
+import { NpmName } from './NpmName.js';
+import { setErrorName } from './errors.js';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
 const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';

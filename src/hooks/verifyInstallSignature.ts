@@ -14,9 +14,9 @@ import {
   doPrompt,
   InstallationVerification,
   VerificationConfig,
-} from '../shared/installationVerification';
+} from '../shared/installationVerification.js';
 
-import { NpmName } from '../shared/NpmName';
+import { NpmName } from '../shared/NpmName.js';
 
 export const hook: Hook.PluginsPreinstall = async function (options) {
   if (options.plugin && options.plugin.type === 'npm') {
