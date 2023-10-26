@@ -6,6 +6,8 @@
  */
 import { Readable } from 'node:stream';
 import * as fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import { assert, expect } from 'chai';
 import got from 'got';
 import { OptionsOfTextResponseBody } from 'got';
@@ -130,7 +132,7 @@ describe('InstallationVerification Tests', () => {
       return 'configDir';
     },
     get cliRoot() {
-      return __dirname;
+      return dirname(fileURLToPath(import.meta.url));
     },
   };
   const currentRegistry = process.env.SFDX_NPM_REGISTRY;

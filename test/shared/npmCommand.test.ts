@@ -8,6 +8,8 @@
 import { fail } from 'node:assert';
 import * as os from 'node:os';
 import * as fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import { expect, assert } from 'chai';
 import * as Sinon from 'sinon';
 import * as shelljs from 'shelljs';
@@ -100,7 +102,9 @@ describe('should run npm commands', () => {
   });
 
   it('Runs the show command', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
@@ -108,7 +112,9 @@ describe('should run npm commands', () => {
   });
 
   it('Runs the show command with specified version', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
@@ -116,7 +122,9 @@ describe('should run npm commands', () => {
   });
 
   it('Runs the pack command', () => {
-    new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+    new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).pack(DEFAULT_REGISTRY, {
+      cwd: CACHE_PATH,
+    });
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
@@ -185,7 +193,9 @@ describe('should find the node executable', () => {
   });
 
   it('finds node binary inside sfdx bin folder and runs npm show command', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(accessSyncStub).to.have.been.calledOnce;
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(osTypeStub).to.have.been.calledOnce;
@@ -202,7 +212,9 @@ describe('should find the node executable', () => {
     shelljsFindStub.returns(['C:\\Program Files\\sfdx\\client\\bin\\node.exe']);
     osTypeStub.returns('Windows_NT');
 
-    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(accessSyncStub).to.not.have.been.called;
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(osTypeStub).to.have.been.calledOnce;
@@ -228,7 +240,9 @@ describe('should find the node executable', () => {
         code: 0,
       } as shelljs.ShellString;
     });
-    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(shelljsFindStub).to.not.have.been.called;
     expect(realpathSyncStub).to.not.have.been.called;
@@ -252,7 +266,9 @@ describe('should find the node executable', () => {
       return null;
     });
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+        DEFAULT_REGISTRY
+      );
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -304,7 +320,9 @@ describe('should run npm commands with execution errors', () => {
 
   it('show command throws error', () => {
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+        DEFAULT_REGISTRY
+      );
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -315,7 +333,9 @@ describe('should run npm commands with execution errors', () => {
 
   it('Runs the pack command', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+      new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).pack(DEFAULT_REGISTRY, {
+        cwd: CACHE_PATH,
+      });
       fail('Error');
     } catch (error) {
       assert(error instanceof SfError);
@@ -363,7 +383,9 @@ describe('should run npm commands with parse errors', () => {
 
   it('show command throws error', () => {
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).show(
+        DEFAULT_REGISTRY
+      );
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -402,7 +424,7 @@ describe('should run npm commands with npm errors', () => {
 
   it('show command throws error', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+      new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).show(DEFAULT_REGISTRY);
     } catch (error) {
       assert(error instanceof SfError);
       expect(error.code).to.equal('NpmError');
@@ -412,7 +434,7 @@ describe('should run npm commands with npm errors', () => {
 
   it('pack command throws error', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY);
+      new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).pack(DEFAULT_REGISTRY);
     } catch (error) {
       assert(error instanceof SfError);
       expect(error.code).to.equal('NpmError');

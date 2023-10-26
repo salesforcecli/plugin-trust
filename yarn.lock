@@ -966,10 +966,10 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^3.0.0", "@oclif/core@^3.0.4", "@oclif/core@^3.3.1", "@oclif/core@^3.5.0", "@oclif/core@^3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-3.8.0.tgz#45f5f630b3b593c3486e7835953ad6fb2af01bcb"
-  integrity sha512-fKqg9QzjIflDcYljZkZEeY6zoRyk4AZ5e2V4LUIsSOR7+B78qpqNqDPJFTI8TvrEU3+Q+ssELntOL2VA3SMsqQ==
+"@oclif/core@^3.0.0", "@oclif/core@^3.0.4", "@oclif/core@^3.3.1", "@oclif/core@^3.5.0", "@oclif/core@^3.9.0":
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-3.9.0.tgz#51c53ea4eafd3d643a55a37477f3e7c9d2cc2942"
+  integrity sha512-9UT0ySJgaUvERUQwDFh0u9Q5cfoBttfyaJ1sorSms6H5AELIjQ2Yvu2QfzPmnAit2rod+hdcDZ+O1Hia5Zcz+Q==
   dependencies:
     ansi-escapes "^4.3.2"
     ansi-styles "^4.3.0"
@@ -3551,7 +3551,7 @@ eslint-config-salesforce-license@^0.2.0:
   resolved "https://registry.yarnpkg.com/eslint-config-salesforce-license/-/eslint-config-salesforce-license-0.2.0.tgz#323193f1aa15dd33fbf108d25fc1210afc11065e"
   integrity sha512-DJdBvgj82Erum82YMe+YvG/o6ukna3UA++lRl0HSTldj0VlBl3Q8hzCp97nRXZHra6JH1I912yievZzklXDw6w==
 
-eslint-config-salesforce-typescript@^2.0.0, eslint-config-salesforce-typescript@^2.0.0-dev.1:
+eslint-config-salesforce-typescript@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/eslint-config-salesforce-typescript/-/eslint-config-salesforce-typescript-2.0.0.tgz#df6cd54c7d5254158e0c175a8a3526d3f9510b56"
   integrity sha512-1gq4ChEamP3VaDXoMJdEUX92fOdNMjX9/xOfByOO5AsQJnakRE/P4LWQrw5QqQQGWU8YnnM/OADFI9otD002aQ==
