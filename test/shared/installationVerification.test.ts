@@ -5,13 +5,13 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { Readable } from 'node:stream';
-import * as fs from 'node:fs';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 import { assert, expect } from 'chai';
 import got from 'got';
 import { OptionsOfTextResponseBody } from 'got';
-import * as shelljs from 'shelljs';
+import shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
 import { Prompter } from '@salesforce/sf-plugins-core';
@@ -155,6 +155,8 @@ describe('InstallationVerification Tests', () => {
         },
       },
     ]);
+    stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
+
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
     shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
     plugin = NpmName.parse('foo');

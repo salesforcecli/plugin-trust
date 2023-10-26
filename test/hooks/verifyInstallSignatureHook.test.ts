@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { expect, config } from 'chai';
-import * as sinon from 'sinon';
+import sinon from 'sinon';
 
 import { stubMethod } from '@salesforce/ts-sinon';
 

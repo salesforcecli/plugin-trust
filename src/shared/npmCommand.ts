@@ -6,11 +6,12 @@
  */
 
 import { type as osType } from 'node:os';
-import * as path from 'node:path';
+import path from 'node:path';
+import { createRequire } from 'node:module';
 
-import * as fs from 'node:fs';
+import fs from 'node:fs';
 import npmRunPath from 'npm-run-path';
-import * as shelljs from 'shelljs';
+import shelljs from 'shelljs';
 import { SfError } from '@salesforce/core';
 import { sleep, parseJson } from '@salesforce/kit';
 import { Ux } from '@salesforce/sf-plugins-core';
@@ -56,8 +57,6 @@ type NpmPackage = {
 };
 
 class NpmCommand {
-  private static npmPkgPath = require.resolve('npm/package.json');
-
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const nodeExecutable = NpmCommand.findNode(options.cliRoot);
     const npmCli = NpmCommand.npmCli();
@@ -75,17 +74,14 @@ class NpmCommand {
     return npmCmdResult;
   }
 
-  private static npmPackagePath(): string {
-    return this.npmPkgPath;
-  }
-
   /**
    * Returns the path to the npm-cli.js file in this package's node_modules
    *
    * @private
    */
   private static npmCli(): string {
-    const pkgPath = NpmCommand.npmPackagePath();
+    const require = createRequire(import.meta.url);
+    const pkgPath = require.resolve('npm/package.json');
 
     const fileData = fs.readFileSync(pkgPath, 'utf8');
     const pkgJson = parseJson(fileData, pkgPath) as NpmPackage;
@@ -109,7 +105,7 @@ class NpmCommand {
 
       try {
         if (filepath.endsWith('node')) {
-          // This checks if the filepath is executable on Mac or Linux, if it is not it errors.
+          // This  checks if the filepath is executable on Mac or Linux, if it is not it errors.
           fs.accessSync(filepath, fs.constants.X_OK);
           return true;
         }
@@ -122,7 +118,7 @@ class NpmCommand {
     if (root) {
       const sfdxBinDirs = NpmCommand.findSfdxBinDirs(root);
       if (sfdxBinDirs.length > 0) {
-        // Find the node executable
+        // Find  the node executable
         const node = shelljs.find(sfdxBinDirs).filter((file) => isExecutable(file))[0];
         if (node) {
           return fs.realpathSync(node);
@@ -167,8 +163,8 @@ export class NpmModule {
       cliRoot: this.cliRoot,
     });
 
-    // `npm show` doesn't return exit code 1 when it fails to get a specific package version
-    // If `stdout` is empty then no info was found in the registry.
+    // `npm  show` doesn't return exit code 1 when it fails to get a specific package version
+    // If `s tdout` is empty then no info was found in the registry.
     if (showCmd.stdout === '') {
       throw setErrorName(
         new SfError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError'),

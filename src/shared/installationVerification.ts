@@ -5,11 +5,11 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as path from 'node:path';
+import path from 'node:path';
 import { Readable } from 'node:stream';
 import { URL } from 'node:url';
-import * as crypto from 'node:crypto';
-import * as fs from 'node:fs';
+import crypto from 'node:crypto';
+import fs from 'node:fs';
 import { mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';

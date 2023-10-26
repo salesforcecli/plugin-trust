@@ -6,16 +6,19 @@
  */
 
 import { fail } from 'node:assert';
-import * as os from 'node:os';
-import * as fs from 'node:fs';
+import os from 'node:os';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
-import { expect, assert } from 'chai';
-import * as Sinon from 'sinon';
-import * as shelljs from 'shelljs';
+import { expect, use as chaiUse, assert } from 'chai';
+import Sinon from 'sinon';
+import shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
+import SinonChai from 'sinon-chai';
 import { NpmModule } from '../../src/shared/npmCommand.js';
+
+chaiUse(SinonChai);
 
 const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 const MODULE_NAME = '@salesforce/plugin-source';
@@ -64,6 +67,8 @@ describe('should run npm commands', () => {
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
+    stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
+
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
     shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
     shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
@@ -143,6 +148,7 @@ describe('should find the node executable', () => {
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
+    stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
     shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
       expect(cmd).to.be.a('string').and.not.to.be.empty;
       if (cmd.includes('show')) {
