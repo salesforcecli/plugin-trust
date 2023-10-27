@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { type as osType } from 'node:os';
+import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 
@@ -101,7 +101,7 @@ class NpmCommand {
    */
   private static findNode(root?: string): string {
     const isExecutable = (filepath: string): boolean => {
-      if (osType() === 'Windows_NT') return filepath.endsWith('node.exe');
+      if (os.type() === 'Windows_NT') return filepath.endsWith('node.exe');
 
       try {
         if (filepath.endsWith('node')) {
