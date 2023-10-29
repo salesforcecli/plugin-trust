@@ -5,9 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as path from 'path';
-import * as fs from 'fs';
-import * as os from 'os';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
+import * as os from 'node:os';
 import { expect, config } from 'chai';
 import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
