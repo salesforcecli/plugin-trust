@@ -4,8 +4,8 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { Readable } from 'stream';
-import * as fs from 'fs';
+import { Readable } from 'node:stream';
+import * as fs from 'node:fs';
 import { assert, expect } from 'chai';
 import got from 'got';
 import { OptionsOfTextResponseBody } from 'got';
