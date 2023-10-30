@@ -105,7 +105,7 @@ class NpmCommand {
 
       try {
         if (filepath.endsWith('node')) {
-          // This  checks if the filepath is executable on Mac or Linux, if it is not it errors.
+          // This checks if the filepath is executable on Mac or Linux, if it is not it errors.
           fs.accessSync(filepath, fs.constants.X_OK);
           return true;
         }
@@ -118,7 +118,7 @@ class NpmCommand {
     if (root) {
       const sfdxBinDirs = NpmCommand.findSfdxBinDirs(root);
       if (sfdxBinDirs.length > 0) {
-        // Find  the node executable
+        // Find the node executable
         const node = shelljs.find(sfdxBinDirs).filter((file) => isExecutable(file))[0];
         if (node) {
           return fs.realpathSync(node);
@@ -163,8 +163,8 @@ export class NpmModule {
       cliRoot: this.cliRoot,
     });
 
-    // `npm  show` doesn't return exit code 1 when it fails to get a specific package version
-    // If `s tdout` is empty then no info was found in the registry.
+    // `npm show` doesn't return exit code 1 when it fails to get a specific package version
+    // If `stdout` is empty then no info was found in the registry.
     if (showCmd.stdout === '') {
       throw setErrorName(
         new SfError(`Failed to find ${this.module}@${this.version} in the registry`, 'NpmError'),

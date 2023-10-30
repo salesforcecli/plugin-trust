@@ -205,7 +205,12 @@ describe('should find the node executable', () => {
     expect(accessSyncStub).to.have.been.calledOnce;
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(osTypeStub).to.have.been.calledOnce;
-    // expect(realpathSyncStub).to.have.been.calledOnce;
+    expect(realpathSyncStub).to.have.been.calledTwice;
+    // when switching to ESM, realpathSyncStub started to be called twice
+    // realpathSync('C:\\Program Files\\sfdx\\client\\bin\\node.exe')
+    // realpathSync('/Users/william.ruemmele/projects/oss/plugin-trust/node_modules/npm/package.json'
+    // when placing a breakpoint at NpmCommand~124 - the only realPathSync method usage, it was only hit once while debugging this UT
+    expect(realpathSyncStub.firstCall.args[0]).to.include(NODE_NAME);
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsFindStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
@@ -224,7 +229,12 @@ describe('should find the node executable', () => {
     expect(accessSyncStub).to.not.have.been.called;
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(osTypeStub).to.have.been.calledOnce;
-    // expect(realpathSyncStub).to.have.been.calledOnce;
+    expect(realpathSyncStub).to.have.been.calledTwice;
+    // when switching to ESM, realpathSyncStub started to be called twice
+    // realpathSync('C:\\Program Files\\sfdx\\client\\bin\\node.exe')
+    // realpathSync('/Users/william.ruemmele/projects/oss/plugin-trust/node_modules/npm/package.json'
+    // when placing a breakpoint at NpmCommand~124 - the only realPathSync method usage, it was only hit once while debugging this UT
+    expect(realpathSyncStub.firstCall.args[0]).to.include(NODE_NAME);
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsFindStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
