@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { SfError } from '@salesforce/core';
-import { setErrorName } from './errors';
+import { setErrorName } from './errors.js';
 
 interface NpmNameInfo {
   scope: string;

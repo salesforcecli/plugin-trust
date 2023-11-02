@@ -5,16 +5,17 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { type as osType } from 'node:os';
-import * as path from 'node:path';
+import os from 'node:os';
+import path from 'node:path';
+import { createRequire } from 'node:module';
 
-import * as fs from 'node:fs';
+import fs from 'node:fs';
 import npmRunPath from 'npm-run-path';
-import * as shelljs from 'shelljs';
+import shelljs from 'shelljs';
 import { SfError } from '@salesforce/core';
 import { sleep, parseJson } from '@salesforce/kit';
 import { Ux } from '@salesforce/sf-plugins-core';
-import { setErrorName } from './errors';
+import { setErrorName } from './errors.js';
 
 export type NpmMeta = {
   tarballUrl?: string;
@@ -56,8 +57,6 @@ type NpmPackage = {
 };
 
 class NpmCommand {
-  private static npmPkgPath = require.resolve('npm/package.json');
-
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const nodeExecutable = NpmCommand.findNode(options.cliRoot);
     const npmCli = NpmCommand.npmCli();
@@ -75,17 +74,14 @@ class NpmCommand {
     return npmCmdResult;
   }
 
-  private static npmPackagePath(): string {
-    return this.npmPkgPath;
-  }
-
   /**
    * Returns the path to the npm-cli.js file in this package's node_modules
    *
    * @private
    */
   private static npmCli(): string {
-    const pkgPath = NpmCommand.npmPackagePath();
+    const require = createRequire(import.meta.url);
+    const pkgPath = require.resolve('npm/package.json');
 
     const fileData = fs.readFileSync(pkgPath, 'utf8');
     const pkgJson = parseJson(fileData, pkgPath) as NpmPackage;
@@ -105,7 +101,7 @@ class NpmCommand {
    */
   private static findNode(root?: string): string {
     const isExecutable = (filepath: string): boolean => {
-      if (osType() === 'Windows_NT') return filepath.endsWith('node.exe');
+      if (os.type() === 'Windows_NT') return filepath.endsWith('node.exe');
 
       try {
         if (filepath.endsWith('node')) {

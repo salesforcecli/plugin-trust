@@ -6,15 +6,17 @@
  */
 
 import { fail } from 'node:assert';
-import * as os from 'node:os';
-import * as fs from 'node:fs';
+import os from 'node:os';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import { expect, use as chaiUse, assert } from 'chai';
-import * as Sinon from 'sinon';
-import * as SinonChai from 'sinon-chai';
-import * as shelljs from 'shelljs';
+import Sinon from 'sinon';
+import shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
-import { NpmModule } from '../../src/shared/npmCommand';
+import SinonChai from 'sinon-chai';
+import { NpmModule } from '../../src/shared/npmCommand.js';
 
 chaiUse(SinonChai);
 
@@ -58,13 +60,15 @@ const NODE_NAME = 'node';
 const NODE_PATH = `/usr/local/sfdx/bin/${NODE_NAME}`;
 
 describe('should run npm commands', () => {
-  let sandbox: sinon.SinonSandbox;
+  let sandbox: Sinon.SinonSandbox;
   let realpathSyncStub: Sinon.SinonStub;
   let shelljsExecStub: Sinon.SinonStub;
   let shelljsFindStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
+    stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
+
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
     shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
     shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
@@ -103,7 +107,9 @@ describe('should run npm commands', () => {
   });
 
   it('Runs the show command', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
@@ -111,7 +117,9 @@ describe('should run npm commands', () => {
   });
 
   it('Runs the show command with specified version', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
@@ -119,7 +127,9 @@ describe('should run npm commands', () => {
   });
 
   it('Runs the pack command', () => {
-    new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+    new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).pack(DEFAULT_REGISTRY, {
+      cwd: CACHE_PATH,
+    });
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
     expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
@@ -127,7 +137,7 @@ describe('should run npm commands', () => {
 });
 
 describe('should find the node executable', () => {
-  let sandbox: sinon.SinonSandbox;
+  let sandbox: Sinon.SinonSandbox;
   let shelljsExecStub: Sinon.SinonStub;
   let shelljsFindStub: Sinon.SinonStub;
   let shelljsWhichStub: Sinon.SinonStub;
@@ -138,6 +148,7 @@ describe('should find the node executable', () => {
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
+    stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
     shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
       expect(cmd).to.be.a('string').and.not.to.be.empty;
       if (cmd.includes('show')) {
@@ -188,11 +199,18 @@ describe('should find the node executable', () => {
   });
 
   it('finds node binary inside sfdx bin folder and runs npm show command', () => {
-    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(accessSyncStub).to.have.been.calledOnce;
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(osTypeStub).to.have.been.calledOnce;
-    expect(realpathSyncStub).to.have.been.calledOnce;
+    expect(realpathSyncStub).to.have.been.calledTwice;
+    // when switching to ESM, realpathSyncStub started to be called twice
+    // realpathSync('C:\\Program Files\\sfdx\\client\\bin\\node.exe')
+    // realpathSync('/Users/william.ruemmele/projects/oss/plugin-trust/node_modules/npm/package.json'
+    // when placing a breakpoint at NpmCommand~124 - the only realPathSync method usage, it was only hit once while debugging this UT
+    expect(realpathSyncStub.firstCall.args[0]).to.include(NODE_NAME);
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsFindStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
@@ -205,11 +223,18 @@ describe('should find the node executable', () => {
     shelljsFindStub.returns(['C:\\Program Files\\sfdx\\client\\bin\\node.exe']);
     osTypeStub.returns('Windows_NT');
 
-    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(accessSyncStub).to.not.have.been.called;
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(osTypeStub).to.have.been.calledOnce;
-    expect(realpathSyncStub).to.have.been.calledOnce;
+    expect(realpathSyncStub).to.have.been.calledTwice;
+    // when switching to ESM, realpathSyncStub started to be called twice
+    // realpathSync('C:\\Program Files\\sfdx\\client\\bin\\node.exe')
+    // realpathSync('/Users/william.ruemmele/projects/oss/plugin-trust/node_modules/npm/package.json'
+    // when placing a breakpoint at NpmCommand~124 - the only realPathSync method usage, it was only hit once while debugging this UT
+    expect(realpathSyncStub.firstCall.args[0]).to.include(NODE_NAME);
     expect(shelljsExecStub).to.have.been.calledOnce;
     expect(shelljsFindStub).to.have.been.calledOnce;
     expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
@@ -219,6 +244,7 @@ describe('should find the node executable', () => {
   });
 
   it('fails to find node binary inside sfdx bin folder and falls back to global node and runs npm show command', () => {
+    realpathSyncStub.restore();
     existsSyncStub.restore();
     existsSyncStub = stubMethod(sandbox, fs, 'existsSync').callsFake((filePath: string) => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
@@ -231,7 +257,9 @@ describe('should find the node executable', () => {
         code: 0,
       } as shelljs.ShellString;
     });
-    const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+    const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+      DEFAULT_REGISTRY
+    );
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(shelljsFindStub).to.not.have.been.called;
     expect(realpathSyncStub).to.not.have.been.called;
@@ -255,7 +283,9 @@ describe('should find the node executable', () => {
       return null;
     });
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+        DEFAULT_REGISTRY
+      );
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -267,7 +297,7 @@ describe('should find the node executable', () => {
 });
 
 describe('should run npm commands with execution errors', () => {
-  let sandbox: sinon.SinonSandbox;
+  let sandbox: Sinon.SinonSandbox;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
@@ -307,7 +337,9 @@ describe('should run npm commands with execution errors', () => {
 
   it('show command throws error', () => {
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME, undefined, __dirname).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
+        DEFAULT_REGISTRY
+      );
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -318,7 +350,9 @@ describe('should run npm commands with execution errors', () => {
 
   it('Runs the pack command', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY, { cwd: CACHE_PATH });
+      new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).pack(DEFAULT_REGISTRY, {
+        cwd: CACHE_PATH,
+      });
       fail('Error');
     } catch (error) {
       assert(error instanceof SfError);
@@ -328,7 +362,7 @@ describe('should run npm commands with execution errors', () => {
 });
 
 describe('should run npm commands with parse errors', () => {
-  let sandbox: sinon.SinonSandbox;
+  let sandbox: Sinon.SinonSandbox;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
@@ -366,7 +400,9 @@ describe('should run npm commands with parse errors', () => {
 
   it('show command throws error', () => {
     try {
-      const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+      const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).show(
+        DEFAULT_REGISTRY
+      );
       expect(npmMetadata).to.be.undefined;
       fail('Error');
     } catch (error) {
@@ -377,7 +413,7 @@ describe('should run npm commands with parse errors', () => {
 });
 
 describe('should run npm commands with npm errors', () => {
-  let sandbox: sinon.SinonSandbox;
+  let sandbox: Sinon.SinonSandbox;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
@@ -405,7 +441,7 @@ describe('should run npm commands with npm errors', () => {
 
   it('show command throws error', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).show(DEFAULT_REGISTRY);
+      new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).show(DEFAULT_REGISTRY);
     } catch (error) {
       assert(error instanceof SfError);
       expect(error.code).to.equal('NpmError');
@@ -415,7 +451,7 @@ describe('should run npm commands with npm errors', () => {
 
   it('pack command throws error', () => {
     try {
-      new NpmModule(MODULE_NAME, MODULE_VERSION, __dirname).pack(DEFAULT_REGISTRY);
+      new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).pack(DEFAULT_REGISTRY);
     } catch (error) {
       assert(error instanceof SfError);
       expect(error.code).to.equal('NpmError');

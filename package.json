@@ -3,68 +3,46 @@
   "description": "validate a digital signature for a npm package",
   "version": "2.6.22",
   "author": "Salesforce",
-  "main": "lib/index.js",
   "bin": {
     "sf-trust": "bin/dev"
   },
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
-    "@oclif/core": "^2.15.0",
-    "@salesforce/core": "^5.3.10",
-    "@salesforce/sf-plugins-core": "^3.1.23",
-    "got": "^11",
+    "@oclif/core": "^3.9.0",
+    "@salesforce/core": "^5.3.16",
+    "@salesforce/sf-plugins-core": "^4.0.0",
+    "got": "^13.0.0",
     "npm": "9.8.1",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^6.3.1",
-    "shelljs": "^0.8.4",
-    "tslib": "^2"
+    "shelljs": "^0.8.4"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^4.0.14",
-    "@salesforce/cli-plugins-testkit": "^4.4.10",
-    "@salesforce/dev-config": "^4.0.1",
-    "@salesforce/dev-scripts": "^5.12.2",
+    "@oclif/plugin-command-snapshot": "^5.0.1",
+    "@salesforce/cli-plugins-testkit": "^5.0.0-dev.1",
+    "@salesforce/dev-scripts": "^6.0.3",
     "@salesforce/plugin-command-reference": "^3.0.43",
     "@salesforce/plugin-telemetry": "^2.3.8",
-    "@salesforce/prettier-config": "^0.0.3",
     "@salesforce/ts-sinon": "^1.4.18",
-    "@swc/core": "1.3.39",
     "@types/shelljs": "^0.8.9",
     "@types/sinon-chai": "^3.2.11",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.61.0",
-    "chai": "^4.3.10",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-config-salesforce": "^2.0.2",
-    "eslint-config-salesforce-license": "^0.2.0",
-    "eslint-config-salesforce-typescript": "^2.0.0",
-    "eslint-plugin-header": "^3.1.1",
-    "eslint-plugin-import": "2.29.0",
-    "eslint-plugin-jsdoc": "^46.8.2",
-    "eslint-plugin-sf-plugin": "^1.16.9",
-    "husky": "^7.0.4",
-    "mocha": "^9.1.3",
-    "nyc": "^15.1.0",
-    "oclif": "^3.17.2",
-    "prettier": "^2.8.8",
-    "pretty-quick": "^3.1.0",
+    "eslint-plugin-sf-plugin": "^1.16.13",
+    "oclif": "^4.0.3",
     "shx": "0.3.4",
-    "sinon": "10.0.0",
     "sinon-chai": "^3.7.0",
-    "ts-node": "^10.0.0",
-    "typescript": "^5.2.2",
-    "wireit": "^0.14.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   },
   "config": {},
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
     "bin",
     "/lib",
     "/messages",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/oclif.lock"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-trust",
   "keywords": [
@@ -72,7 +50,9 @@
     "salesforce",
     "sfdx",
     "salesforcedx",
-    "sfdx-plugin"
+    "sfdx-plugin",
+    "sf",
+    "sf-plugin"
   ],
   "license": "BSD-3-Clause",
   "oclif": {
@@ -97,19 +77,21 @@
           }
         }
       }
-    }
+    },
+    "flexibleTaxonomy": true,
+    "topicSeparator": " "
   },
   "repository": "salesforcecli/plugin-trust",
   "scripts": {
     "build": "wireit",
     "clean": "sf-clean",
     "clean-all": "sf-clean all",
-    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json",
+    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json oclif.lock",
     "compile": "wireit",
     "docs": "sf-docs",
     "format": "wireit",
     "lint": "wireit",
-    "postpack": "shx rm -f oclif.manifest.json",
+    "postpack": "shx rm -f oclif.manifest.json oclif.lock",
     "prepack": "sf-prepack",
     "prepare": "sf-install",
     "test": "wireit",
@@ -196,7 +178,7 @@
       "output": []
     },
     "test:command-reference": {
-      "command": "\"./bin/dev\" commandreference:generate --erroronwarnings",
+      "command": "ts-node \"./bin/dev.js\" commandreference:generate --erroronwarnings",
       "files": [
         "src/**/*.ts",
         "messages/**",
@@ -207,7 +189,7 @@
       ]
     },
     "test:deprecation-policy": {
-      "command": "\"./bin/dev\" snapshot:compare",
+      "command": "ts-node \"./bin/dev.js\" snapshot:compare",
       "files": [
         "src/**/*.ts"
       ],
@@ -217,12 +199,14 @@
       ]
     },
     "test:json-schema": {
-      "command": "\"./bin/dev\" schema:compare",
+      "command": "ts-node \"./bin/dev.js\" schema:compare",
       "files": [
         "src/**/*.ts",
         "schemas"
       ],
       "output": []
     }
-  }
+  },
+  "exports": "./lib/index.js",
+  "type": "module"
 }

@@ -5,13 +5,13 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { expect, config } from 'chai';
-import * as sinon from 'sinon';
+import sinon from 'sinon';
 
 import { stubMethod } from '@salesforce/ts-sinon';
 
 import { Prompter } from '@salesforce/sf-plugins-core';
-import { InstallationVerification, VerificationConfig } from '../../src/shared/installationVerification';
-import { hook } from '../../src/hooks/verifyInstallSignature';
+import { InstallationVerification, VerificationConfig } from '../../src/shared/installationVerification.js';
+import { hook } from '../../src/hooks/verifyInstallSignature.js';
 
 config.truncateThreshold = 0;
 

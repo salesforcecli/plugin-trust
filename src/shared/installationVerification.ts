@@ -5,25 +5,26 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as path from 'node:path';
+import path from 'node:path';
 import { Readable } from 'node:stream';
 import { URL } from 'node:url';
-import * as crypto from 'node:crypto';
-import * as fs from 'node:fs';
+import crypto from 'node:crypto';
+import fs from 'node:fs';
 import { mkdir } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import { Logger, SfError, Messages } from '@salesforce/core';
 import got from 'got';
 import { ProxyAgent } from 'proxy-agent';
 import { Prompter } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
-import { NpmModule, NpmMeta } from '../shared/npmCommand';
-import { NpmName } from './NpmName';
-import { setErrorName } from './errors';
-
+import { NpmModule, NpmMeta } from './npmCommand.js';
+import { NpmName } from './NpmName.js';
+import { setErrorName } from './errors.js';
 const CRYPTO_LEVEL = 'RSA-SHA256';
 const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 
 export interface ConfigContext {
   configDir?: string;

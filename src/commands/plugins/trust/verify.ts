@@ -5,13 +5,19 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import { SfCommand, Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { Messages, SfError, Logger } from '@salesforce/core';
-import { ConfigContext, InstallationVerification, VerificationConfig } from '../../../shared/installationVerification';
-import { NpmName } from '../../../shared/NpmName';
-import { setErrorName } from '../../../shared/errors';
+import {
+  ConfigContext,
+  InstallationVerification,
+  VerificationConfig,
+} from '../../../shared/installationVerification.js';
+import { NpmName } from '../../../shared/NpmName.js';
+import { setErrorName } from '../../../shared/errors.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
 
 export interface VerifyResponse {
