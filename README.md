@@ -91,15 +91,15 @@ sfdx plugins
 
 <!-- commands -->
 
-- [`@salesforce/plugin-trust plugins:trust:verify`](#salesforceplugin-trust-pluginstrustverify)
+- [`@salesforce/plugin-trust plugins trust verify`](#salesforceplugin-trust-plugins-trust-verify)
 
-## `@salesforce/plugin-trust plugins:trust:verify`
+## `@salesforce/plugin-trust plugins trust verify`
 
 Validate a digital signature.
 
 ```
 USAGE
-  $ @salesforce/plugin-trust plugins:trust:verify -n <value> [--json] [-r <value>]
+  $ @salesforce/plugin-trust plugins trust verify -n <value> [--json] [-r <value>]
 
 FLAGS
   -n, --npm=<value>       (required) Specify the npm name. This can include a tag/version.
@@ -114,11 +114,11 @@ DESCRIPTION
   Verifies the digital signature on an npm package matches the signature and key stored at the expected URLs.
 
 EXAMPLES
-  $ @salesforce/plugin-trust plugins:trust:verify --npm @scope/npmName --registry http://my.repo.org:4874
+  $ @salesforce/plugin-trust plugins trust verify --npm @scope/npmName --registry http://my.repo.org:4874
 
-  $ @salesforce/plugin-trust plugins:trust:verify --npm @scope/npmName
+  $ @salesforce/plugin-trust plugins trust verify --npm @scope/npmName
 ```
 
-_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/2.6.22/src/commands/plugins/trust/verify.ts)_
+_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/2.6.23/src/commands/plugins/trust/verify.ts)_
 
 <!-- commandsstop -->
