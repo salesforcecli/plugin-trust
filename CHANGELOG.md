@@ -1,3 +1,9 @@
+## [3.0.1](https://github.com/salesforcecli/plugin-trust/compare/2.6.23...3.0.1) (2023-11-06)
+
+### Bug Fixes
+
+- 3.0.0 release ([5efff3a](https://github.com/salesforcecli/plugin-trust/commit/5efff3a6a10fe4780f92f4c84eb8c9e421dcb3b1))
+
 ## [2.6.23](https://github.com/salesforcecli/plugin-trust/compare/2.6.22...2.6.23) (2023-11-05)
 
 ### Bug Fixes
