@@ -21,7 +21,12 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
       command: opts.command.id,
     });
 
-    await opts.config.runCommand('plugins:install', [`${opts.command.pluginName}@${opts.pluginVersion}`]);
+    const jitInstallArgv = [`${opts.command.pluginName}@${opts.pluginVersion}`];
+    if (opts.argv.includes('--json')) {
+      // pass along --json arg to plugins:install
+      jitInstallArgv.push('--json');
+    }
+    await opts.config.runCommand('plugins:install', jitInstallArgv);
 
     global.cliTelemetry?.record({
       eventName: 'JIT_INSTALL_SUCCESS',
