@@ -24,7 +24,7 @@
     "@salesforce/plugin-command-reference": "^3.0.43",
     "@salesforce/plugin-telemetry": "^2.3.8",
     "@salesforce/ts-sinon": "^1.4.18",
-    "@types/shelljs": "^0.8.9",
+    "@types/shelljs": "^0.8.15",
     "@types/sinon-chai": "^3.2.11",
     "eslint-plugin-sf-plugin": "^1.16.13",
     "oclif": "^4.0.3",
