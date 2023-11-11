@@ -1,3 +1,9 @@
+## [3.0.2](https://github.com/salesforcecli/plugin-trust/compare/3.0.1...3.0.2) (2023-11-11)
+
+### Bug Fixes
+
+- pass json flag to plugins install ([#643](https://github.com/salesforcecli/plugin-trust/issues/643)) ([c8157ec](https://github.com/salesforcecli/plugin-trust/commit/c8157ecf29d24f93b6997696d32542fa13d92ce9))
+
 ## [3.0.1](https://github.com/salesforcecli/plugin-trust/compare/2.6.23...3.0.1) (2023-11-06)
 
 ### Bug Fixes
