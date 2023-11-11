@@ -26,7 +26,7 @@
     "@salesforce/ts-sinon": "^1.4.18",
     "@types/shelljs": "^0.8.15",
     "@types/sinon-chai": "^3.2.11",
-    "eslint-plugin-sf-plugin": "^1.16.13",
+    "eslint-plugin-sf-plugin": "^1.16.14",
     "oclif": "^4.0.3",
     "shx": "0.3.4",
     "sinon-chai": "^3.7.0",
