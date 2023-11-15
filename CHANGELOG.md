@@ -1,3 +1,9 @@
+## [3.0.4](https://github.com/salesforcecli/plugin-trust/compare/3.0.3...3.0.4) (2023-11-15)
+
+### Bug Fixes
+
+- **deps:** updates from devScripts and core v6 ([22fa38a](https://github.com/salesforcecli/plugin-trust/commit/22fa38a7fe0d794dbad25dd44ac71413b1d29c49))
+
 ## [3.0.3](https://github.com/salesforcecli/plugin-trust/compare/3.0.2...3.0.3) (2023-11-12)
 
 ### Bug Fixes
