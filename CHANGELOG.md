@@ -1,3 +1,9 @@
+## [3.0.5](https://github.com/salesforcecli/plugin-trust/compare/3.0.4...3.0.5) (2023-11-25)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 3.11.0 to 3.12.0 ([547e96c](https://github.com/salesforcecli/plugin-trust/commit/547e96c5f7f7eb9747f4f0ee33c56f31ae437684))
+
 ## [3.0.4](https://github.com/salesforcecli/plugin-trust/compare/3.0.3...3.0.4) (2023-11-15)
 
 ### Bug Fixes
