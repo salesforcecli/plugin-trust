@@ -1,3 +1,9 @@
+# [3.1.0](https://github.com/salesforcecli/plugin-trust/compare/3.0.7...3.1.0) (2023-12-01)
+
+### Features
+
+- allow any 403 response to continue verification ([#662](https://github.com/salesforcecli/plugin-trust/issues/662)) ([84fff9e](https://github.com/salesforcecli/plugin-trust/commit/84fff9e4f4756cd6ac59c818a90189d050175860))
+
 ## [3.0.7](https://github.com/salesforcecli/plugin-trust/compare/3.0.6...3.0.7) (2023-11-29)
 
 ### Bug Fixes
