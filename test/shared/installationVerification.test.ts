@@ -685,5 +685,55 @@ describe('InstallationVerification Tests', () => {
         throw err;
       }
     });
+
+    it('continues installation when error message is response code 403 (forbidden)', async () => {
+      const vConfig = new VerificationConfig();
+      vConfig.verifier = {
+        async verify() {
+          const err = new Error();
+          err.message = 'Response code 403 (Forbidden)';
+          throw err;
+        },
+        async isAllowListed() {
+          return false;
+        },
+      } as Verifier;
+
+      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(true);
+
+      try {
+        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+      } catch (e) {
+        assert(e instanceof Error);
+        const err = new Error("this test shouldn't fail.");
+        err.stack = e.stack;
+        throw err;
+      }
+    });
+
+    it('continues installation when error message contains response code 403', async () => {
+      const vConfig = new VerificationConfig();
+      vConfig.verifier = {
+        async verify() {
+          const err = new Error();
+          err.message = 'Response code 403 (OtherReason)';
+          throw err;
+        },
+        async isAllowListed() {
+          return false;
+        },
+      } as Verifier;
+
+      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(true);
+
+      try {
+        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+      } catch (e) {
+        assert(e instanceof Error);
+        const err = new Error("this test shouldn't fail.");
+        err.stack = e.stack;
+        throw err;
+      }
+    });
   });
 });

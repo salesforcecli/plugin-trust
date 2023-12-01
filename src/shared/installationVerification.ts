@@ -469,7 +469,7 @@ export async function doInstallationCodeSigningVerification(
     verificationConfig.log(`Successfully validated digital signature for ${plugin.plugin}.`);
   } catch (err) {
     if (err instanceof Error) {
-      if (err.name === 'NotSigned' || err.message === 'Response code 403 (Forbidden)') {
+      if (err.name === 'NotSigned' || err.message?.includes('Response code 403')) {
         if (!verificationConfig.verifier) {
           throw new Error('VerificationConfig.verifier is not set.');
         }
