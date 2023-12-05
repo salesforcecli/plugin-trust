@@ -424,15 +424,7 @@ export class InstallationVerification implements Verifier {
 }
 
 export class VerificationConfig {
-  private verifierMember?: Verifier | undefined;
-
-  public get verifier(): Verifier | undefined {
-    return this.verifierMember;
-  }
-
-  public set verifier(value: Verifier | undefined) {
-    this.verifierMember = value;
-  }
+  public verifier?: Verifier;
 
   // eslint-disable-next-line class-methods-use-this
   public log(message: string): void {
@@ -454,6 +446,10 @@ export async function doInstallationCodeSigningVerification(
   plugin: { plugin: string; tag: string },
   verificationConfig: VerificationConfig
 ): Promise<void> {
+  if (await verificationConfig.verifier?.isAllowListed()) {
+    verificationConfig.log(`The plugin [${plugin.plugin}] is allow-listed, skipping digital signature verification.`);
+    return;
+  }
   try {
     if (!verificationConfig.verifier) {
       throw new Error('VerificationConfig.verifier is not set.');
@@ -473,12 +469,7 @@ export async function doInstallationCodeSigningVerification(
         if (!verificationConfig.verifier) {
           throw new Error('VerificationConfig.verifier is not set.');
         }
-        if (await verificationConfig.verifier.isAllowListed()) {
-          verificationConfig.log(`The plugin [${plugin.plugin}] is not digitally signed but it is allow-listed.`);
-          return;
-        } else {
-          return await doPrompt();
-        }
+        return await doPrompt();
       } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
         throw setErrorName(new SfError(err.message ?? 'The user canceled the plugin installation.'), '');
       }

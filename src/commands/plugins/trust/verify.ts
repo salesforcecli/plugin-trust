@@ -71,6 +71,14 @@ export class Verify extends SfCommand<VerifyResponse> {
 
     vConfig.verifier = Verify.getVerifier(npmName, configContext);
 
+    if (await vConfig.verifier.isAllowListed()) {
+      const message = `Skipping digital signature verification because [${npmName.name}] is allow-listed.`;
+      this.log(message);
+      return {
+        message,
+        verified: false,
+      };
+    }
     if (flags.registry) {
       process.env.SF_NPM_REGISTRY = flags.registry;
       process.env.SFDX_NPM_REGISTRY = flags.registry;
@@ -85,33 +93,22 @@ export class Verify extends SfCommand<VerifyResponse> {
         throw setErrorName(e, 'FailedDigitalSignatureVerification');
       }
       const message = `Successfully validated digital signature for ${npmName.name}.`;
+      this.logSuccess(message);
 
-      if (!flags.json) {
-        vConfig.log(message);
-      }
       return { message, verified: true };
     } catch (error) {
       if (!(error instanceof Error)) {
         throw error;
       }
       logger.debug(`err reported: ${JSON.stringify(error, null, 4)}`);
-      const response: VerifyResponse = {
-        verified: false,
-        message: error.message,
-      };
 
       if (error.name === 'NotSigned') {
-        let message: string = error.message;
-        if (await vConfig.verifier.isAllowListed()) {
-          message = `The plugin [${npmName.name}] is not digitally signed but it is allow-listed.`;
-          vConfig.log(message);
-          response.message = message;
-        } else {
-          message = 'The plugin is not digitally signed.';
-          vConfig.log(message);
-          response.message = message;
-        }
-        return response;
+        const message = 'The plugin is not digitally signed.';
+        this.log(message);
+        return {
+          verified: false,
+          message,
+        };
       }
       throw SfError.wrap(error);
     }

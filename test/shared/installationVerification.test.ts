@@ -582,6 +582,9 @@ describe('InstallationVerification Tests', () => {
       let message = '';
       const vConfig = new VerificationConfig();
       vConfig.verifier = {
+        async isAllowListed() {
+          return false;
+        },
         async verify() {
           return {
             verified: true,
@@ -601,6 +604,9 @@ describe('InstallationVerification Tests', () => {
     it('FailedDigitalSignatureVerification', async () => {
       const vConfig = new VerificationConfig();
       vConfig.verifier = {
+        async isAllowListed() {
+          return false;
+        },
         async verify() {
           return {
             verified: false,
