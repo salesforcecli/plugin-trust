@@ -1,3 +1,9 @@
+## [3.1.2](https://github.com/salesforcecli/plugin-trust/compare/3.1.1...3.1.2) (2023-12-05)
+
+### Bug Fixes
+
+- bump npm ([3c50c17](https://github.com/salesforcecli/plugin-trust/commit/3c50c17eb6b628efc449e7eb1dd7f36dff07f412))
+
 ## [3.1.1](https://github.com/salesforcecli/plugin-trust/compare/3.1.0...3.1.1) (2023-12-03)
 
 ### Bug Fixes
