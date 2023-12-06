@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-trust",
   "description": "validate a digital signature for a npm package",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "author": "Salesforce",
   "bin": {
     "sf-trust": "bin/dev"
@@ -12,7 +12,7 @@
     "@salesforce/core": "^6.1.3",
     "@salesforce/sf-plugins-core": "^5.0.4",
     "got": "^13.0.0",
-    "npm": "9.9.1",
+    "npm": "10.2.3",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^6.3.1",
     "shelljs": "^0.8.4"
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^5.0.3",
     "@salesforce/cli-plugins-testkit": "^5.0.6",
-    "@salesforce/dev-scripts": "^7.1.1",
+    "@salesforce/dev-scripts": "^8.0.0",
     "@salesforce/plugin-command-reference": "^3.0.47",
     "@salesforce/plugin-telemetry": "^2.3.8",
     "@salesforce/ts-sinon": "^1.4.18",
