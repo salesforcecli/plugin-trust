@@ -72,7 +72,7 @@ export class Verify extends SfCommand<VerifyResponse> {
     vConfig.verifier = Verify.getVerifier(npmName, configContext);
 
     if (await vConfig.verifier.isAllowListed()) {
-      const message = `Skipping digital signature verification because [${npmName.name}] is allow-listed.`;
+      const message = messages.getMessage('SkipSignatureCheck', [npmName.name]);
       this.log(message);
       return {
         message,
@@ -92,7 +92,7 @@ export class Verify extends SfCommand<VerifyResponse> {
         const e = messages.createError('FailedDigitalSignatureVerification');
         throw setErrorName(e, 'FailedDigitalSignatureVerification');
       }
-      const message = `Successfully validated digital signature for ${npmName.name}.`;
+      const message = messages.getMessage('SignatureCheckSuccess', [npmName.name]);
       this.logSuccess(message);
 
       return { message, verified: true };
@@ -103,7 +103,7 @@ export class Verify extends SfCommand<VerifyResponse> {
       logger.debug(`err reported: ${JSON.stringify(error, null, 4)}`);
 
       if (error.name === 'NotSigned') {
-        const message = 'The plugin is not digitally signed.';
+        const message = messages.getMessage('NotSigned');
         this.log(message);
         return {
           verified: false,
