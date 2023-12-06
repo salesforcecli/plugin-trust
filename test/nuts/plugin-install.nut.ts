@@ -61,7 +61,7 @@ describe('plugins:install commands', () => {
       ensureExitCode: 0,
       cli: 'sf',
     });
-    expect(result.shellOutput.stdout).to.contain(`Successfully validated digital signature for ${SIGNED_MODULE_NAME}`);
+    expect(result.shellOutput.stdout).to.contain(messages.getMessage('SignatureCheckSuccess', [SIGNED_MODULE_NAME]));
   });
 
   it('plugins:install prompts on unsigned plugin (denies)', async () => {
@@ -102,8 +102,6 @@ describe('plugins:install commands', () => {
       ensureExitCode: 0,
       cli: 'sf',
     });
-    expect(result.shellOutput.stdout).to.contain(
-      `The plugin [${UNSIGNED_MODULE_NAME2}] is not digitally signed but it is allow-listed.`
-    );
+    expect(result.shellOutput.stdout).to.contain(messages.getMessage('SkipSignatureCheck', [UNSIGNED_MODULE_NAME2]));
   });
 });
