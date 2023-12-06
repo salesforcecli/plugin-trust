@@ -446,8 +446,10 @@ export async function doInstallationCodeSigningVerification(
   plugin: { plugin: string; tag: string },
   verificationConfig: VerificationConfig
 ): Promise<void> {
+  const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
+
   if (await verificationConfig.verifier?.isAllowListed()) {
-    verificationConfig.log(`The plugin [${plugin.plugin}] is allow-listed, skipping digital signature verification.`);
+    verificationConfig.log(messages.getMessage('SkipSignatureCheck', [plugin.plugin]));
     return;
   }
   try {
@@ -456,13 +458,10 @@ export async function doInstallationCodeSigningVerification(
     }
     const meta = await verificationConfig.verifier.verify();
     if (!meta.verified) {
-      const err = new SfError(
-        "A digital signature is specified for this plugin but it didn't verify against the certificate.",
-        'FailedDigitalSignatureVerification'
-      );
+      const err = messages.createError('FailedDigitalSignatureVerification');
       throw setErrorName(err, 'FailedDigitalSignatureVerification');
     }
-    verificationConfig.log(`Successfully validated digital signature for ${plugin.plugin}.`);
+    verificationConfig.log(messages.getMessage('SignatureCheckSuccess', [plugin.plugin]));
   } catch (err) {
     if (err instanceof Error) {
       if (err.name === 'NotSigned' || err.message?.includes('Response code 403')) {

@@ -22,7 +22,7 @@ The registry name. The behavior is the same as npm.
 
 # NotSigned
 
-The plugin is not digitally signed.
+The plugin isn't digitally signed.
 
 # SignatureCheckSuccess
 
