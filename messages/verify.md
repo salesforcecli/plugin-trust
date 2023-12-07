@@ -20,6 +20,18 @@ Specify the npm name. This can include a tag/version.
 
 The registry name. The behavior is the same as npm.
 
+# NotSigned
+
+The plugin isn't digitally signed.
+
+# SignatureCheckSuccess
+
+Successfully validated digital signature for %s.
+
+# SkipSignatureCheck
+
+Skipping digital signature verification because [%s] is allow-listed.
+
 # FailedDigitalSignatureVerification
 
 A digital signature is specified for this plugin but it didn't verify against the certificate.

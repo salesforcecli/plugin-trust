@@ -424,15 +424,7 @@ export class InstallationVerification implements Verifier {
 }
 
 export class VerificationConfig {
-  private verifierMember?: Verifier | undefined;
-
-  public get verifier(): Verifier | undefined {
-    return this.verifierMember;
-  }
-
-  public set verifier(value: Verifier | undefined) {
-    this.verifierMember = value;
-  }
+  public verifier?: Verifier;
 
   // eslint-disable-next-line class-methods-use-this
   public log(message: string): void {
@@ -454,31 +446,29 @@ export async function doInstallationCodeSigningVerification(
   plugin: { plugin: string; tag: string },
   verificationConfig: VerificationConfig
 ): Promise<void> {
+  const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
+
+  if (await verificationConfig.verifier?.isAllowListed()) {
+    verificationConfig.log(messages.getMessage('SkipSignatureCheck', [plugin.plugin]));
+    return;
+  }
   try {
     if (!verificationConfig.verifier) {
       throw new Error('VerificationConfig.verifier is not set.');
     }
     const meta = await verificationConfig.verifier.verify();
     if (!meta.verified) {
-      const err = new SfError(
-        "A digital signature is specified for this plugin but it didn't verify against the certificate.",
-        'FailedDigitalSignatureVerification'
-      );
+      const err = messages.createError('FailedDigitalSignatureVerification');
       throw setErrorName(err, 'FailedDigitalSignatureVerification');
     }
-    verificationConfig.log(`Successfully validated digital signature for ${plugin.plugin}.`);
+    verificationConfig.log(messages.getMessage('SignatureCheckSuccess', [plugin.plugin]));
   } catch (err) {
     if (err instanceof Error) {
       if (err.name === 'NotSigned' || err.message?.includes('Response code 403')) {
         if (!verificationConfig.verifier) {
           throw new Error('VerificationConfig.verifier is not set.');
         }
-        if (await verificationConfig.verifier.isAllowListed()) {
-          verificationConfig.log(`The plugin [${plugin.plugin}] is not digitally signed but it is allow-listed.`);
-          return;
-        } else {
-          return await doPrompt();
-        }
+        return await doPrompt();
       } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
         throw setErrorName(new SfError(err.message ?? 'The user canceled the plugin installation.'), '');
       }
