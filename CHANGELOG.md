@@ -1,3 +1,9 @@
+# [3.2.0](https://github.com/salesforcecli/plugin-trust/compare/3.1.2...3.2.0) (2023-12-07)
+
+### Features
+
+- check allowList before making callouts ([#668](https://github.com/salesforcecli/plugin-trust/issues/668)) ([a69df98](https://github.com/salesforcecli/plugin-trust/commit/a69df9842d0ed7e67e631549dc06b6c52d8f90e6))
+
 ## [3.1.2](https://github.com/salesforcecli/plugin-trust/compare/3.1.1...3.1.2) (2023-12-05)
 
 ### Bug Fixes
