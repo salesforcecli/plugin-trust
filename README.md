@@ -114,7 +114,7 @@ DESCRIPTION
   Verifies the digital signature on an npm package matches the signature and key stored at the expected URLs.
 
 EXAMPLES
-  $ @salesforce/plugin-trust plugins trust verify --npm @scope/npmName --registry http://my.repo.org:4874
+  $ @salesforce/plugin-trust plugins trust verify --npm @scope/npmName --registry https://npm.pkg.github.com
 
   $ @salesforce/plugin-trust plugins trust verify --npm @scope/npmName
 ```
