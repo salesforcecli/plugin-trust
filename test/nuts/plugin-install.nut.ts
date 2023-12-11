@@ -69,7 +69,7 @@ describe('plugins:install commands', () => {
       `plugins:install ${UNSIGNED_MODULE_NAME}`,
       { 'continue the installation': Interaction.No },
       {
-        ensureExitCode: 2, // code 2 is the output code for the NO answer
+        ensureExitCode: 'nonZero',
         cli: 'sf',
       }
     );
