@@ -25,6 +25,6 @@ OPTIONS
                                                                                     invocation
 
 EXAMPLES
-  sfdx plugins:trust:verify --npm @scope/npmName --registry http://my.repo.org:4874
+  sfdx plugins:trust:verify --npm @scope/npmName --registry https://npm.pkg.github.com
   sfdx plugins:trust:verify --npm @scope/npmName
 ```

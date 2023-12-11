@@ -8,7 +8,7 @@ Verifies the digital signature on an npm package matches the signature and key s
 
 # examples
 
-- <%= config.bin %> <%= command.id %> --npm @scope/npmName --registry http://my.repo.org:4874
+- <%= config.bin %> <%= command.id %> --npm @scope/npmName --registry https://npm.pkg.github.com
 
 - <%= config.bin %> <%= command.id %> --npm @scope/npmName
 
