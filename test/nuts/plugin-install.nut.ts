@@ -8,13 +8,13 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
-import { fileURLToPath } from 'node:url';
+
 import { dirname } from 'node:path';
 import { expect, config } from 'chai';
 import { TestSession, execCmd, execInteractiveCmd, Interaction } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
 
-Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
 
 config.truncateThreshold = 0;
