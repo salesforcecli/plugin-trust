@@ -11,8 +11,8 @@ import { URL } from 'node:url';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import { mkdir } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
+
+
 import { Logger, SfError, Messages } from '@salesforce/core';
 import got from 'got';
 import { ProxyAgent } from 'proxy-agent';
@@ -24,7 +24,7 @@ import { setErrorName } from './errors.js';
 const CRYPTO_LEVEL = 'RSA-SHA256';
 const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
-Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
 
 export interface ConfigContext {
   configDir?: string;
