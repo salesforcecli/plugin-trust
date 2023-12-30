@@ -1,3 +1,9 @@
+## [3.2.5](https://github.com/salesforcecli/plugin-trust/compare/3.2.4...3.2.5) (2023-12-30)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 5.0.12 to 5.0.13 ([5833290](https://github.com/salesforcecli/plugin-trust/commit/5833290b75428905d1ca45cc9c4f446ad21fc3d5))
+
 ## [3.2.4](https://github.com/salesforcecli/plugin-trust/compare/3.2.3...3.2.4) (2023-12-24)
 
 ### Bug Fixes
