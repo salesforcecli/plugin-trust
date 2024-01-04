@@ -9,7 +9,7 @@ import sinon from 'sinon';
 
 import { stubMethod } from '@salesforce/ts-sinon';
 
-import { Prompter } from '@salesforce/sf-plugins-core';
+import { prompts } from '@salesforce/sf-plugins-core';
 import { InstallationVerification, VerificationConfig } from '../../src/shared/installationVerification.js';
 import { hook } from '../../src/hooks/verifyInstallSignature.js';
 
@@ -33,7 +33,7 @@ describe('plugin install hook', () => {
     });
     stubMethod(sandbox, vConfig.verifier, 'isAllowListed').callsFake(async () => false);
 
-    promptSpy = stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(false);
+    promptSpy = stubMethod(sandbox, prompts, 'confirm').resolves(false);
   });
 
   afterEach(() => {

@@ -12,19 +12,19 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import { mkdir } from 'node:fs/promises';
 
-
 import { Logger, SfError, Messages } from '@salesforce/core';
 import got from 'got';
 import { ProxyAgent } from 'proxy-agent';
-import { Prompter } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
+import { prompts } from '@salesforce/sf-plugins-core';
 import { NpmModule, NpmMeta } from './npmCommand.js';
 import { NpmName } from './NpmName.js';
 import { setErrorName } from './errors.js';
+
 const CRYPTO_LEVEL = 'RSA-SHA256';
 const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 
 export interface ConfigContext {
   configDir?: string;
@@ -434,7 +434,7 @@ export class VerificationConfig {
 
 export async function doPrompt(): Promise<void> {
   const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
-  if (!(await new Prompter().confirm(messages.getMessage('InstallConfirmation'), 30000, false))) {
+  if (!(await prompts.confirm({ message: messages.getMessage('InstallConfirmation'), ms: 30_000 }))) {
     throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
   }
   // they approved the plugin.  Let them know how to automate this.
