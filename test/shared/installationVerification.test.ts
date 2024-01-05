@@ -14,7 +14,7 @@ import { OptionsOfTextResponseBody } from 'got';
 import shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
-import { Prompter } from '@salesforce/sf-plugins-core';
+import { prompts } from '@salesforce/sf-plugins-core';
 import Sinon from 'sinon';
 import {
   ConfigContext,
@@ -634,7 +634,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(false);
+      stubMethod(sandbox, prompts, 'confirm').resolves(false);
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
@@ -657,7 +657,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(true);
+      stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
@@ -680,7 +680,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(true);
+      stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
@@ -705,7 +705,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(true);
+      stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
@@ -730,7 +730,7 @@ describe('InstallationVerification Tests', () => {
         },
       } as Verifier;
 
-      stubMethod(sandbox, Prompter.prototype, 'confirm').resolves(true);
+      stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
       try {
         await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);

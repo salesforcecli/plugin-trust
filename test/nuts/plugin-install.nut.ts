@@ -72,7 +72,9 @@ describe('plugins:install commands', () => {
       }
     );
 
-    expect(result.stdout.replaceAll('\n', '')).to.contain(messages.getMessage('InstallConfirmation'));
+    expect(replaceAllWhitespace(result.stdout)).to.contain(
+      replaceAllWhitespace(messages.getMessage('InstallConfirmation'))
+    );
     expect(result.stdout).to.contain('Do you want to continue the installation?');
     expect(result.stderr).to.contain('The user canceled the plugin installation');
   });
@@ -86,7 +88,9 @@ describe('plugins:install commands', () => {
         cli: 'sf',
       }
     );
-    expect(result.stdout.replaceAll('\n', '')).to.contain(messages.getMessage('InstallConfirmation'));
+    expect(replaceAllWhitespace(result.stdout)).to.contain(
+      replaceAllWhitespace(messages.getMessage('InstallConfirmation'))
+    );
     expect(result.stdout).to.contain('Do you want to continue the installation?');
     expect(result.stdout).to.contain('Finished digital signature check');
   });
@@ -103,3 +107,5 @@ describe('plugins:install commands', () => {
     expect(result.shellOutput.stdout).to.contain(messages.getMessage('SkipSignatureCheck', [UNSIGNED_MODULE_NAME2]));
   });
 });
+
+const replaceAllWhitespace = (str: string): string => str.replaceAll('\n', '').replaceAll(' ', '');
