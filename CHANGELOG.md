@@ -1,3 +1,9 @@
+# [3.3.0](https://github.com/salesforcecli/plugin-trust/compare/3.2.5...3.3.0) (2024-01-05)
+
+### Features
+
+- use new inquirer via sf-plugins-core ([#697](https://github.com/salesforcecli/plugin-trust/issues/697)) ([465840e](https://github.com/salesforcecli/plugin-trust/commit/465840e5b3675624723f7c4c6a4470d3ca241f50))
+
 ## [3.2.5](https://github.com/salesforcecli/plugin-trust/compare/3.2.4...3.2.5) (2023-12-30)
 
 ### Bug Fixes
