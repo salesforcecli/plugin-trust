@@ -1,3 +1,9 @@
+## [3.3.2](https://github.com/salesforcecli/plugin-trust/compare/3.3.1...3.3.2) (2024-01-14)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 6.4.4 to 6.4.7 ([3b888ed](https://github.com/salesforcecli/plugin-trust/commit/3b888edab5f0aeed4835db3d7ef2227cd6eb75ac))
+
 ## [3.3.1](https://github.com/salesforcecli/plugin-trust/compare/3.3.0...3.3.1) (2024-01-06)
 
 ### Bug Fixes
