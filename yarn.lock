@@ -1679,11 +1679,12 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^3.15.0", "@oclif/core@^3.15.1", "@oclif/core@^3.16.0":
-  version "3.16.0"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-3.16.0.tgz#682657cb5e4a3262a47e26e0c8a7bf0343acaf76"
-  integrity sha512-/PIz+udzb59XE8O/bQvqlCtXy6RByEHH0KsrAJNa/ZrqtdsLmeDNJcHdgygFHx+nz+PYMoUzsyzJMau++EDNoQ==
+"@oclif/core@^3.15.0", "@oclif/core@^3.15.1", "@oclif/core@^3.16.0", "@oclif/core@^3.18.1":
+  version "3.18.1"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-3.18.1.tgz#a8c9ee3848ad663d5694bef6079116c70d32fc55"
+  integrity sha512-l0LsjzGcqjbUEdeSBX6bdZieVmEv82Q0W3StiyaDMEnPZ9KLH28HrLpcZg6d50mCYW9CUZNzmRo6qrCHWrgLKw==
   dependencies:
+    "@types/cli-progress" "^3.11.5"
     ansi-escapes "^4.3.2"
     ansi-styles "^4.3.0"
     cardinal "^2.1.1"
@@ -1707,7 +1708,6 @@
     strip-ansi "^6.0.1"
     supports-color "^8.1.1"
     supports-hyperlinks "^2.2.0"
-    tsconfck "^3.0.0"
     widest-line "^3.1.0"
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
@@ -2013,13 +2013,13 @@
     "@salesforce/ts-types" "^2.0.9"
     tslib "^2.6.2"
 
-"@salesforce/plugin-command-reference@^3.0.61":
-  version "3.0.61"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.0.61.tgz#3f7cd5089b52eed02059d5b6831349913b092f7c"
-  integrity sha512-0mS90XJW8UaWDaf+bGz0digHjUz69nEZJkYV6UJ/TliYciHlGX3GZT/pRG0rEvnNvggIdcSbdZrq6IP9xyZoVg==
+"@salesforce/plugin-command-reference@^3.0.63":
+  version "3.0.63"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.0.63.tgz#22e20f473f2589d2ec912a19d7a7359b9846247b"
+  integrity sha512-VpfrKYfMQowJ1SFtSQY+gcDqc2EsRZBfJmDy4JCJ9681323UelCOku9W0cThQSv/6miDtvDofW107FM2STSQrg==
   dependencies:
-    "@oclif/core" "^3.16.0"
-    "@salesforce/core" "^6.4.4"
+    "@oclif/core" "^3.18.1"
+    "@salesforce/core" "^6.4.7"
     "@salesforce/kit" "^3.0.15"
     "@salesforce/sf-plugins-core" "^5.0.13"
     "@salesforce/ts-types" "^2.0.9"
@@ -2787,6 +2787,13 @@
   version "3.11.4"
   resolved "https://registry.yarnpkg.com/@types/cli-progress/-/cli-progress-3.11.4.tgz#58d9e60bd5fd85a57984890ef9c9d831a0dda896"
   integrity sha512-yufTxeeNCZuEIxx2uebK8lpSAsJM4lvzakm/VxzYhDtqhXCzwH9jpn7nPCxzrROuEbLATqhFq4MIPoG0tlrsvw==
+  dependencies:
+    "@types/node" "*"
+
+"@types/cli-progress@^3.11.5":
+  version "3.11.5"
+  resolved "https://registry.yarnpkg.com/@types/cli-progress/-/cli-progress-3.11.5.tgz#9518c745e78557efda057e3f96a5990c717268c3"
+  integrity sha512-D4PbNRbviKyppS5ivBGyFO29POlySLmA2HyUFE4p5QGazAMM3CwkKWcvTl8gvElSuxRh6FPKL8XmidX873ou4g==
   dependencies:
     "@types/node" "*"
 
@@ -9872,11 +9879,6 @@ ts-retry-promise@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/ts-retry-promise/-/ts-retry-promise-0.8.0.tgz#0a0c57b510827d5630da4b0c47f36b55b83a49e3"
   integrity sha512-elI/GkojPANBikPaMWQnk4T/bOJ6tq/hqXyQRmhfC9PAD6MoHmXIXK7KilJrlpx47VAKCGcmBrTeK5dHk6YAYg==
-
-tsconfck@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/tsconfck/-/tsconfck-3.0.0.tgz#b469f1ced12973bbec3209a55ed8de3bb04223c9"
-  integrity sha512-w3wnsIrJNi7avf4Zb0VjOoodoO0woEqGgZGQm+LHH9przdUI+XDKsWAXwxHA1DaRTjeuZNcregSzr7RaA8zG9A==
 
 tsconfig-paths@^3.14.2:
   version "3.14.2"
