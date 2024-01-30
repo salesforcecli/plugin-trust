@@ -17,6 +17,7 @@ import got from 'got';
 import { ProxyAgent } from 'proxy-agent';
 import { ux } from '@oclif/core';
 import { prompts } from '@salesforce/sf-plugins-core';
+import { maxSatisfying } from 'semver';
 import { NpmModule, NpmMeta } from './npmCommand.js';
 import { NpmName } from './NpmName.js';
 import { setErrorName } from './errors.js';
@@ -348,7 +349,9 @@ export class InstallationVerification implements Verifier {
     }
 
     // Assume the tag is version tag.
-    let versionNumber = npmMetadata.versions.find((version) => version === this.pluginNpmName?.tag);
+    let versionNumber =
+      maxSatisfying(npmMetadata.versions, this.pluginNpmName.tag) ??
+      npmMetadata.versions.find((version) => version === this.pluginNpmName?.tag);
 
     logger.debug(`retrieveNpmMeta | versionObject: ${JSON.stringify(versionNumber)}`);
 
@@ -363,7 +366,9 @@ export class InstallationVerification implements Verifier {
 
         // if we got a dist tag hit look up the version object
         if (tagVersionStr && tagVersionStr.length > 0 && tagVersionStr.includes('.')) {
-          versionNumber = npmMetadata.versions.find((version) => version === tagVersionStr);
+          versionNumber =
+            maxSatisfying(npmMetadata.versions, tagVersionStr) ??
+            npmMetadata.versions.find((version) => version === tagVersionStr);
           logger.debug(`retrieveNpmMeta | versionObject: ${versionNumber}`);
         } else {
           const err = new SfError(
