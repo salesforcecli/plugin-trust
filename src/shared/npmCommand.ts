@@ -177,7 +177,8 @@ export class NpmModule {
       const raw = JSON.parse(showCmd.stdout) as NpmShowResults | NpmShowResults[];
       if (Array.isArray(raw)) {
         // Return the last result in the array since that will be the highest version
-        return raw.at(-1) ?? raw[0];
+        // NOTE: .at() possibly returns undefined so instead directly index the array for the last element
+        return raw[raw.length - 1];
       }
       return raw;
     } catch (error) {
