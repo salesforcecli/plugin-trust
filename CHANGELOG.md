@@ -1,3 +1,9 @@
+## [3.3.5](https://github.com/salesforcecli/plugin-trust/compare/3.3.4...3.3.5) (2024-02-01)
+
+### Bug Fixes
+
+- allow semver ranges ([#719](https://github.com/salesforcecli/plugin-trust/issues/719)) ([7d0c8e0](https://github.com/salesforcecli/plugin-trust/commit/7d0c8e0735fe7ec162416adea8117609a1ca811b))
+
 ## [3.3.4](https://github.com/salesforcecli/plugin-trust/compare/3.3.3...3.3.4) (2024-01-28)
 
 ### Bug Fixes
