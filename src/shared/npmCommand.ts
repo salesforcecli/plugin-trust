@@ -173,7 +173,14 @@ export class NpmModule {
     }
 
     try {
-      return JSON.parse(showCmd.stdout) as NpmShowResults;
+      // `npm show` returns an array of results when the version is a range
+      const raw = JSON.parse(showCmd.stdout) as NpmShowResults | NpmShowResults[];
+      if (Array.isArray(raw)) {
+        // Return the last result in the array since that will be the highest version
+        // NOTE: .at() possibly returns undefined so instead directly index the array for the last element
+        return raw[raw.length - 1];
+      }
+      return raw;
     } catch (error) {
       if (error instanceof Error) {
         throw setErrorName(new SfError(error.message, 'ShellParseError'), 'ShellParseError');
