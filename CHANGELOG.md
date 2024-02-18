@@ -1,3 +1,9 @@
+## [3.3.9](https://github.com/salesforcecli/plugin-trust/compare/3.3.8...3.3.9) (2024-02-18)
+
+### Bug Fixes
+
+- **deps:** bump proxy-agent from 6.3.1 to 6.4.0 ([8e78944](https://github.com/salesforcecli/plugin-trust/commit/8e78944dacc50d4677b2e204296a222adf95d718))
+
 ## [3.3.8](https://github.com/salesforcecli/plugin-trust/compare/3.3.7...3.3.8) (2024-02-11)
 
 ### Bug Fixes
