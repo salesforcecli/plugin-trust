@@ -1,3 +1,9 @@
+## [3.3.10](https://github.com/salesforcecli/plugin-trust/compare/3.3.9...3.3.10) (2024-02-21)
+
+### Bug Fixes
+
+- **deps:** bump ip from 1.1.8 to 1.1.9 ([be80790](https://github.com/salesforcecli/plugin-trust/commit/be80790fbdadc555665f8cbaf43f250b83dbe55b))
+
 ## [3.3.9](https://github.com/salesforcecli/plugin-trust/compare/3.3.8...3.3.9) (2024-02-18)
 
 ### Bug Fixes
