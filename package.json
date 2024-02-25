@@ -21,7 +21,7 @@
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^5.0.8",
     "@salesforce/cli-plugins-testkit": "^5.1.9",
-    "@salesforce/dev-scripts": "^8.3.0",
+    "@salesforce/dev-scripts": "^8.4.0",
     "@salesforce/plugin-command-reference": "^3.0.65",
     "@salesforce/plugin-telemetry": "^2.3.8",
     "@salesforce/ts-sinon": "^1.4.18",
@@ -29,7 +29,6 @@
     "@types/sinon-chai": "^3.2.12",
     "eslint-plugin-sf-plugin": "^1.17.3",
     "oclif": "^4.4.17",
-    "shx": "0.3.4",
     "sinon-chai": "^3.7.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2"
@@ -39,11 +38,12 @@
     "node": ">=18.0.0"
   },
   "files": [
-    "bin",
     "/lib",
     "/messages",
+    "/npm-shrinkwrap.json",
+    "/oclif.lock",
     "/oclif.manifest.json",
-    "/oclif.lock"
+    "bin"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-trust",
   "keywords": [
@@ -87,13 +87,12 @@
     "build": "wireit",
     "clean": "sf-clean",
     "clean-all": "sf-clean all",
-    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json oclif.lock",
     "compile": "wireit",
     "docs": "sf-docs",
     "format": "wireit",
     "link-check": "wireit",
     "lint": "wireit",
-    "postpack": "shx rm -f oclif.manifest.json oclif.lock",
+    "postpack": "sf-clean",
     "prepack": "sf-prepack",
     "prepare": "sf-install",
     "test": "wireit",
