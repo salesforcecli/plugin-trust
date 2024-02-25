@@ -28,7 +28,7 @@
     "@types/shelljs": "^0.8.15",
     "@types/sinon-chai": "^3.2.12",
     "eslint-plugin-sf-plugin": "^1.17.3",
-    "oclif": "^4.4.13",
+    "oclif": "^4.4.17",
     "shx": "0.3.4",
     "sinon-chai": "^3.7.0",
     "ts-node": "^10.9.2",
