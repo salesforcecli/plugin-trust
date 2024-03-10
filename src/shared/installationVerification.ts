@@ -490,7 +490,7 @@ export async function doInstallationCodeSigningVerification(
 const getSigningContent = async (url: string): Promise<Readable> => {
   const res = await got.get({
     url,
-    timeout: { request: 10000 },
+    timeout: { request: 10_000 },
     agent: { https: new ProxyAgent() },
   });
   if (res.statusCode !== 200) {
