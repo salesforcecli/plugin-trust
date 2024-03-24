@@ -91,34 +91,8 @@ sfdx plugins
 
 <!-- commands -->
 
-- [`@salesforce/plugin-trust plugins trust verify`](#salesforceplugin-trust-plugins-trust-verify)
+# Command Topics
 
-## `@salesforce/plugin-trust plugins trust verify`
-
-Validate a digital signature.
-
-```
-USAGE
-  $ @salesforce/plugin-trust plugins trust verify -n <value> [--json] [-r <value>]
-
-FLAGS
-  -n, --npm=<value>       (required) Specify the npm name. This can include a tag/version.
-  -r, --registry=<value>  The registry name. The behavior is the same as npm.
-
-GLOBAL FLAGS
-  --json  Format output as json.
-
-DESCRIPTION
-  Validate a digital signature.
-
-  Verifies the digital signature on an npm package matches the signature and key stored at the expected URLs.
-
-EXAMPLES
-  $ @salesforce/plugin-trust plugins trust verify --npm @scope/npmName --registry https://npm.pkg.github.com
-
-  $ @salesforce/plugin-trust plugins trust verify --npm @scope/npmName
-```
-
-_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/3.3.17/src/commands/plugins/trust/verify.ts)_
+- [`@salesforce/plugin-trust plugins`](docs/plugins.md) - list installed plugins
 
 <!-- commandsstop -->
