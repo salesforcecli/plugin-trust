@@ -1,10 +1,10 @@
 [
   {
-    "command": "plugins:trust:verify",
-    "plugin": "@salesforce/plugin-trust",
-    "flags": ["json", "loglevel", "npm", "registry"],
     "alias": [],
+    "command": "plugins:trust:verify",
+    "flagAliases": [],
     "flagChars": ["n", "r"],
-    "flagAliases": []
+    "flags": ["flags-dir", "json", "loglevel", "npm", "registry"],
+    "plugin": "@salesforce/plugin-trust"
   }
 ]
