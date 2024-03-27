@@ -437,9 +437,14 @@ export class VerificationConfig {
   }
 }
 
-export async function doPrompt(): Promise<void> {
+export async function doPrompt(plugin?: string): Promise<void> {
   const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
-  if (!(await prompts.confirm({ message: messages.getMessage('InstallConfirmation'), ms: 30_000 }))) {
+  if (
+    !(await prompts.confirm({
+      message: messages.getMessage('InstallConfirmation', [plugin ?? 'This plugin']),
+      ms: 30_000,
+    }))
+  ) {
     throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
   }
   // they approved the plugin.  Let them know how to automate this.
@@ -473,7 +478,7 @@ export async function doInstallationCodeSigningVerification(
         if (!verificationConfig.verifier) {
           throw new Error('VerificationConfig.verifier is not set.');
         }
-        return await doPrompt();
+        return await doPrompt(plugin.plugin);
       } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
         throw setErrorName(new SfError(err.message ?? 'The user canceled the plugin installation.'), '');
       }

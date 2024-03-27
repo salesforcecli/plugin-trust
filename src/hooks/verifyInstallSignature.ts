@@ -65,7 +65,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
       this.error(error);
     }
   } else {
-    await doPrompt();
+    await doPrompt(options.plugin.url);
   }
 };
 
