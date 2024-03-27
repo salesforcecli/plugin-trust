@@ -156,6 +156,32 @@ const errorHandlerForVerify = (err: Error): Error => {
 export const getNpmRegistry = (): URL =>
   new URL(process.env.SF_NPM_REGISTRY ?? process.env.SFDX_NPM_REGISTRY ?? DEFAULT_REGISTRY);
 
+export async function isAllowListed({
+  logger,
+  configPath,
+  name,
+}: {
+  logger: Logger;
+  configPath: string;
+  name?: string;
+}): Promise<boolean> {
+  const allowListedFilePath = path.join(configPath, ALLOW_LIST_FILENAME);
+  logger.debug(`isAllowListed | allowlistFilePath: ${allowListedFilePath}`);
+  let fileContent: string;
+  try {
+    fileContent = await fs.promises.readFile(allowListedFilePath, 'utf8');
+    const allowlistArray = JSON.parse(fileContent) as string[];
+    logger.debug('isAllowListed | Successfully parsed allowlist.');
+    return name ? allowlistArray.includes(name) : false;
+  } catch (err) {
+    if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
+      return false;
+    } else {
+      throw err;
+    }
+  }
+}
+
 /**
  * class for verifying a digital signature pack of an npm
  */
@@ -236,23 +262,11 @@ export class InstallationVerification implements Verifier {
   }
 
   public async isAllowListed(): Promise<boolean> {
-    const logger = await this.getLogger();
-    const allowListedFilePath = path.join(this.getConfigPath() ?? '', ALLOW_LIST_FILENAME);
-    logger.debug(`isAllowListed | allowlistFilePath: ${allowListedFilePath}`);
-    let fileContent: string;
-    try {
-      fileContent = await fs.promises.readFile(allowListedFilePath, 'utf8');
-      const allowlistArray = JSON.parse(fileContent) as string[];
-      logger.debug('isAllowListed | Successfully parsed allowlist.');
-      const nameToFind = this.pluginNpmName?.toString();
-      return nameToFind ? allowlistArray.includes(nameToFind) : false;
-    } catch (err) {
-      if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
-        return false;
-      } else {
-        throw err;
-      }
-    }
+    return isAllowListed({
+      logger: await this.getLogger(),
+      configPath: this.getConfigPath() ?? '',
+      name: this.pluginNpmName?.toString(),
+    });
   }
 
   /**
