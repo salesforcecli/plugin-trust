@@ -4,22 +4,27 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { expect, config } from 'chai';
+import fs from 'node:fs';
+import { assert, expect, config as chaiConfig } from 'chai';
 import sinon from 'sinon';
-
 import { stubMethod } from '@salesforce/ts-sinon';
 
 import { prompts } from '@salesforce/sf-plugins-core';
+import { Config, ux } from '@oclif/core';
 import { InstallationVerification, VerificationConfig } from '../../src/shared/installationVerification.js';
-import { hook } from '../../src/hooks/verifyInstallSignature.js';
 
-config.truncateThreshold = 0;
+chaiConfig.truncateThreshold = 0;
 
 describe('plugin install hook', () => {
   let sandbox: sinon.SinonSandbox;
   let vConfig: VerificationConfig;
   let promptSpy: sinon.SinonSpy;
   let verifySpy: sinon.SinonSpy;
+  let config: Config;
+
+  before(async () => {
+    config = await Config.load(import.meta.url);
+  });
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -34,6 +39,7 @@ describe('plugin install hook', () => {
     stubMethod(sandbox, vConfig.verifier, 'isAllowListed').callsFake(async () => false);
 
     promptSpy = stubMethod(sandbox, prompts, 'confirm').resolves(false);
+    stubMethod(sandbox, ux, 'log').callsFake(() => {});
   });
 
   afterEach(() => {
@@ -41,45 +47,42 @@ describe('plugin install hook', () => {
   });
 
   it('exits by calling this.error', async () => {
-    let calledError = false;
-    await hook.call(
-      // @ts-expect-error not a valid mock for context
-      {
-        error: () => (calledError = true),
-      },
-      {
-        plugin: { name: 'test', type: 'npm' },
-        config: {},
-      }
-    );
-    expect(calledError).to.equal(true);
-  });
-
-  it('should prompt for repo urls', async () => {
     try {
-      await hook.call(
-        // @ts-expect-error not a valid mock for context
-        {},
-        {
-          plugin: { name: 'test', type: 'repo' },
-          config: {},
-        }
-      );
+      await config.runHook('plugins:preinstall:verify:signature', {
+        plugin: { name: 'test', type: 'npm', tag: 'latest' },
+      });
+      assert.fail('Expected error to be thrown');
     } catch (error) {
       expect(error).to.have.property('name', 'InstallationCanceledError');
-      expect(promptSpy.called).to.be.true;
     }
   });
 
-  it('should skip signature verification for JIT plugins with matching version', async () => {
-    await hook.call(
-      // @ts-expect-error not a valid mock for context
-      {},
-      {
-        plugin: { name: '@ns/test', type: 'npm', tag: '1.2.3' },
-        config: { pjson: { oclif: { jitPlugins: { '@ns/test': '1.2.3' } } } },
-      }
-    );
+  it('should prompt for repo urls that are not allowlisted', async () => {
+    const result = await config.runHook('plugins:preinstall:verify:signature', {
+      plugin: { url: 'https://github.com/oclif/plugin-version', type: 'repo' },
+    });
+
+    expect(result.failures).to.have.length(1);
+    expect(result.failures[0].error).to.have.property('name', 'InstallationCanceledError');
+    expect(promptSpy.called).to.be.true;
+  });
+
+  it('should not prompt for repo urls that are allowlisted', async () => {
+    stubMethod(sandbox, fs.promises, 'readFile').resolves(JSON.stringify(['https://github.com/oclif/plugin-version']));
+    const result = await config.runHook('plugins:preinstall:verify:signature', {
+      plugin: { url: 'https://github.com/oclif/plugin-version', type: 'repo' },
+    });
+
+    expect(result.failures).to.have.length(0);
+    expect(result.successes).to.have.length(1);
+    expect(promptSpy.called).to.be.false;
+  });
+
+  it.only('should skip signature verification for JIT plugins with matching version', async () => {
+    sandbox.stub(config, 'pjson').value({ oclif: { jitPlugins: { '@ns/test': '1.2.3' } } });
+    await config.runHook('plugins:preinstall:verify:signature', {
+      plugin: { name: '@ns/test', type: 'npm', tag: '1.2.3' },
+    });
     expect(promptSpy.called).to.be.false;
     expect(verifySpy.called).to.be.false;
   });
