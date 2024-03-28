@@ -38,7 +38,7 @@ A digital signature is specified for this plugin but it didn't verify against th
 
 # InstallConfirmation
 
-This plugin isn't signed by Salesforce. Only install the plugin if you trust its creator. Do you want to continue the installation?,
+%s isn't signed by Salesforce. Only install the plugin if you trust its creator. Do you want to continue the installation?
 
 # SuggestAllowList
 

@@ -73,7 +73,7 @@ describe('plugins:install commands', () => {
     );
 
     expect(replaceAllWhitespace(result.stdout)).to.contain(
-      replaceAllWhitespace(messages.getMessage('InstallConfirmation'))
+      replaceAllWhitespace(messages.getMessage('InstallConfirmation', [UNSIGNED_MODULE_NAME]))
     );
     expect(result.stdout).to.contain('Do you want to continue the installation?');
     expect(result.stderr).to.contain('The user canceled the plugin installation');
@@ -89,7 +89,7 @@ describe('plugins:install commands', () => {
       }
     );
     expect(replaceAllWhitespace(result.stdout)).to.contain(
-      replaceAllWhitespace(messages.getMessage('InstallConfirmation'))
+      replaceAllWhitespace(messages.getMessage('InstallConfirmation', [UNSIGNED_MODULE_NAME]))
     );
     expect(result.stdout).to.contain('Do you want to continue the installation?');
     expect(result.stdout).to.contain('Finished digital signature check');
