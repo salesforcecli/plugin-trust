@@ -1,3 +1,14 @@
+# [3.5.0](https://github.com/salesforcecli/plugin-trust/compare/3.4.0...3.5.0) (2024-03-28)
+
+### Bug Fixes
+
+- show name in prompt ([4d8d947](https://github.com/salesforcecli/plugin-trust/commit/4d8d947191ee8a4c8245c8e4d3855856eee06270))
+- update install confirmation message ([48759d6](https://github.com/salesforcecli/plugin-trust/commit/48759d6abf8f7ac358d2fea385b1323011d566ab))
+
+### Features
+
+- support github urls in allow list file ([81cf593](https://github.com/salesforcecli/plugin-trust/commit/81cf5932fcbd1c234dbf740e8a3483fdac9446e4))
+
 # [3.4.0](https://github.com/salesforcecli/plugin-trust/compare/3.3.18...3.4.0) (2024-03-25)
 
 ### Features
