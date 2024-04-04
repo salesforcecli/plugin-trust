@@ -222,15 +222,11 @@
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
-      "require": "./lib/index.js",
-      "import": "./lib/index.js",
-      "default": "./lib/index.js"
+      "import": "./lib/index.js"
     },
     "./npmName": {
       "types": "./lib/shared/npmName.d.ts",
-      "require": "./lib/shared/npmName.js",
-      "import": "./lib/shared/npmName.js",
-      "default": "./lib/shared/npmName.js"
+      "import": "./lib/shared/npmName.js"
     }
   },
   "type": "module"
