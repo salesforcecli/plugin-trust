@@ -220,14 +220,8 @@
     }
   },
   "exports": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
-    },
-    "./npmName": {
-      "types": "./lib/shared/npmName.d.ts",
-      "import": "./lib/shared/npmName.js"
-    }
+    ".": "./lib/index.js",
+    "./npmName": "./lib/shared/npmName.js"
   },
   "type": "module"
 }
