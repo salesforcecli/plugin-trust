@@ -22,13 +22,6 @@ export type NpmName = {
  * @return {NpmName} - An object with the parsed components.
  */
 export const parseNpmName = (npmName: string): NpmName => {
-  if (!npmName || npmName.length < 1) {
-    throw setErrorName(
-      new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
-      'MissingOrInvalidNpmName'
-    );
-  }
-
   const nameWithoutAt = validateNpmNameAndRemoveLeadingAt(npmName);
   const hasScope = nameWithoutAt.includes('/');
   const hasTag = nameWithoutAt.includes('@');

@@ -9,7 +9,7 @@
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
     "@oclif/core": "^3.26.0",
-    "@salesforce/core": "^6.5.5",
+    "@salesforce/core": "^6.7.6",
     "@salesforce/kit": "^3.1.0",
     "@salesforce/sf-plugins-core": "^8.0.2",
     "got": "^13.0.0",
@@ -219,6 +219,19 @@
       "output": []
     }
   },
-  "exports": "./lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "require": "./lib/index.js",
+      "import": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./npmName": {
+      "types": "./lib/shared/npmName.d.ts",
+      "require": "./lib/shared/npmName.js",
+      "import": "./lib/shared/npmName.js",
+      "default": "./lib/shared/npmName.js"
+    }
+  },
   "type": "module"
 }
