@@ -7,7 +7,7 @@
 import { homedir } from 'node:os';
 import { Hook } from '@oclif/core';
 import { SfError } from '@salesforce/core';
-import { TelemetryGlobal } from '@salesforce/plugin-telemetry/lib/telemetryGlobal.js';
+import type { TelemetryGlobal } from '@salesforce/plugin-telemetry/lib/telemetryGlobal.js';
 
 declare const global: TelemetryGlobal;
 
