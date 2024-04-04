@@ -29,68 +29,37 @@ export const parseNpmName = (npmName: string): NpmName => {
     );
   }
 
-  let returnNpmName: NpmName | undefined;
+  const nameWithoutAt = validateNpmNameAndRemoveLeadingAt(npmName);
+  const hasScope = nameWithoutAt.includes('/');
+  const hasTag = nameWithoutAt.includes('@');
 
-  const components: string[] = npmName.split('@');
-  // salesforce/jj
-  if (components.length === 1) {
-    returnNpmName = setNameAndScope(components[0]);
-  } else if (components[0].includes('/')) {
-    returnNpmName = setNameAndScope(components[0]);
-  } else if (components[1].includes('/')) {
-    returnNpmName = setNameAndScope(components[1]);
-  } else {
-    // Allow something like salesforcedx/pre-release
-    returnNpmName = { ...setNameAndScope(components[0]), tag: components[1] };
-  }
-
-  if (components.length > 2) {
-    returnNpmName.tag = components[2];
-  }
-  return returnNpmName;
+  return {
+    scope: hasScope ? nameWithoutAt.split('/')[0] : undefined,
+    tag: hasTag ? nameWithoutAt.split('@')[1] : DEFAULT_TAG,
+    name: hasScope ? nameWithoutAt.split('/')[1].split('@')[0] : nameWithoutAt.split('@')[0],
+  };
 };
 
 /** Produces a formatted string version of the object */
 export const npmNameToString = (npmName: NpmName, includeTag = false): string =>
   `${npmName.scope ? `@${npmName.scope}/` : ''}${npmName.name}${includeTag ? npmName.tag : ''}`;
 
-/**
- * helper to parse the name and scope.
- *
- * @param {string} name - The string to parse.
- * @param {NpmName} returnNpmName - The object to update.
- */
-const setNameAndScope = (name: string): NpmName => {
-  // There are at least 2 components. So there is likely a scope.
-  const subComponents: string[] = name.split('/');
-  if (subComponents.length === 2 && subComponents[0].trim().length > 0 && subComponents[1].trim().length > 0) {
-    return {
-      tag: DEFAULT_TAG,
-      scope: validateComponentString(subComponents[0]),
-      name: validateComponentString(subComponents[1]) ?? DEFAULT_TAG,
-    };
-  } else if (subComponents.length === 1) {
-    return {
-      tag: DEFAULT_TAG,
-      name: validateComponentString(subComponents[0]),
-    };
+const validateNpmNameAndRemoveLeadingAt = (input: string): string => {
+  const nameWithoutAt = input.startsWith('@') ? input.slice(1) : input;
+  if (
+    !nameWithoutAt.length || // empty
+    nameWithoutAt.includes(' ') ||
+    nameWithoutAt.startsWith('@') || // starts with @ after we already removed it
+    nameWithoutAt.endsWith('@') ||
+    nameWithoutAt.startsWith('/') || // starts with /
+    nameWithoutAt.endsWith('/') || // ends with /
+    (nameWithoutAt.match(/@/g) ?? []).length > 1 || // should only have 1 @ left (first was removed in parseNpmName)
+    (nameWithoutAt.match(/\//g) ?? []).length > 1 // can only have 1 slash
+  ) {
+    throw setErrorName(
+      new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
+      'MissingOrInvalidNpmName'
+    );
   }
-  throw setErrorName(new SfError('The npm name is invalid.', 'InvalidNpmName'), 'InvalidNpmName');
-};
-
-/**
- * Validate a component part that it's not empty and return it trimmed.
- *
- * @param {string} name The component to validate.
- * @return {string} A whitespace trimmed version of the component.
- */
-const validateComponentString = (name: string): string => {
-  const trimmedName = name.trim();
-  if (trimmedName && trimmedName.length > 0) {
-    return trimmedName;
-  }
-  throw setErrorName(
-    new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
-    'MissingOrInvalidNpmName'
-  );
+  return nameWithoutAt;
 };
