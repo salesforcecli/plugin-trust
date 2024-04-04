@@ -34,8 +34,8 @@ export const parseNpmName = (npmName: string): NpmName => {
 };
 
 /** Produces a formatted string version of the object */
-export const npmNameToString = (npmName: NpmName, includeTag = false): string =>
-  `${npmName.scope ? `@${npmName.scope}/` : ''}${npmName.name}${includeTag ? npmName.tag : ''}`;
+export const npmNameToString = (npmName: NpmName): string =>
+  `${npmName.scope ? `@${npmName.scope}/` : ''}${npmName.name}`;
 
 const validateNpmNameAndRemoveLeadingAt = (input: string): string => {
   const nameWithoutAt = input.startsWith('@') ? input.slice(1) : input;

@@ -6,91 +6,110 @@
  */
 
 import { expect } from 'chai';
-import { parseNpmName } from '../../src/shared/NpmName.js';
+import { npmNameToString, parseNpmName } from '../../src/shared/NpmName.js';
 
-describe('parse', () => {
-  describe('scope without @', () => {
-    it('salesforce/foo', () => {
-      const f = parseNpmName('salesforce/foo');
-      expect(f.scope).to.equal('salesforce');
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('latest');
+describe('npmName', () => {
+  describe('parse', () => {
+    describe('scope without @', () => {
+      it('salesforce/foo', () => {
+        const input = 'salesforce/foo';
+        const f = parseNpmName(input);
+        expect(f.scope).to.equal('salesforce');
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('latest');
+        expect(npmNameToString(f)).to.equal('@salesforce/foo');
+      });
+      it('salesforce/foo@latest', () => {
+        const input = 'salesforce/foo@latest';
+        const f = parseNpmName(input);
+        expect(f.scope).to.equal('salesforce');
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('latest');
+        expect(npmNameToString(f)).to.equal('@salesforce/foo');
+      });
+      it('salesforce/foo@rc', () => {
+        const input = 'salesforce/foo@rc';
+        const f = parseNpmName(input);
+        expect(f.scope).to.equal('salesforce');
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('rc');
+        expect(npmNameToString(f)).to.equal('@salesforce/foo');
+      });
     });
-    it('salesforce/foo@latest', () => {
-      const f = parseNpmName('salesforce/foo@latest');
-      expect(f.scope).to.equal('salesforce');
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('latest');
-    });
-    // it doesn't work on main
-    it('salesforce/foo@rc', () => {
-      const f = parseNpmName('salesforce/foo@rc');
-      expect(f.scope).to.equal('salesforce');
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('rc');
-    });
-  });
 
-  describe('scope with @', () => {
-    it('@salesforce/foo', () => {
-      const f = parseNpmName('@salesforce/foo');
-      expect(f.scope).to.equal('salesforce');
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('latest');
+    describe('scope with @', () => {
+      it('@salesforce/foo', () => {
+        const input = '@salesforce/foo';
+        const f = parseNpmName(input);
+        expect(f.scope).to.equal('salesforce');
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('latest');
+        expect(npmNameToString(f)).to.equal('@salesforce/foo');
+      });
+      it('@salesforce/foo@latest', () => {
+        const input = '@salesforce/foo@latest';
+        const f = parseNpmName(input);
+        expect(f.scope).to.equal('salesforce');
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('latest');
+        expect(npmNameToString(f)).to.equal('@salesforce/foo');
+      });
+      it('@salesforce/foo@rc', () => {
+        const input = '@salesforce/foo@rc';
+        const f = parseNpmName(input);
+        expect(f.scope).to.equal('salesforce');
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('rc');
+        expect(npmNameToString(f)).to.equal('@salesforce/foo');
+      });
     });
-    it('@salesforce/foo@latest', () => {
-      const f = parseNpmName('@salesforce/foo@latest');
-      expect(f.scope).to.equal('salesforce');
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('latest');
-    });
-    it('@salesforce/foo@rc', () => {
-      const f = parseNpmName('@salesforce/foo@rc');
-      expect(f.scope).to.equal('salesforce');
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('rc');
-    });
-  });
 
-  describe('no scope', () => {
-    it('foo', () => {
-      const f = parseNpmName('foo');
-      expect(f.scope).to.be.undefined;
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('latest');
+    describe('no scope', () => {
+      it('foo', () => {
+        const input = 'foo';
+        const f = parseNpmName(input);
+        expect(f.scope).to.be.undefined;
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('latest');
+        expect(npmNameToString(f)).to.equal('foo');
+      });
+      it('foo@latest', () => {
+        const input = 'foo@latest';
+        const f = parseNpmName(input);
+        expect(f.scope).to.be.undefined;
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('latest');
+        expect(npmNameToString(f)).to.equal('foo');
+      });
+      it('foo@rc', () => {
+        const input = 'foo@rc';
+        const f = parseNpmName(input);
+        expect(f.scope).to.be.undefined;
+        expect(f.name).to.equal('foo');
+        expect(f.tag).to.equal('rc');
+        expect(npmNameToString(f)).to.equal('foo');
+      });
     });
-    it('foo@latest', () => {
-      const f = parseNpmName('foo@latest');
-      expect(f.scope).to.be.undefined;
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('latest');
-    });
-    it('foo@rc', () => {
-      const f = parseNpmName('foo@rc');
-      expect(f.scope).to.be.undefined;
-      expect(f.name).to.equal('foo');
-      expect(f.tag).to.equal('rc');
-    });
-  });
 
-  describe('invalid', () => {
-    it('empty', () => {
-      expect(() => parseNpmName('')).to.throw();
-    });
-    it('single leading @', () => {
-      expect(() => parseNpmName('@')).to.throw();
-    });
-    it('extra slashes', () => {
-      expect(() => parseNpmName('this/is/real/bad')).to.throw();
-    });
-    it('space', () => {
-      expect(() => parseNpmName('this fails')).to.throw();
-    });
-    it('extra @', () => {
-      expect(() => parseNpmName('@@')).to.throw();
-    });
-    it('extra @s', () => {
-      expect(() => parseNpmName('@foo/bar@z@f')).to.throw();
+    describe('invalid', () => {
+      it('empty', () => {
+        expect(() => parseNpmName('')).to.throw();
+      });
+      it('single leading @', () => {
+        expect(() => parseNpmName('@')).to.throw();
+      });
+      it('extra slashes', () => {
+        expect(() => parseNpmName('this/is/real/bad')).to.throw();
+      });
+      it('space', () => {
+        expect(() => parseNpmName('this fails')).to.throw();
+      });
+      it('extra @', () => {
+        expect(() => parseNpmName('@@')).to.throw();
+      });
+      it('extra @s', () => {
+        expect(() => parseNpmName('@foo/bar@z@f')).to.throw();
+      });
     });
   });
 });
