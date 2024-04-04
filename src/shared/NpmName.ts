@@ -7,150 +7,90 @@
 import { SfError } from '@salesforce/core';
 import { setErrorName } from './errors.js';
 
-interface NpmNameInfo {
-  scope: string;
+const DEFAULT_TAG = 'latest';
+
+export type NpmName = {
+  tag: string;
+  scope?: string;
   name: string;
-}
+};
 
 /**
- * String representing the parsed components of an NpmName
+ * Parse an NPM package name into {scope, name, tag}. The tag is 'latest' by default and can be any semver string.
  *
- * @example
- * const f: NpmName = NpmName.parse('@salesforce/jj@foo');
- * console.log(f.tag === 'foo')
+ * @param {string} npmName - The npm name to parse.
+ * @return {NpmName} - An object with the parsed components.
  */
-export class NpmName {
-  public static readonly DEFAULT_TAG = 'latest';
-  public tag: string;
-  // next 2 props won't exist until after parse is called
-  // TODO: make this more functional and deterministic
-  public scope!: string;
-  public name!: string;
-
-  /**
-   * Private ctor. Use static parse method.
-   */
-  private constructor() {
-    this.tag = NpmName.DEFAULT_TAG;
-  }
-  /**
-   * Parse an NPM package name into {scope, name, tag}. The tag is 'latest' by default and can be any semver string.
-   *
-   * @param {string} npmName - The npm name to parse.
-   * @return {NpmName} - An object with the parsed components.
-   */
-  public static parse(npmName: string): NpmName {
-    if (!npmName || npmName.length < 1) {
-      throw setErrorName(
-        new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
-        'MissingOrInvalidNpmName'
-      );
-    }
-
-    const returnNpmName = new NpmName();
-
-    const components: string[] = npmName.split('@');
-
-    // salesforce/jj
-    if (components.length === 1) {
-      NpmName.setNameAndScope(components[0], returnNpmName);
-    } else if (components[0].includes('/')) {
-      NpmName.setNameAndScope(components[0], returnNpmName);
-    } else if (components[1].includes('/')) {
-      NpmName.setNameAndScope(components[1], returnNpmName);
-    } else {
-      // Allow something like salesforcedx/pre-release
-      NpmName.setNameAndScope(components[0], returnNpmName);
-      returnNpmName.tag = components[1];
-    }
-
-    if (components.length > 2) {
-      returnNpmName.tag = components[2];
-    }
-    return returnNpmName;
+export const parseNpmName = (npmName: string): NpmName => {
+  if (!npmName || npmName.length < 1) {
+    throw setErrorName(
+      new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
+      'MissingOrInvalidNpmName'
+    );
   }
 
-  /**
-   * Static helper to parse the name and scope.
-   *
-   * @param {string} name - The string to parse.
-   * @param {NpmNameInfo} returnNpmName - The object to update.
-   */
-  private static setNameAndScope(name: string, returnNpmName: NpmNameInfo): void {
-    // There are at least 2 components. So there is likely a scope.
-    const subComponents: string[] = name.split('/');
-    if (subComponents.length === 2 && subComponents[0].trim().length > 0 && subComponents[1].trim().length > 0) {
-      returnNpmName.scope = NpmName.validateComponentString(subComponents[0]);
-      returnNpmName.name = NpmName.validateComponentString(subComponents[1]);
-    } else if (subComponents.length === 1) {
-      returnNpmName.name = NpmName.validateComponentString(subComponents[0]);
-    } else {
-      throw setErrorName(new SfError('The npm name is invalid.', 'InvalidNpmName'), 'InvalidNpmName');
-    }
+  let returnNpmName: NpmName | undefined;
+
+  const components: string[] = npmName.split('@');
+  // salesforce/jj
+  if (components.length === 1) {
+    returnNpmName = setNameAndScope(components[0]);
+  } else if (components[0].includes('/')) {
+    returnNpmName = setNameAndScope(components[0]);
+  } else if (components[1].includes('/')) {
+    returnNpmName = setNameAndScope(components[1]);
+  } else {
+    // Allow something like salesforcedx/pre-release
+    returnNpmName = { ...setNameAndScope(components[0]), tag: components[1] };
   }
 
-  /**
-   * Validate a component part that it's not empty and return it trimmed.
-   *
-   * @param {string} name The component to validate.
-   * @return {string} A whitespace trimmed version of the component.
-   */
-  private static validateComponentString(name: string): string {
-    const trimmedName = name.trim();
-    if (trimmedName && trimmedName.length > 0) {
-      return trimmedName;
-    } else {
-      throw setErrorName(
-        new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
-        'MissingOrInvalidNpmName'
-      );
-    }
+  if (components.length > 2) {
+    returnNpmName.tag = components[2];
   }
+  return returnNpmName;
+};
 
-  /**
-   * Produce a string that can be used by npm. @salesforce/jj@1.2.3 becomes "salesforce-jj-1.2.3.tgz
-   *
-   * @param {string} [ext = tgz] The file extension to use.
-   * @param {boolean} includeLatestTag - True if the "latest" tag should be used. Generally you wouldn't do this.
-   * @return {string} Formatted npm string thats compatible with the npm utility
-   */
-  public toFilename(ext = 'tgz', includeLatestTag?: boolean): string {
-    const nameComponents: string[] = [];
+/** Produces a formatted string version of the object */
+export const npmNameToString = (npmName: NpmName, includeTag = false): string =>
+  `${npmName.scope ? `@${npmName.scope}/` : ''}${npmName.name}${includeTag ? npmName.tag : ''}`;
 
-    if (this.scope) {
-      nameComponents.push(this.scope);
-    }
-
-    nameComponents.push(this.name);
-
-    if (this.tag) {
-      if (this.tag !== NpmName.DEFAULT_TAG) {
-        nameComponents.push(this.tag);
-      } else if (includeLatestTag) {
-        nameComponents.push(this.tag);
-      }
-    }
-
-    return nameComponents.join('-').concat(ext.startsWith('.') ? ext : `.${ext}`);
+/**
+ * helper to parse the name and scope.
+ *
+ * @param {string} name - The string to parse.
+ * @param {NpmName} returnNpmName - The object to update.
+ */
+const setNameAndScope = (name: string): NpmName => {
+  // There are at least 2 components. So there is likely a scope.
+  const subComponents: string[] = name.split('/');
+  if (subComponents.length === 2 && subComponents[0].trim().length > 0 && subComponents[1].trim().length > 0) {
+    return {
+      tag: DEFAULT_TAG,
+      scope: validateComponentString(subComponents[0]),
+      name: validateComponentString(subComponents[1]) ?? DEFAULT_TAG,
+    };
+  } else if (subComponents.length === 1) {
+    return {
+      tag: DEFAULT_TAG,
+      name: validateComponentString(subComponents[0]),
+    };
   }
+  throw setErrorName(new SfError('The npm name is invalid.', 'InvalidNpmName'), 'InvalidNpmName');
+};
 
-  /**
-   * Produces a formatted string version of the object.
-   *
-   * @return {string} A formatted string version of the object.
-   */
-  public toString(includeTag = false): string {
-    const nameComponents: string[] = [];
-    if (this.scope && this.scope.length > 0) {
-      nameComponents.push(`@${this.scope}/`);
-    }
-
-    nameComponents.push(this.name);
-
-    if (includeTag && this.tag && this.tag.length > 0) {
-      nameComponents.push(`@${this.tag}`);
-    }
-
-    return nameComponents.join('');
+/**
+ * Validate a component part that it's not empty and return it trimmed.
+ *
+ * @param {string} name The component to validate.
+ * @return {string} A whitespace trimmed version of the component.
+ */
+const validateComponentString = (name: string): string => {
+  const trimmedName = name.trim();
+  if (trimmedName && trimmedName.length > 0) {
+    return trimmedName;
   }
-}
+  throw setErrorName(
+    new SfError('The npm name is missing or invalid.', 'MissingOrInvalidNpmName'),
+    'MissingOrInvalidNpmName'
+  );
+};

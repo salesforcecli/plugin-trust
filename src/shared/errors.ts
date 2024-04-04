@@ -14,6 +14,7 @@ import { SfError } from '@salesforce/core';
 export const setErrorName = (err: SfError, name: string): SfError => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore override readonly .name field
+  // eslint-disable-next-line no-param-reassign
   err.name = name;
   return err;
 };

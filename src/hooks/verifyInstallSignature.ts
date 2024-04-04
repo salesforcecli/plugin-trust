@@ -17,7 +17,7 @@ import {
   isAllowListed,
 } from '../shared/installationVerification.js';
 
-import { NpmName } from '../shared/NpmName.js';
+import { type NpmName, parseNpmName } from '../shared/NpmName.js';
 
 export const hook: Hook.PluginsPreinstall = async function (options) {
   if (options.plugin && options.plugin.type === 'npm') {
@@ -35,7 +35,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
       return;
     }
     logger.debug('parsing npm name');
-    const npmName = NpmName.parse(plugin.name);
+    const npmName = parseNpmName(plugin.name);
     logger.debug(`npmName components: ${JSON.stringify(npmName, null, 4)}`);
 
     npmName.tag = plugin.tag || 'latest';
