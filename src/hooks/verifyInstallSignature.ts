@@ -17,7 +17,7 @@ import {
   isAllowListed,
 } from '../shared/installationVerification.js';
 
-import { type ParsedNpm, parseNpmName } from '../shared/npmName.js';
+import { type NpmName, parseNpmName } from '../shared/npmName.js';
 
 export const hook: Hook.PluginsPreinstall = async function (options) {
   if (options.plugin && options.plugin.type === 'npm') {
@@ -87,7 +87,7 @@ export default hook;
 /**
  * Build a VerificationConfig. Useful for testing.
  */
-const buildVerificationConfig = (npmName: ParsedNpm, configContext: ConfigContext): VerificationConfig => {
+const buildVerificationConfig = (npmName: NpmName, configContext: ConfigContext): VerificationConfig => {
   const vConfig = new VerificationConfig();
   vConfig.verifier = new InstallationVerification().setPluginNpmName(npmName).setConfig(configContext);
   return vConfig;

@@ -26,7 +26,7 @@ import {
   Verifier,
 } from '../../src/shared/installationVerification.js';
 import { NpmMeta, NpmModule, NpmShowResults } from '../../src/shared/npmCommand.js';
-import { ParsedNpm, parseNpmName } from '../../src/shared/npmName.js';
+import { type NpmName, parseNpmName } from '../../src/shared/npmName.js';
 import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert.js';
 
 const BLANK_PLUGIN = { plugin: '', tag: '' };
@@ -137,7 +137,7 @@ describe('InstallationVerification Tests', () => {
   };
   const currentRegistry = process.env.SFDX_NPM_REGISTRY;
   let fsReaddirSyncStub: Sinon.SinonStub;
-  let plugin: ParsedNpm;
+  let plugin: NpmName;
   let realpathSyncStub: Sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
   let shelljsExecStub: Sinon.SinonStub;
