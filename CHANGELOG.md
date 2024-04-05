@@ -1,3 +1,9 @@
+## [3.5.3](https://github.com/salesforcecli/plugin-trust/compare/3.5.2...3.5.3) (2024-04-05)
+
+### Bug Fixes
+
+- file casing consistent with export ([d98792d](https://github.com/salesforcecli/plugin-trust/commit/d98792da2db55b47467bdf74652421fa5b406607))
+
 ## [3.5.2](https://github.com/salesforcecli/plugin-trust/compare/3.5.1...3.5.2) (2024-04-05)
 
 ### Bug Fixes
