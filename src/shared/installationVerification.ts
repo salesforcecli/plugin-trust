@@ -19,7 +19,7 @@ import { ux } from '@oclif/core';
 import { prompts } from '@salesforce/sf-plugins-core';
 import { maxSatisfying } from 'semver';
 import { NpmModule, NpmMeta } from './npmCommand.js';
-import { NpmName } from './NpmName.js';
+import { NpmName, npmNameToString } from './NpmName.js';
 import { setErrorName } from './errors.js';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
@@ -265,7 +265,7 @@ export class InstallationVerification implements Verifier {
     return isAllowListed({
       logger: await this.getLogger(),
       configPath: this.getConfigPath() ?? '',
-      name: this.pluginNpmName?.toString(),
+      name: this.pluginNpmName ? npmNameToString(this.pluginNpmName) : undefined,
     });
   }
 

@@ -12,7 +12,7 @@ import {
   InstallationVerification,
   VerificationConfig,
 } from '../../../shared/installationVerification.js';
-import { NpmName } from '../../../shared/NpmName.js';
+import { type NpmName, parseNpmName } from '../../../shared/NpmName.js';
 import { setErrorName } from '../../../shared/errors.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
@@ -50,7 +50,7 @@ export class Verify extends SfCommand<VerifyResponse> {
     const logger = await Logger.child('verify');
     this.log('Checking for digital signature.');
 
-    const npmName: NpmName = NpmName.parse(flags.npm);
+    const npmName = parseNpmName(flags.npm);
 
     logger.debug(`running verify command for npm: ${npmName.name}`);
 

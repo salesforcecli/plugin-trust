@@ -26,7 +26,7 @@ import {
   Verifier,
 } from '../../src/shared/installationVerification.js';
 import { NpmMeta, NpmModule, NpmShowResults } from '../../src/shared/npmCommand.js';
-import { NpmName } from '../../src/shared/NpmName.js';
+import { NpmName, parseNpmName } from '../../src/shared/NpmName.js';
 import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert.js';
 
 const BLANK_PLUGIN = { plugin: '', tag: '' };
@@ -159,7 +159,7 @@ describe('InstallationVerification Tests', () => {
 
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
     shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
-    plugin = NpmName.parse('foo');
+    plugin = parseNpmName('foo');
     pollForAvailabilityStub = stubMethod(sandbox, NpmModule.prototype, 'pollForAvailability').resolves();
     gotStub = stubMethod(sandbox, got, 'get');
   });
@@ -548,7 +548,7 @@ describe('InstallationVerification Tests', () => {
       stubMethod(sandbox, fs.promises, 'rm').resolves();
       stubMethod(sandbox, fs.promises, 'readFile').resolves(`["${TEST_VALUE1}"]`);
       const verification1 = new InstallationVerification()
-        .setPluginNpmName(NpmName.parse(TEST_VALUE1))
+        .setPluginNpmName(parseNpmName(TEST_VALUE1))
         .setConfig(config);
       expect(await verification1.isAllowListed()).to.be.equal(true);
     });
@@ -560,7 +560,7 @@ describe('InstallationVerification Tests', () => {
       stubMethod(sandbox, fs.promises, 'readFile').resolves(`["${TEST_VALUE2}"]`);
 
       const verification2 = new InstallationVerification()
-        .setPluginNpmName(NpmName.parse(TEST_VALUE2))
+        .setPluginNpmName(parseNpmName(TEST_VALUE2))
         .setConfig(config);
       expect(await verification2.isAllowListed()).to.be.equal(true);
     });
@@ -572,7 +572,7 @@ describe('InstallationVerification Tests', () => {
       stubMethod(sandbox, fs.promises, 'rm').resolves();
       stubMethod(sandbox, fs.promises, 'readFile').rejects(error);
 
-      const verification = new InstallationVerification().setPluginNpmName(NpmName.parse('BAR')).setConfig(config);
+      const verification = new InstallationVerification().setPluginNpmName(parseNpmName('BAR')).setConfig(config);
       expect(await verification.isAllowListed()).to.be.equal(false);
     });
   });
