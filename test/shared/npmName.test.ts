@@ -6,7 +6,7 @@
  */
 
 import { expect } from 'chai';
-import { npmNameToString, parseNpmName } from '../../src/shared/NpmName.js';
+import { npmNameToString, parseNpmName } from '../../src/shared/npmName.js';
 
 describe('npmName', () => {
   describe('parse', () => {

@@ -9,7 +9,7 @@ import { setErrorName } from './errors.js';
 
 const DEFAULT_TAG = 'latest';
 
-export type NpmName = {
+export type ParsedNpm = {
   tag: string;
   scope?: string;
   name: string;
@@ -19,9 +19,9 @@ export type NpmName = {
  * Parse an NPM package name into {scope, name, tag}. The tag is 'latest' by default and can be any semver string.
  *
  * @param {string} npmName - The npm name to parse.
- * @return {NpmName} - An object with the parsed components.
+ * @return {ParsedNpm} - An object with the parsed components.
  */
-export const parseNpmName = (npmName: string): NpmName => {
+export const parseNpmName = (npmName: string): ParsedNpm => {
   const nameWithoutAt = validateNpmNameAndRemoveLeadingAt(npmName);
   const hasScope = nameWithoutAt.includes('/');
   const hasTag = nameWithoutAt.includes('@');
@@ -34,7 +34,7 @@ export const parseNpmName = (npmName: string): NpmName => {
 };
 
 /** Produces a formatted string version of the object */
-export const npmNameToString = (npmName: NpmName): string =>
+export const npmNameToString = (npmName: ParsedNpm): string =>
   `${npmName.scope ? `@${npmName.scope}/` : ''}${npmName.name}`;
 
 const validateNpmNameAndRemoveLeadingAt = (input: string): string => {

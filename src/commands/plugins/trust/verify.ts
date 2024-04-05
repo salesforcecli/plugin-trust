@@ -12,7 +12,7 @@ import {
   InstallationVerification,
   VerificationConfig,
 } from '../../../shared/installationVerification.js';
-import { type NpmName, parseNpmName } from '../../../shared/NpmName.js';
+import { type ParsedNpm, parseNpmName } from '../../../shared/npmName.js';
 import { setErrorName } from '../../../shared/errors.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
@@ -41,7 +41,7 @@ export class Verify extends SfCommand<VerifyResponse> {
     loglevel,
   };
 
-  private static getVerifier(npmName: NpmName, config: ConfigContext): InstallationVerification {
+  private static getVerifier(npmName: ParsedNpm, config: ConfigContext): InstallationVerification {
     return new InstallationVerification().setPluginNpmName(npmName).setConfig(config);
   }
 

@@ -19,7 +19,7 @@ import { ux } from '@oclif/core';
 import { prompts } from '@salesforce/sf-plugins-core';
 import { maxSatisfying } from 'semver';
 import { NpmModule, NpmMeta } from './npmCommand.js';
-import { NpmName, npmNameToString } from './NpmName.js';
+import { ParsedNpm, npmNameToString } from './npmName.js';
 import { setErrorName } from './errors.js';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
@@ -187,7 +187,7 @@ export async function isAllowListed({
  */
 export class InstallationVerification implements Verifier {
   // The name of the published plugin
-  private pluginNpmName?: NpmName;
+  private pluginNpmName?: ParsedNpm;
 
   // config derived from the cli environment
   private config?: ConfigContext;
@@ -211,7 +211,7 @@ export class InstallationVerification implements Verifier {
    *
    * @param _pluginName the published plugin name
    */
-  public setPluginNpmName(_pluginName?: NpmName | undefined): InstallationVerification {
+  public setPluginNpmName(_pluginName?: ParsedNpm | undefined): InstallationVerification {
     if (_pluginName) {
       this.pluginNpmName = _pluginName;
       return this;
