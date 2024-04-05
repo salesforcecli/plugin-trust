@@ -17,7 +17,7 @@ import {
   isAllowListed,
 } from '../shared/installationVerification.js';
 
-import { type NpmName, parseNpmName } from '../shared/NpmName.js';
+import { type NpmName, parseNpmName } from '../shared/npmName.js';
 
 export const hook: Hook.PluginsPreinstall = async function (options) {
   if (options.plugin && options.plugin.type === 'npm') {

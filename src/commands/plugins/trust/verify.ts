@@ -12,7 +12,7 @@ import {
   InstallationVerification,
   VerificationConfig,
 } from '../../../shared/installationVerification.js';
-import { type NpmName, parseNpmName } from '../../../shared/NpmName.js';
+import { type NpmName, parseNpmName } from '../../../shared/npmName.js';
 import { setErrorName } from '../../../shared/errors.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);

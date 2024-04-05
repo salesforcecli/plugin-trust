@@ -26,7 +26,7 @@ import {
   Verifier,
 } from '../../src/shared/installationVerification.js';
 import { NpmMeta, NpmModule, NpmShowResults } from '../../src/shared/npmCommand.js';
-import { NpmName, parseNpmName } from '../../src/shared/NpmName.js';
+import { type NpmName, parseNpmName } from '../../src/shared/npmName.js';
 import { CERTIFICATE, TEST_DATA, TEST_DATA_SIGNATURE } from '../testCert.js';
 
 const BLANK_PLUGIN = { plugin: '', tag: '' };
