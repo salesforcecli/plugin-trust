@@ -1,3 +1,10 @@
+## [3.5.2](https://github.com/salesforcecli/plugin-trust/compare/3.5.1...3.5.2) (2024-04-05)
+
+### Bug Fixes
+
+- parsing to string and UT (tag is never used) ([1414853](https://github.com/salesforcecli/plugin-trust/commit/141485378a3f65c963315d51e0407743d17c58a5))
+- refactor npmName ([6dc0b30](https://github.com/salesforcecli/plugin-trust/commit/6dc0b30daf93687b5b2fc1d46c771fead1d6ad66))
+
 ## [3.5.1](https://github.com/salesforcecli/plugin-trust/compare/3.5.0...3.5.1) (2024-03-30)
 
 ### Bug Fixes
