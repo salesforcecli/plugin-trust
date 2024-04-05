@@ -19,7 +19,7 @@ import { ux } from '@oclif/core';
 import { prompts } from '@salesforce/sf-plugins-core';
 import { maxSatisfying } from 'semver';
 import { NpmModule, NpmMeta } from './npmCommand.js';
-import { NpmName, npmNameToString } from './npmName.js';
+import { type NpmName, npmNameToString } from './npmName.js';
 import { setErrorName } from './errors.js';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
