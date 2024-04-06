@@ -18,7 +18,7 @@ import { setErrorName } from '../../../shared/errors.js';
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
 
-export interface VerifyResponse {
+export type VerifyResponse = {
   message: string;
   verified: boolean;
 }

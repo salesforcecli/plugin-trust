@@ -27,13 +27,13 @@ const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 
-export interface ConfigContext {
+export type ConfigContext = {
   configDir?: string;
   cacheDir?: string;
   dataDir?: string;
   cliRoot?: string;
 }
-export interface Verifier {
+export type Verifier = {
   verify(): Promise<NpmMeta>;
   isAllowListed(): Promise<boolean>;
 }
