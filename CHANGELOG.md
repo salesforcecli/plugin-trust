@@ -1,3 +1,9 @@
+# [3.6.0](https://github.com/salesforcecli/plugin-trust/compare/3.5.4...3.6.0) (2024-04-10)
+
+### Features
+
+- core7 and jsforce-node ([4350cfc](https://github.com/salesforcecli/plugin-trust/commit/4350cfc0b6d50bf89eee05170b34cbbf153c1079))
+
 ## [3.5.4](https://github.com/salesforcecli/plugin-trust/compare/3.5.3...3.5.4) (2024-04-07)
 
 ### Bug Fixes
