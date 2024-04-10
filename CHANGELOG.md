@@ -1,3 +1,9 @@
+## [3.6.1](https://github.com/salesforcecli/plugin-trust/compare/3.6.0...3.6.1) (2024-04-10)
+
+### Bug Fixes
+
+- **deps:** bump tar from 6.2.0 to 6.2.1 ([#790](https://github.com/salesforcecli/plugin-trust/issues/790)) ([e79fd6a](https://github.com/salesforcecli/plugin-trust/commit/e79fd6ac6a71bb4e2bf34e65be772ecb425be4cc))
+
 # [3.6.0](https://github.com/salesforcecli/plugin-trust/compare/3.5.4...3.6.0) (2024-04-10)
 
 ### Features
