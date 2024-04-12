@@ -41,6 +41,7 @@ jobs:
       - run: |
           if [[ -n $(git status --short) ]]; then
             npm install @salesforce/cli -g
+            yarn build
             yarn test:nuts
             git add -A
             git commit -m "fix: update npm version"
