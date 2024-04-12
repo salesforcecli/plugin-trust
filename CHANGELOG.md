@@ -1,3 +1,9 @@
+## [3.6.2](https://github.com/salesforcecli/plugin-trust/compare/3.6.1...3.6.2) (2024-04-12)
+
+### Bug Fixes
+
+- **deps:** bump devDeps ([3d4a1cd](https://github.com/salesforcecli/plugin-trust/commit/3d4a1cdb26b5aecb963fad060077e2a2057124e6))
+
 ## [3.6.1](https://github.com/salesforcecli/plugin-trust/compare/3.6.0...3.6.1) (2024-04-10)
 
 ### Bug Fixes
