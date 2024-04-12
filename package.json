@@ -13,7 +13,7 @@
     "@salesforce/kit": "^3.1.0",
     "@salesforce/sf-plugins-core": "^9.0.0",
     "got": "^13.0.0",
-    "npm": "10.2.3",
+    "npm": "10.5.0",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^6.4.0",
     "semver": "^7.6.0",
