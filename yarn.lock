@@ -1800,10 +1800,10 @@
     debug "^4.3.4"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-telemetry@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.2.0.tgz#c0a8de04b7838994e94dff75572250009d4af075"
-  integrity sha512-N+Rc+LyO3n+4BJ37cgm77DzoszI1Q/l/dQqBM6tNWmovlvxFL5RsUJm7/etEagDuZURBAJrv72jiel4P0XKfow==
+"@salesforce/plugin-telemetry@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.3.0.tgz#29aaa4eba957b475265bbdb8eb73f44d15c1d10f"
+  integrity sha512-bxsPltJCwnKp9TPCd6XnFW2Uslo/mOgiYTYjwPN8mBNLhbubsN8PgJ0kh5qwH9MdPUd09+u8HafP9+T7E7kkDw==
   dependencies:
     "@oclif/core" "^3.26.2"
     "@salesforce/core" "^7.0.1"
