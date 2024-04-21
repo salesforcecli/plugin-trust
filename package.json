@@ -10,7 +10,7 @@
   "dependencies": {
     "@oclif/core": "^3.26.4",
     "@salesforce/core": "^7.3.0",
-    "@salesforce/kit": "^3.1.0",
+    "@salesforce/kit": "^3.1.1",
     "@salesforce/sf-plugins-core": "^9.0.0",
     "got": "^13.0.0",
     "npm": "10.5.0",
