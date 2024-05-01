@@ -1,3 +1,9 @@
+## [3.6.7](https://github.com/salesforcecli/plugin-trust/compare/3.6.6...3.6.7) (2024-05-01)
+
+### Bug Fixes
+
+- standard npm updates ([#805](https://github.com/salesforcecli/plugin-trust/issues/805)) ([57d8cbf](https://github.com/salesforcecli/plugin-trust/commit/57d8cbfa100061540eabe1edb3ee3ac6d4644b43))
+
 ## [3.6.6](https://github.com/salesforcecli/plugin-trust/compare/3.6.5...3.6.6) (2024-04-21)
 
 ### Bug Fixes
