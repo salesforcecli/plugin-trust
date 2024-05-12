@@ -1952,7 +1952,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.0"
 
-"@salesforce/core@^7.0.0", "@salesforce/core@^7.2.0", "@salesforce/core@^7.3.1", "@salesforce/core@^7.3.3", "@salesforce/core@^7.3.5", "@salesforce/core@^7.3.6":
+"@salesforce/core@^7.0.0", "@salesforce/core@^7.3.1", "@salesforce/core@^7.3.3", "@salesforce/core@^7.3.5", "@salesforce/core@^7.3.6":
   version "7.3.6"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-7.3.6.tgz#b2769abf3d8cee6fef26741dd9bdbe977a497023"
   integrity sha512-LngaY4GxixZ7X5oPGa00NdRzpqTXC8jPOQ/H+oFNiZb8nhMfYTBsQob258z33sIBf+G/5RZOJgX10Z+teJzt6A==
@@ -2034,13 +2034,13 @@
     debug "^4.3.4"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-telemetry@^3.3.5":
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.3.5.tgz#706dd827fa4d6a11d01175b3f1df50e30bed8a1d"
-  integrity sha512-6RJEYxEYPNru6izCBuDf4Rwh8H+YImGBvXPUF8h7YsNdg3TDvhjIKiiMjvYsByjRywenqkF5ZTpQ9OC2nAPoTA==
+"@salesforce/plugin-telemetry@^3.3.7":
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.3.7.tgz#9b143decff30aa0824f3ec32ac482c946a5d8f96"
+  integrity sha512-PGqtdvXtM5gC2CpXrMdMeEblBVMzJqMgX7s9q9sNdVqYMJR3J+l+SKH0BOm/SZ5Hua2p2vJs7Aza72hFIn71sw==
   dependencies:
     "@oclif/core" "^3.26.2"
-    "@salesforce/core" "^7.2.0"
+    "@salesforce/core" "^7.3.5"
     "@salesforce/kit" "^3.1.0"
     "@salesforce/sf-plugins-core" "^9.0.4"
     "@salesforce/telemetry" "^6.0.0"
