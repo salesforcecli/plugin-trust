@@ -1,3 +1,9 @@
+## [3.6.11](https://github.com/salesforcecli/plugin-trust/compare/3.6.10...3.6.11) (2024-05-12)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 7.3.5 to 7.3.6 ([018fa76](https://github.com/salesforcecli/plugin-trust/commit/018fa763ee9ed21c242f679e634b434aeb020a28))
+
 ## [3.6.10](https://github.com/salesforcecli/plugin-trust/compare/3.6.9...3.6.10) (2024-05-12)
 
 ### Bug Fixes
