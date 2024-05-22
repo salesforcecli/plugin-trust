@@ -157,6 +157,14 @@ export class NpmModule {
     };
   }
 
+  public ping(registry?: string): { registry: string; time: number; details: Record<string, unknown> } {
+    return JSON.parse(NpmCommand.runNpmCmd(`ping ${registry} --json`, { json: true, cliRoot: this.cliRoot })) as {
+      registry: string;
+      time: number;
+      details: Record<string, unknown>;
+    };
+  }
+
   public show(registry: string): NpmShowResults {
     const showCmd = NpmCommand.runNpmCmd(`show ${this.module}@${this.version} --json`, {
       registry,

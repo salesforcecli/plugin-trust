@@ -11,6 +11,7 @@
     "@oclif/core": "^3.26.6",
     "@salesforce/core": "^7.3.8",
     "@salesforce/kit": "^3.1.1",
+    "@salesforce/plugin-info": "^3.2.7",
     "@salesforce/sf-plugins-core": "^9.0.10",
     "got": "^13.0.0",
     "npm": "^10.7.0",
@@ -58,6 +59,7 @@
   "oclif": {
     "commands": "./lib/commands",
     "hooks": {
+      "sf-doctor-@salesforce/plugin-trust": "./lib/hooks/diagnostics",
       "plugins:preinstall:verify:signature": [
         "./lib/hooks/verifyInstallSignature.js"
       ],
