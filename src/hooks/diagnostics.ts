@@ -20,7 +20,7 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
   ].map(async (url) => {
     try {
       // find npm install
-      const module = new NpmModule('@salesforce/cli');
+      const module = new NpmModule('');
 
       const results = module.ping(url);
 
@@ -29,9 +29,9 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
         // to trigger the catch/fail below
         throw Error;
       }
-      await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: url, status: 'pass' });
+      await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: `can access: ${url}`, status: 'pass' });
     } catch (e) {
-      await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: url, status: 'fail' });
+      await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: `can't access: ${url}`, status: 'fail' });
       options.doctor.addSuggestion(
         `Cannot reach ${url} - potential network configuration error, check proxies, firewalls, environment variables`
       );
