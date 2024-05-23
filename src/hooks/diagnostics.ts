@@ -13,7 +13,7 @@ export const hook: HookFunction = (options) => Promise.all([registryCheck(option
 const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
   // find npm install
   const npm = new NpmModule('');
-
+  const config = npm.run('config get registry').stdout.trim();
   await Promise.all(
     [
       ...new Set([
@@ -21,9 +21,10 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
         'https://registry.npmjs.org',
         'https://registry.yarnpkg.com',
         process.env.npm_config_registry ??
-          process.env.NPM_CONFIG_REGISTRY ??
-          npm.run('config get registry').stdout.trim() ??
-          'https://registry.npmjs.org',
+        process.env.NPM_CONFIG_REGISTRY ??
+        npm.run('config get registry').stdout.trim()
+          ? config
+          : 'https://registry.npmjs.org',
       ]),
     ].map(async (url) => {
       try {
