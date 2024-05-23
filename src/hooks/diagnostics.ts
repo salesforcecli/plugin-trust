@@ -13,7 +13,7 @@ export const hook: HookFunction = (options) => Promise.all([registryCheck(option
 const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
   // find npm install
   const npm = new NpmModule('');
-  const config = npm.run('config get registry').stdout.trim();
+
   await Promise.all(
     [
       ...new Set([
@@ -21,27 +21,28 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
         'https://registry.npmjs.org',
         'https://registry.yarnpkg.com',
         process.env.npm_config_registry ??
-        process.env.NPM_CONFIG_REGISTRY ??
-        npm.run('config get registry').stdout.trim()
-          ? config
-          : 'https://registry.npmjs.org',
+          process.env.NPM_CONFIG_REGISTRY ??
+          npm.run('config get registry').stdout.trim(),
       ]),
-    ].map(async (url) => {
-      try {
-        const results = npm.ping(url);
+    ]
+      // incase customRegistry is undefined, prevent printing an extra line
+      .filter((u) => u)
+      .map(async (url) => {
+        try {
+          const results = npm.ping(url);
 
-        // timeout after 5000ms, error
-        if (!results || results.time > 5000) {
-          // to trigger the catch/fail below
-          throw Error;
+          // timeout after 5000ms, error
+          if (!results || results.time > 5000) {
+            // to trigger the catch/fail below
+            throw Error;
+          }
+          await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: `can access: ${url}`, status: 'pass' });
+        } catch (e) {
+          await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: `can't access: ${url}`, status: 'fail' });
+          options.doctor.addSuggestion(
+            `Cannot reach ${url} - potential network configuration error, check proxies, firewalls, environment variables`
+          );
         }
-        await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: `can access: ${url}`, status: 'pass' });
-      } catch (e) {
-        await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: `can't access: ${url}`, status: 'fail' });
-        options.doctor.addSuggestion(
-          `Cannot reach ${url} - potential network configuration error, check proxies, firewalls, environment variables`
-        );
-      }
-    })
+      })
   );
 };
