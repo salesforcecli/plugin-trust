@@ -1,3 +1,9 @@
+# [3.7.0](https://github.com/salesforcecli/plugin-trust/compare/3.6.13...3.7.0) (2024-05-23)
+
+### Features
+
+- add network diagnostic check ([#828](https://github.com/salesforcecli/plugin-trust/issues/828)) ([4577086](https://github.com/salesforcecli/plugin-trust/commit/457708699f2e7792484c0b47f1ed20ae93b578c7))
+
 ## [3.6.13](https://github.com/salesforcecli/plugin-trust/compare/3.6.12...3.6.13) (2024-05-19)
 
 ### Bug Fixes
