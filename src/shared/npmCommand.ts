@@ -11,7 +11,7 @@ import { createRequire } from 'node:module';
 
 import fs from 'node:fs';
 import npmRunPath from 'npm-run-path';
-import shelljs from 'shelljs';
+import shelljs, { ShellString } from 'shelljs';
 import { SfError } from '@salesforce/core';
 import { sleep, parseJson } from '@salesforce/kit';
 import { Ux } from '@salesforce/sf-plugins-core';
@@ -155,6 +155,18 @@ export class NpmModule {
     this.npmMeta = {
       moduleName: module,
     };
+  }
+
+  public ping(registry?: string): { registry: string; time: number; details: Record<string, unknown> } {
+    return JSON.parse(NpmCommand.runNpmCmd(`ping ${registry} --json`, { json: true, cliRoot: this.cliRoot })) as {
+      registry: string;
+      time: number;
+      details: Record<string, unknown>;
+    };
+  }
+
+  public run(command: string): ShellString {
+    return NpmCommand.runNpmCmd(command, { cliRoot: this.cliRoot, json: command.includes('--json') });
   }
 
   public show(registry: string): NpmShowResults {
