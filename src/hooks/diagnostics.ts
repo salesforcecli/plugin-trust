@@ -11,8 +11,18 @@ type HookFunction = (options: { doctor: SfDoctor }) => Promise<[void]>;
 export const hook: HookFunction = (options) => Promise.all([registryCheck(options)]);
 
 const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
+  const pluginName = '@salesforce/plugin-trust';
   // find npm install
   const npm = new NpmModule('');
+  const env = process.env.npm_config_registry ?? process.env.NPM_CONFIG_REGISTRY;
+  if (env) {
+    options.doctor.addSuggestion(`using npm registry ${env} from environment variable`);
+  }
+
+  const config = npm.run('config get registry').stdout.trim();
+  if (config) {
+    options.doctor.addSuggestion(`using npm registry ${config} from npm config`);
+  }
 
   await Promise.all(
     [
@@ -20,9 +30,7 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
         // npm and yarn registries
         'https://registry.npmjs.org',
         'https://registry.yarnpkg.com',
-        process.env.npm_config_registry ??
-          process.env.NPM_CONFIG_REGISTRY ??
-          npm.run('config get registry').stdout.trim(),
+        env ?? config,
       ]),
     ]
       // incase customRegistry is undefined, prevent printing an extra line
@@ -36,11 +44,17 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
             // to trigger the catch/fail below
             throw Error;
           }
-          await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: `can access: ${url}`, status: 'pass' });
+          await Lifecycle.getInstance().emit('Doctor:diagnostic', {
+            testName: `[${pluginName}] can ping: ${url}`,
+            status: 'pass',
+          });
         } catch (e) {
-          await Lifecycle.getInstance().emit('Doctor:diagnostic', { testName: `can't access: ${url}`, status: 'fail' });
+          await Lifecycle.getInstance().emit('Doctor:diagnostic', {
+            testName: `[${pluginName}] can't ping: ${url}`,
+            status: 'fail',
+          });
           options.doctor.addSuggestion(
-            `Cannot reach ${url} - potential network configuration error, check proxies, firewalls, environment variables`
+            `Cannot ping ${url} - potential network configuration error, check proxies, firewalls, environment variables. Verify this by running 'npm ping ${url}'`
           );
         }
       })
