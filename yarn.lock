@@ -2112,16 +2112,16 @@
     proxy-agent "^6.4.0"
     semver "^7.6.0"
 
-"@salesforce/plugin-telemetry@^3.3.9":
-  version "3.3.9"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.3.9.tgz#9dd576dac713cb67918e17f490ce78c68202e2a0"
-  integrity sha512-iX/9moXUmTtUDb8VStMMUwYUnO6pwmh4rtCBuZSBorVF8dx3k1UsLjmjmQZhhMSnfzJH5/3Xznvw7WeQgoQ7eQ==
+"@salesforce/plugin-telemetry@^3.3.12":
+  version "3.3.12"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.3.12.tgz#112d435e61494e8445eed343248b507281f6376f"
+  integrity sha512-Wn1b6pNkwfUHaaidvr7/fvUMo2oBv9HLgzZpdMg4maarN28aGuzkUDZznaryl0y1082j0JFD55QJCQUDrfATlA==
   dependencies:
     "@oclif/core" "^3.26.2"
     "@salesforce/core" "^7.3.5"
-    "@salesforce/kit" "^3.1.0"
+    "@salesforce/kit" "^3.1.2"
     "@salesforce/sf-plugins-core" "^9.0.10"
-    "@salesforce/telemetry" "^6.0.6"
+    "@salesforce/telemetry" "^6.0.9"
     "@salesforce/ts-types" "^2.0.9"
     debug "^4.3.4"
 
@@ -2148,13 +2148,13 @@
     "@salesforce/ts-types" "^2.0.9"
     chalk "^5.3.0"
 
-"@salesforce/telemetry@^6.0.6":
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-6.0.7.tgz#79fa4daabf440cbd5a88dfa9c42cf663cf6f3337"
-  integrity sha512-7eHgAdaO9i36+ynJjlE1hHM5y7IUh5MBzZvi6alx14YerhCz2Y6ILvZEsa/LgGA8BOoR83Vj8UAaLKByoQKA9w==
+"@salesforce/telemetry@^6.0.9":
+  version "6.0.9"
+  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-6.0.9.tgz#7237fe630d8be825fb37b866a96e610951a17e9f"
+  integrity sha512-JqrxUWjdDFzRjiM1zPtDbbMG7RaJkyKMANl/+Be8Szje/TiMW3HygCnIQKKmUdO3uKBDeNJgpvcLCHpNnX0dbg==
   dependencies:
-    "@salesforce/core" "^7.3.8"
-    "@salesforce/kit" "^3.1.1"
+    "@salesforce/core" "^7.3.9"
+    "@salesforce/kit" "^3.1.2"
     applicationinsights "^2.9.5"
     got "^11"
     proxy-agent "^6.4.0"
