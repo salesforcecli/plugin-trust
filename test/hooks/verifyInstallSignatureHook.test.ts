@@ -9,8 +9,8 @@ import { assert, expect, config as chaiConfig } from 'chai';
 import sinon from 'sinon';
 import { stubMethod } from '@salesforce/ts-sinon';
 
-import { prompts } from '@salesforce/sf-plugins-core';
-import { Config, ux } from '@oclif/core';
+import { Ux, prompts } from '@salesforce/sf-plugins-core';
+import { Config } from '@oclif/core';
 import { InstallationVerification, VerificationConfig } from '../../src/shared/installationVerification.js';
 
 chaiConfig.truncateThreshold = 0;
@@ -39,7 +39,7 @@ describe('plugin install hook', () => {
     stubMethod(sandbox, vConfig.verifier, 'isAllowListed').callsFake(async () => false);
 
     promptSpy = stubMethod(sandbox, prompts, 'confirm').resolves(false);
-    stubMethod(sandbox, ux, 'log').callsFake(() => {});
+    stubMethod(sandbox, Ux.prototype, 'log').callsFake(() => {});
   });
 
   afterEach(() => {

@@ -14,7 +14,7 @@ import { OptionsOfTextResponseBody } from 'got';
 import shelljs from 'shelljs';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
-import { prompts } from '@salesforce/sf-plugins-core';
+import { Ux, prompts } from '@salesforce/sf-plugins-core';
 import Sinon from 'sinon';
 import {
   ConfigContext,
@@ -596,7 +596,7 @@ describe('InstallationVerification Tests', () => {
         message = _message;
       };
 
-      await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+      await doInstallationCodeSigningVerification(new Ux())({}, BLANK_PLUGIN, vConfig);
       expect(message).to.include('Successfully');
       expect(message).to.include('digital signature');
     });
@@ -615,7 +615,7 @@ describe('InstallationVerification Tests', () => {
       } as Verifier;
 
       try {
-        return await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+        return await doInstallationCodeSigningVerification(new Ux())({}, BLANK_PLUGIN, vConfig);
       } catch (err) {
         expect(err).to.have.property('name', 'FailedDigitalSignatureVerification');
       }
@@ -637,7 +637,7 @@ describe('InstallationVerification Tests', () => {
       stubMethod(sandbox, prompts, 'confirm').resolves(false);
 
       try {
-        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+        await doInstallationCodeSigningVerification(new Ux())({}, BLANK_PLUGIN, vConfig);
         throw new Error('Failure: This should never happen');
       } catch (err) {
         expect(err).to.have.property('name', 'InstallationCanceledError');
@@ -660,7 +660,7 @@ describe('InstallationVerification Tests', () => {
       stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
       try {
-        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+        await doInstallationCodeSigningVerification(new Ux())({}, BLANK_PLUGIN, vConfig);
         throw new Error('Failure: This should never happen');
       } catch (err) {
         expect(err).to.have.property('name', 'UnexpectedHost');
@@ -683,7 +683,7 @@ describe('InstallationVerification Tests', () => {
       stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
       try {
-        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+        await doInstallationCodeSigningVerification(new Ux())({}, BLANK_PLUGIN, vConfig);
       } catch (e) {
         assert(e instanceof Error);
         const err = new Error("this test shouldn't fail.");
@@ -708,7 +708,7 @@ describe('InstallationVerification Tests', () => {
       stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
       try {
-        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+        await doInstallationCodeSigningVerification(new Ux())({}, BLANK_PLUGIN, vConfig);
       } catch (e) {
         assert(e instanceof Error);
         const err = new Error("this test shouldn't fail.");
@@ -733,7 +733,7 @@ describe('InstallationVerification Tests', () => {
       stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
       try {
-        await doInstallationCodeSigningVerification({}, BLANK_PLUGIN, vConfig);
+        await doInstallationCodeSigningVerification(new Ux())({}, BLANK_PLUGIN, vConfig);
       } catch (e) {
         assert(e instanceof Error);
         const err = new Error("this test shouldn't fail.");

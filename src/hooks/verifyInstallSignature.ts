@@ -7,7 +7,7 @@
 
 import { Hook } from '@oclif/core';
 import { Logger, Messages } from '@salesforce/core';
-import { ux } from '@oclif/core';
+import { Ux } from '@salesforce/sf-plugins-core/Ux';
 import {
   ConfigContext,
   doInstallationCodeSigningVerification,
@@ -20,6 +20,7 @@ import {
 import { type NpmName, parseNpmName } from '../shared/npmName.js';
 
 export const hook: Hook.PluginsPreinstall = async function (options) {
+  const ux = new Ux();
   if (options.plugin && options.plugin.type === 'npm') {
     const logger = await Logger.child('verifyInstallSignature');
     const plugin = options.plugin;
@@ -56,7 +57,7 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
 
     try {
       logger.debug('doing verification');
-      await doInstallationCodeSigningVerification(configContext, { plugin: plugin.name, tag: plugin.tag }, vConfig);
+      await doInstallationCodeSigningVerification(ux)(configContext, { plugin: plugin.name, tag: plugin.tag }, vConfig);
       ux.log('Finished digital signature check.');
     } catch (error) {
       if (!(error instanceof Error)) {
@@ -75,10 +76,10 @@ export const hook: Hook.PluginsPreinstall = async function (options) {
       const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
       ux.log(messages.getMessage('SkipSignatureCheck', [options.plugin.url]));
     } else {
-      await doPrompt(options.plugin.url);
+      await doPrompt(ux)(options.plugin.url);
     }
   } else {
-    await doPrompt();
+    await doPrompt(ux)();
   }
 };
 

@@ -11,11 +11,10 @@ import { URL } from 'node:url';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import { mkdir } from 'node:fs/promises';
-
+import { Ux } from '@salesforce/sf-plugins-core/Ux';
 import { Logger, SfError, Messages } from '@salesforce/core';
 import got from 'got';
 import { ProxyAgent } from 'proxy-agent';
-import { ux } from '@oclif/core';
 import { prompts } from '@salesforce/sf-plugins-core';
 import { maxSatisfying } from 'semver';
 import { NpmModule, NpmMeta } from './npmCommand.js';
@@ -32,11 +31,11 @@ export type ConfigContext = {
   cacheDir?: string;
   dataDir?: string;
   cliRoot?: string;
-}
+};
 export type Verifier = {
   verify(): Promise<NpmMeta>;
   isAllowListed(): Promise<boolean>;
-}
+};
 
 class CodeVerifierInfo {
   private signature?: Readable;
@@ -444,62 +443,66 @@ export class InstallationVerification implements Verifier {
 
 export class VerificationConfig {
   public verifier?: Verifier;
-
+  private ux = new Ux();
   // eslint-disable-next-line class-methods-use-this
   public log(message: string): void {
-    ux.log(message);
+    this.ux.log(message);
   }
 }
 
-export async function doPrompt(plugin?: string): Promise<void> {
-  const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
-  if (
-    !(await prompts.confirm({
-      message: messages.getMessage('InstallConfirmation', [plugin ?? 'This plugin']),
-      ms: 30_000,
-    }))
-  ) {
-    throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
-  }
-  // they approved the plugin.  Let them know how to automate this.
-  ux.log(messages.getMessage('SuggestAllowList'));
-}
-
-export async function doInstallationCodeSigningVerification(
-  config: ConfigContext,
-  plugin: { plugin: string; tag: string },
-  verificationConfig: VerificationConfig
-): Promise<void> {
-  const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
-
-  if (await verificationConfig.verifier?.isAllowListed()) {
-    verificationConfig.log(messages.getMessage('SkipSignatureCheck', [plugin.plugin]));
-    return;
-  }
-  try {
-    if (!verificationConfig.verifier) {
-      throw new Error('VerificationConfig.verifier is not set.');
+export const doPrompt =
+  (ux: Ux) =>
+  async (plugin?: string): Promise<void> => {
+    const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
+    if (
+      !(await prompts.confirm({
+        message: messages.getMessage('InstallConfirmation', [plugin ?? 'This plugin']),
+        ms: 30_000,
+      }))
+    ) {
+      throw new SfError('The user canceled the plugin installation.', 'InstallationCanceledError');
     }
-    const meta = await verificationConfig.verifier.verify();
-    if (!meta.verified) {
-      const err = messages.createError('FailedDigitalSignatureVerification');
-      throw setErrorName(err, 'FailedDigitalSignatureVerification');
+    // they approved the plugin.  Let them know how to automate this.
+    ux.log(messages.getMessage('SuggestAllowList'));
+  };
+
+export const doInstallationCodeSigningVerification =
+  (ux: Ux) =>
+  async (
+    config: ConfigContext,
+    plugin: { plugin: string; tag: string },
+    verificationConfig: VerificationConfig
+  ): Promise<void> => {
+    const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
+
+    if (await verificationConfig.verifier?.isAllowListed()) {
+      verificationConfig.log(messages.getMessage('SkipSignatureCheck', [plugin.plugin]));
+      return;
     }
-    verificationConfig.log(messages.getMessage('SignatureCheckSuccess', [plugin.plugin]));
-  } catch (err) {
-    if (err instanceof Error) {
-      if (err.name === 'NotSigned' || err.message?.includes('Response code 403')) {
-        if (!verificationConfig.verifier) {
-          throw new Error('VerificationConfig.verifier is not set.');
-        }
-        return await doPrompt(plugin.plugin);
-      } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
-        throw setErrorName(new SfError(err.message ?? 'The user canceled the plugin installation.'), '');
+    try {
+      if (!verificationConfig.verifier) {
+        throw new Error('VerificationConfig.verifier is not set.');
       }
-      throw setErrorName(SfError.wrap(err), err.name);
+      const meta = await verificationConfig.verifier.verify();
+      if (!meta.verified) {
+        const err = messages.createError('FailedDigitalSignatureVerification');
+        throw setErrorName(err, 'FailedDigitalSignatureVerification');
+      }
+      verificationConfig.log(messages.getMessage('SignatureCheckSuccess', [plugin.plugin]));
+    } catch (err) {
+      if (err instanceof Error) {
+        if (err.name === 'NotSigned' || err.message?.includes('Response code 403')) {
+          if (!verificationConfig.verifier) {
+            throw new Error('VerificationConfig.verifier is not set.');
+          }
+          return doPrompt(ux)(plugin.plugin);
+        } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
+          throw setErrorName(new SfError(err.message ?? 'The user canceled the plugin installation.'), '');
+        }
+        throw setErrorName(SfError.wrap(err), err.name);
+      }
     }
-  }
-}
+  };
 
 /**
  * Retrieve url content for a host
