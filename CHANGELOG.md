@@ -1,3 +1,9 @@
+## [3.7.5](https://github.com/salesforcecli/plugin-trust/compare/3.7.4...3.7.5) (2024-06-06)
+
+### Bug Fixes
+
+- **deps:** devScripts + manual changes ([#843](https://github.com/salesforcecli/plugin-trust/issues/843)) ([559ef17](https://github.com/salesforcecli/plugin-trust/commit/559ef1750d8178e6579b929e00a77b80f2edc074))
+
 ## [3.7.4](https://github.com/salesforcecli/plugin-trust/compare/3.7.3...3.7.4) (2024-06-02)
 
 ### Bug Fixes
