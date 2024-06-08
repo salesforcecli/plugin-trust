@@ -1825,10 +1825,10 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^4", "@oclif/core@^4.0.0-beta.12":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.0.2.tgz#e6b15c4397e52b31fde9b7695f537c20b56634ed"
-  integrity sha512-0r+JwE1FbVlEYNQlLonMULnZb6rKR0RqT8eUgKeJTb5cILhsKUjlZf2NLIX4GP3SZrK8POwGGLcztmj42hZYiw==
+"@oclif/core@^4", "@oclif/core@^4.0.0-beta.12", "@oclif/core@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.0.3.tgz#6231272447c7057813986860448613ed38cfdc47"
+  integrity sha512-yM8R/M2WfSNfL9eF8clS/SbQvanvHZJgoij5bLs3ro7uAFCkL/LYcagyj0UVGbysx5AI+SNIof6OHQUXYZpOZw==
   dependencies:
     ansi-escapes "^4.3.2"
     ansis "^3.1.1"
@@ -2056,15 +2056,15 @@
     proxy-agent "^6.4.0"
     semver "^7.6.0"
 
-"@salesforce/plugin-telemetry@^3.3.12":
-  version "3.3.12"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.3.12.tgz#112d435e61494e8445eed343248b507281f6376f"
-  integrity sha512-Wn1b6pNkwfUHaaidvr7/fvUMo2oBv9HLgzZpdMg4maarN28aGuzkUDZznaryl0y1082j0JFD55QJCQUDrfATlA==
+"@salesforce/plugin-telemetry@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.4.0.tgz#cf6f19b1732e4cf2562020f923e69aa728ecd827"
+  integrity sha512-SO6kRTNK3n7e4gXSdwlzNJD6VOgpGTvWI3dTSx+ymVwQNSgJaxJhM8KFOuxn1fvoxazhhTDvrMJmMWLIwNCFrA==
   dependencies:
-    "@oclif/core" "^3.26.2"
+    "@oclif/core" "^4.0.3"
     "@salesforce/core" "^7.3.5"
     "@salesforce/kit" "^3.1.2"
-    "@salesforce/sf-plugins-core" "^9.0.10"
+    "@salesforce/sf-plugins-core" "^10.0.0"
     "@salesforce/telemetry" "^6.0.9"
     "@salesforce/ts-types" "^2.0.9"
     debug "^4.3.4"
@@ -2097,7 +2097,7 @@
     string-width "^7.1.0"
     terminal-link "^3.0.0"
 
-"@salesforce/sf-plugins-core@^9.0.10", "@salesforce/sf-plugins-core@^9.0.5", "@salesforce/sf-plugins-core@^9.0.7":
+"@salesforce/sf-plugins-core@^9.0.5", "@salesforce/sf-plugins-core@^9.0.7":
   version "9.0.12"
   resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-9.0.12.tgz#8bcacdb412c3570f66220acd6346636d86f81d62"
   integrity sha512-KtZErzUdBrDDONpE6ZbW3V5WfBwUwo07Snttnu4IFs82rbsOkyCG/m02b+mbnGBrwWWy7auZW4e2ciRrmbZGDQ==
