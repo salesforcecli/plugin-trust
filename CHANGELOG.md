@@ -1,3 +1,9 @@
+## [3.7.6](https://github.com/salesforcecli/plugin-trust/compare/3.7.5...3.7.6) (2024-06-13)
+
+### Bug Fixes
+
+- **deps:** bump braces from 3.0.2 to 3.0.3 ([1091344](https://github.com/salesforcecli/plugin-trust/commit/10913448f4f4d75defc8b625f38f2f60062ac517))
+
 ## [3.7.5](https://github.com/salesforcecli/plugin-trust/compare/3.7.4...3.7.5) (2024-06-06)
 
 ### Bug Fixes
