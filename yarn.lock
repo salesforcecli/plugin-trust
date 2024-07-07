@@ -1667,10 +1667,10 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^4", "@oclif/core@^4.0.6":
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.0.7.tgz#e624fa6e91ddcd84ebd0aa9e6efbe17b94f2dd1f"
-  integrity sha512-sU4Dx+RXCWAkrMw8tQFYAL6VfcHYKLPxVC9iKfgTXr4aDhcCssDwrbgpx0Di1dnNxvQlDGUhuCEInZuIY/nNfw==
+"@oclif/core@^4", "@oclif/core@^4.0.6", "@oclif/core@^4.0.7":
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.0.8.tgz#667caa6481682e34594a4df6faeb3137879652d8"
+  integrity sha512-9AzNoRlKfIeuqOin+HK9cyouELeup7sX+MGIFc5dR+bnG0sSzFnV1A/Z57E7KWrY5NdWULHYT5NhiL1YpEhG2w==
   dependencies:
     ansi-escapes "^4.3.2"
     ansis "^3.1.1"
@@ -1683,7 +1683,7 @@
     indent-string "^4.0.0"
     is-wsl "^2.2.0"
     lilconfig "^3.1.2"
-    minimatch "^9.0.4"
+    minimatch "^9.0.5"
     string-width "^4.2.3"
     supports-color "^8"
     widest-line "^3.1.0"
@@ -1899,12 +1899,12 @@
     proxy-agent "^6.4.0"
     semver "^7.6.0"
 
-"@salesforce/plugin-telemetry@^3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.5.1.tgz#d2a12a380a547e936881eb0a7e45c07ecca111f7"
-  integrity sha512-YeTsbHP/M9lQntr6lp24sMEAEkUqYANY4BYwPM7k1rYWUr0iqKmNikXGZrXC1CjaeM+befSu9vxSIOSdFgPjwg==
+"@salesforce/plugin-telemetry@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.1.tgz#be5587a55f2892d2c8b13a75a39587766b327465"
+  integrity sha512-nCxKMTI9lKM5rGbGjvPRVMqvzMZmJEVNFLoQj1LzT4uQTeIXXV1Uq8pAaOFgsP8L9St+eX56oIfPaM9pUHuifQ==
   dependencies:
-    "@oclif/core" "^4.0.6"
+    "@oclif/core" "^4.0.7"
     "@salesforce/core" "^8.0.3"
     "@salesforce/kit" "^3.1.6"
     "@salesforce/sf-plugins-core" "^11.1.1"
@@ -6547,6 +6547,13 @@ minimatch@^9.0.0, minimatch@^9.0.3, minimatch@^9.0.4:
   version "9.0.4"
   resolved "https://registry.npmjs.org/minimatch/-/minimatch-9.0.4.tgz"
   integrity sha512-KqWh+VchfxcMNRAJjj2tnsSJdNbHsVgnkBhTNrW7AjVo6OvLtxw8zfT9oLw1JSohlFzJ8jCoTgaoXvJ+kHt6fw==
+  dependencies:
+    brace-expansion "^2.0.1"
+
+minimatch@^9.0.5:
+  version "9.0.5"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-9.0.5.tgz#d74f9dd6b57d83d8e98cfb82133b03978bc929e5"
+  integrity sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==
   dependencies:
     brace-expansion "^2.0.1"
 

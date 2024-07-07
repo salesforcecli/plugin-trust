@@ -25,7 +25,7 @@
     "@salesforce/cli-plugins-testkit": "^5.3.18",
     "@salesforce/dev-scripts": "^10.2.2",
     "@salesforce/plugin-command-reference": "^3.1.5",
-    "@salesforce/plugin-telemetry": "^3.5.1",
+    "@salesforce/plugin-telemetry": "^3.6.1",
     "@salesforce/ts-sinon": "^1.4.18",
     "@types/shelljs": "^0.8.15",
     "@types/sinon-chai": "^3.2.12",
