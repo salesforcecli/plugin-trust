@@ -1,3 +1,9 @@
+## [3.7.14](https://github.com/salesforcecli/plugin-trust/compare/3.7.13...3.7.14) (2024-07-21)
+
+### Bug Fixes
+
+- **deps:** bump semver from 7.6.2 to 7.6.3 ([feb6a7a](https://github.com/salesforcecli/plugin-trust/commit/feb6a7a568a2386ea5246dd39e69365aa41275ff))
+
 ## [3.7.13](https://github.com/salesforcecli/plugin-trust/compare/3.7.12...3.7.13) (2024-06-30)
 
 ### Bug Fixes
