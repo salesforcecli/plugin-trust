@@ -343,7 +343,7 @@ export class InstallationVerification implements Verifier {
     }
     logger.debug(`retrieveNpmMeta | npmRegistry: ${npmRegistry.href}`);
     logger.debug(`retrieveNpmMeta | this.pluginNpmName.name: ${this.pluginNpmName.name}`);
-    logger.debug(`retrieveNpmMeta | this.pluginNpmName.scope: ${this.pluginNpmName.scope}`);
+    logger.debug(`retrieveNpmMeta | this.pluginNpmName.scope: ${this.pluginNpmName.scope ?? '<not defined>'}`);
     logger.debug(`retrieveNpmMeta | this.pluginNpmName.tag: ${this.pluginNpmName.tag}`);
 
     const npmShowModule = this.pluginNpmName.scope
@@ -382,7 +382,7 @@ export class InstallationVerification implements Verifier {
           versionNumber =
             maxSatisfying(npmMetadata.versions, tagVersionStr) ??
             npmMetadata.versions.find((version) => version === tagVersionStr);
-          logger.debug(`retrieveNpmMeta | versionObject: ${versionNumber}`);
+          logger.debug(`retrieveNpmMeta | versionObject: ${versionNumber ?? '<not defined>'}`);
         } else {
           const err = new SfError(
             `The dist tag ${this.pluginNpmName.tag} was not found for plugin: ${this.pluginNpmName.name}`,
@@ -427,7 +427,7 @@ export class InstallationVerification implements Verifier {
 
       npmModule.npmMeta.tarballUrl = npmMetadata.dist?.tarball;
 
-      logger.debug(`retrieveNpmMeta | meta.tarballUrl: ${npmModule.npmMeta.tarballUrl}`);
+      logger.debug(`retrieveNpmMeta | meta.tarballUrl: ${npmModule.npmMeta.tarballUrl ?? '<not defined>'}`);
 
       return npmModule.npmMeta;
     }

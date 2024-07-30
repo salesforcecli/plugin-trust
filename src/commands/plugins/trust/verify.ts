@@ -21,7 +21,7 @@ const messages = Messages.loadMessages('@salesforce/plugin-trust', 'verify');
 export type VerifyResponse = {
   message: string;
   verified: boolean;
-}
+};
 
 export class Verify extends SfCommand<VerifyResponse> {
   public static readonly summary = messages.getMessage('summary');
@@ -63,9 +63,9 @@ export class Verify extends SfCommand<VerifyResponse> {
       cliRoot: this.config.root,
     };
 
-    logger.debug(`cacheDir: ${configContext.cacheDir}`);
-    logger.debug(`configDir: ${configContext.configDir}`);
-    logger.debug(`dataDir: ${configContext.dataDir}`);
+    (['cacheDir', 'configDir', 'dataDir'] as const)
+      .map((dir) => `${dir}: ${configContext[dir] ?? '<not present on configContext>'}`)
+      .map((s) => logger.debug(s));
 
     vConfig.verifier = Verify.getVerifier(npmName, configContext);
 
@@ -84,7 +84,7 @@ export class Verify extends SfCommand<VerifyResponse> {
 
     try {
       const meta = await vConfig.verifier.verify();
-      logger.debug(`meta.verified: ${meta.verified}`);
+      logger.debug(`meta.verified: ${meta.verified ?? '<not present>'}`);
 
       if (!meta.verified) {
         const e = messages.createError('FailedDigitalSignatureVerification');

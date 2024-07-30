@@ -60,7 +60,7 @@ class NpmCommand {
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const nodeExecutable = NpmCommand.findNode(options.cliRoot);
     const npmCli = NpmCommand.npmCli();
-    const command = `"${nodeExecutable}" "${npmCli}" ${cmd} --registry=${options.registry}`;
+    const command = `"${nodeExecutable}" "${npmCli}" ${cmd} --registry=${options.registry ?? ''}`;
     const npmCmdResult = shelljs.exec(command, {
       ...options,
       silent: true,
@@ -158,7 +158,7 @@ export class NpmModule {
   }
 
   public ping(registry?: string): { registry: string; time: number; details: Record<string, unknown> } {
-    return JSON.parse(NpmCommand.runNpmCmd(`ping ${registry} --json`, { json: true, cliRoot: this.cliRoot })) as {
+    return JSON.parse(NpmCommand.runNpmCmd(`ping ${registry ?? ''} --json`, { json: true, cliRoot: this.cliRoot })) as {
       registry: string;
       time: number;
       details: Record<string, unknown>;

@@ -17,11 +17,11 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
       eventName: 'JIT_INSTALL_STARTED',
       type: 'EVENT',
       version: opts.pluginVersion,
-      plugin: opts.command.pluginName,
+      plugin: opts.pluginName,
       command: opts.command.id,
     });
 
-    const jitInstallArgv = [`${opts.command.pluginName}@${opts.pluginVersion}`];
+    const jitInstallArgv = [`${opts.pluginName}@${opts.pluginVersion}`];
     if (opts.argv.includes('--json')) {
       // pass along --json arg to plugins:install
       jitInstallArgv.push('--json');
@@ -32,7 +32,7 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
       eventName: 'JIT_INSTALL_SUCCESS',
       type: 'EVENT',
       version: opts.pluginVersion,
-      plugin: opts.command.pluginName,
+      plugin: opts.pluginName,
       command: opts.command.id,
     });
   } catch (error) {
@@ -43,11 +43,14 @@ const hook: Hook<'jit_plugin_not_installed'> = async function (opts) {
       stackTrace:
         error instanceof Error ? error?.stack?.replace(new RegExp(homedir(), 'g'), '<GDPR_HIDDEN>') : undefined,
       version: opts.pluginVersion,
-      plugin: opts.command.pluginName,
+      plugin: opts.pluginName,
       command: opts.command.id,
     });
 
-    throw new SfError(`Could not install ${opts.command.pluginName}`, 'JitPluginInstallError');
+    throw new SfError(
+      `Could not install ${opts.pluginName ?? '<opts.command.pluginName not defined>'}`,
+      'JitPluginInstallError'
+    );
   }
 };
 
