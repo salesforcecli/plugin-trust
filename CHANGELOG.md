@@ -1,3 +1,9 @@
+## [3.7.19](https://github.com/salesforcecli/plugin-trust/compare/3.7.18...3.7.19) (2024-08-04)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/kit from 3.1.6 to 3.2.0 ([fd8b3b3](https://github.com/salesforcecli/plugin-trust/commit/fd8b3b36d33b6d84c00b3e5a8f8e1da542c1a878))
+
 ## [3.7.18](https://github.com/salesforcecli/plugin-trust/compare/3.7.17...3.7.18) (2024-08-04)
 
 ### Bug Fixes
