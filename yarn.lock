@@ -1277,37 +1277,18 @@
     wrap-ansi "^6.2.0"
     yoctocolors-cjs "^2.1.2"
 
-"@inquirer/core@^9.0.4":
-  version "9.0.7"
-  resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-9.0.7.tgz#ec529c2e8b531d574155f12615fbff42bb615da4"
-  integrity sha512-wyqnTmlnd9p7cX6tfMlth+/Nx7vV2t/FvtO9VMSi2XjBkNy0MkPr19RSOyP3qrywdlJT+BQbEnXLPqq0wFMw3A==
-  dependencies:
-    "@inquirer/figures" "^1.0.5"
-    "@inquirer/type" "^1.5.1"
-    "@types/mute-stream" "^0.0.4"
-    "@types/node" "^22.0.0"
-    "@types/wrap-ansi" "^3.0.0"
-    ansi-escapes "^4.3.2"
-    cli-spinners "^2.9.2"
-    cli-width "^4.1.0"
-    mute-stream "^1.0.0"
-    signal-exit "^4.1.0"
-    strip-ansi "^6.0.1"
-    wrap-ansi "^6.2.0"
-    yoctocolors-cjs "^2.1.2"
-
 "@inquirer/figures@^1.0.3", "@inquirer/figures@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@inquirer/figures/-/figures-1.0.5.tgz#57f9a996d64d3e3345d2a3ca04d36912e94f8790"
   integrity sha512-79hP/VWdZ2UVc9bFGJnoQ/lQMpL74mGgzSYX1xUqCVk7/v73vJCMw1VuyWN1jGkZ9B3z7THAbySqGbCNefcjfA==
 
-"@inquirer/input@^2.1.9", "@inquirer/input@^2.2.1":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@inquirer/input/-/input-2.2.3.tgz#19d74c21f94088df73743d9e160afbe2517b1483"
-  integrity sha512-L3vH9istz91uk43Us4dqLb0UV6XxoSQ2MYRs3QSIPDXj1zUPGOk44Y1R69tPkO4VSHnlZjDp+FPEf/CTaee4dg==
+"@inquirer/input@^2.1.9", "@inquirer/input@^2.2.7":
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/@inquirer/input/-/input-2.2.9.tgz#08fdf9a48e4f6fc64c2d508b9d10afac843f9bd8"
+  integrity sha512-7Z6N+uzkWM7+xsE+3rJdhdG/+mQgejOVqspoW+w0AbSZnL6nq5tGMEVASaYVWbkoSzecABWwmludO2evU3d31g==
   dependencies:
-    "@inquirer/core" "^9.0.4"
-    "@inquirer/type" "^1.5.0"
+    "@inquirer/core" "^9.0.10"
+    "@inquirer/type" "^1.5.2"
 
 "@inquirer/password@^2.1.20":
   version "2.1.22"
@@ -1329,7 +1310,7 @@
     ansi-escapes "^4.3.2"
     chalk "^4.1.2"
 
-"@inquirer/type@^1.3.3", "@inquirer/type@^1.5.0", "@inquirer/type@^1.5.1":
+"@inquirer/type@^1.3.3":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@inquirer/type/-/type-1.5.1.tgz#cdd36732e38ea5d2b1a4336aada65ebe7d2765e0"
   integrity sha512-m3YgGQlKNS0BM+8AFiJkCsTqHEFCWn6s/Rqye3mYwvqY6LdfUv12eSwbsgNzrYyrLXiy7IrrjDLPysaSBwEfhw==
@@ -1416,25 +1397,7 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@jsforce/jsforce-node@^3.2.0":
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/@jsforce/jsforce-node/-/jsforce-node-3.3.3.tgz#cef75219f467233b8e0c537e2026bd5860dc6fcb"
-  integrity sha512-oIheBN4vB9xvSaAjJXi1lcXe3KLShZKGITebD6X5ssoGZ+FPqoaXbI1I2yVWeWg8aWHh8VqhFRdz3duc7Rq8/w==
-  dependencies:
-    "@sindresorhus/is" "^4"
-    abort-controller "^3.0.0"
-    base64url "^3.0.1"
-    csv-parse "^5.5.2"
-    csv-stringify "^6.4.4"
-    faye "^1.4.0"
-    form-data "^4.0.0"
-    https-proxy-agent "^5.0.0"
-    multistream "^3.1.0"
-    node-fetch "^2.6.1"
-    strip-ansi "^6.0.0"
-    xml2js "^0.6.2"
-
-"@jsforce/jsforce-node@^3.4.0":
+"@jsforce/jsforce-node@^3.2.2", "@jsforce/jsforce-node@^3.4.0":
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/@jsforce/jsforce-node/-/jsforce-node-3.4.1.tgz#36f5cba775b395eeedba676a78eafe447c3f4b28"
   integrity sha512-PsBKfglH0/8W/Srr4LsxEFsVmjmZjEj/T4XLGpbBoK8yVObwbiMk4VqwA6XwiA6SHqnEqqQbHZxk2rr7dZC+4A==
@@ -1814,7 +1777,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.1"
 
-"@salesforce/core@^8.0.3", "@salesforce/core@^8.2.1", "@salesforce/core@^8.2.7", "@salesforce/core@^8.2.8":
+"@salesforce/core@^8.0.3", "@salesforce/core@^8.2.7", "@salesforce/core@^8.2.8":
   version "8.2.8"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.2.8.tgz#1e93ddd8b9f348f1e20547de4cdff30062520fd9"
   integrity sha512-Fyy1TG9cUtQV+YAjyYCHerZ0K/t9fuB6dU9HrXFvcjMKorMS5JaI1wkZh8w1+zfvu6GY/MOzeqVZCq2W+9ShLA==
@@ -1896,17 +1859,17 @@
     debug "^4.3.6"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-info@^3.3.21":
-  version "3.3.21"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-info/-/plugin-info-3.3.21.tgz#6dc6d246c37fc3d276806c2d07800a11cc609126"
-  integrity sha512-XsqbWThMR7wj4265Fu/WWHqrYLKLKX5wYZfVrSkyHGMf8euD2zII9h0KNM2A9/MPdxlao5PvbH/uhyLgOsnjJw==
+"@salesforce/plugin-info@^3.3.26":
+  version "3.3.26"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-info/-/plugin-info-3.3.26.tgz#07689d14e6f5d8220b45c5b699669ef667b559ae"
+  integrity sha512-mnG06d+xpS+vpuSGtjgRGlItyFuvlX7fM+0LniBBKp3yqnQhvv+zwLZqHiKan15vPB644CVnAPw1komEV3aa3w==
   dependencies:
-    "@inquirer/input" "^2.2.1"
-    "@jsforce/jsforce-node" "^3.2.0"
+    "@inquirer/input" "^2.2.7"
+    "@jsforce/jsforce-node" "^3.2.2"
     "@oclif/core" "^4"
-    "@salesforce/core" "^8.2.1"
+    "@salesforce/core" "^8.2.8"
     "@salesforce/kit" "^3.1.6"
-    "@salesforce/sf-plugins-core" "^11.1.2"
+    "@salesforce/sf-plugins-core" "^11.2.4"
     got "^13.0.0"
     marked "^4.3.0"
     marked-terminal "^4.2.0"
@@ -1937,7 +1900,7 @@
   resolved "https://registry.yarnpkg.com/@salesforce/schemas/-/schemas-1.9.0.tgz#ba477a112653a20b4edcf989c61c57bdff9aa3ca"
   integrity sha512-LiN37zG5ODT6z70sL1fxF7BQwtCX9JOWofSU8iliSNIM+WDEeinnoFtVqPInRSNt8I0RiJxIKCrqstsmQRBNvA==
 
-"@salesforce/sf-plugins-core@^11.1.1", "@salesforce/sf-plugins-core@^11.1.2", "@salesforce/sf-plugins-core@^11.2.4", "@salesforce/sf-plugins-core@^11.3.0":
+"@salesforce/sf-plugins-core@^11.1.1", "@salesforce/sf-plugins-core@^11.2.4", "@salesforce/sf-plugins-core@^11.3.0":
   version "11.3.0"
   resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-11.3.0.tgz#7bf0466f65761dc6fdfdf78f79cc705dd74b6d87"
   integrity sha512-kY+y8dxItkMCa52TCOxvu8nAPr2RyLf03pk+HVFMoHkVdumrbDdxmjYFNxAtYmDISQFx1W0SSoIeK2sboziDNw==
@@ -2753,7 +2716,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^22.0.0":
+"@types/node@*":
   version "22.0.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-22.0.0.tgz#04862a2a71e62264426083abe1e27e87cac05a30"
   integrity sha512-VT7KSYudcPOzP5Q0wfbowyNLaVR8QWUdw+088uFWwfvpY6uCWaXpqV6ieLAu9WBcnTa7H4Z5RLK8I5t2FuOcqw==
