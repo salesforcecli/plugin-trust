@@ -1,3 +1,9 @@
+## [3.7.25](https://github.com/salesforcecli/plugin-trust/compare/3.7.24...3.7.25) (2024-08-25)
+
+### Bug Fixes
+
+- **deps:** bump micromatch from 4.0.5 to 4.0.8 ([0a85e80](https://github.com/salesforcecli/plugin-trust/commit/0a85e80a9f965f4a1294cb7507aa499c8ee2c6ab))
+
 ## [3.7.24](https://github.com/salesforcecli/plugin-trust/compare/3.7.23...3.7.24) (2024-08-24)
 
 ### Bug Fixes
