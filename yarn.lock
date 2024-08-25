@@ -1877,16 +1877,16 @@
     proxy-agent "^6.4.0"
     semver "^7.6.3"
 
-"@salesforce/plugin-telemetry@^3.6.7":
-  version "3.6.7"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.7.tgz#da57ed70ab4ffde2397373a1ec1bd6864ef176a3"
-  integrity sha512-Nr1b+ABfc4Mkq0fY7G9pvMNH0q9SWGV4jxL0rhNPufRFdZqZjbgMRS/HMwQ7+2EMThQOF2WhGuHnvk19nsmcFQ==
+"@salesforce/plugin-telemetry@^3.6.10":
+  version "3.6.10"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.10.tgz#d3bf835aa8f7b95e451090a78b5acacec6fa87d7"
+  integrity sha512-Vzc+FXHpi7IvckdIZexGCx9LemJ24FKrIFK5Qc4Xsngmyf54SGGLqrdWnhS6W+bHZ0avpzmgEK4+aNw9pFa3WQ==
   dependencies:
     "@oclif/core" "^4.0.16"
     "@salesforce/core" "^8.2.7"
     "@salesforce/kit" "^3.1.6"
-    "@salesforce/sf-plugins-core" "^11.2.4"
-    "@salesforce/telemetry" "^6.0.23"
+    "@salesforce/sf-plugins-core" "^11.3.4"
+    "@salesforce/telemetry" "^6.0.25"
     "@salesforce/ts-types" "^2.0.11"
     debug "^4.3.4"
 
@@ -1918,7 +1918,7 @@
     string-width "^7.2.0"
     terminal-link "^3.0.0"
 
-"@salesforce/telemetry@^6.0.23":
+"@salesforce/telemetry@^6.0.25":
   version "6.0.25"
   resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-6.0.25.tgz#76ae7cac9f3086e640fab9039731e13ad8f675d2"
   integrity sha512-CKX/cqSyZ8zr9htHLTII3n6u0xXi+Bt6cb11Giv9iU17V+JychoX69VcARnuYTFBimka+WiK3nhWrGQW8g+HtA==
