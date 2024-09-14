@@ -1,3 +1,9 @@
+## [3.7.28](https://github.com/salesforcecli/plugin-trust/compare/3.7.27...3.7.28) (2024-09-14)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 8.5.4 to 8.5.7 ([3306775](https://github.com/salesforcecli/plugin-trust/commit/3306775c77badec18bcf3d722d39dce5d98e72e8))
+
 ## [3.7.27](https://github.com/salesforcecli/plugin-trust/compare/3.7.26...3.7.27) (2024-09-01)
 
 ### Bug Fixes
