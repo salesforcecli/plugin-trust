@@ -12,7 +12,7 @@
     "@salesforce/core": "^8.5.7",
     "@salesforce/kit": "^3.2.0",
     "@salesforce/plugin-info": "^3.4.9",
-    "@salesforce/sf-plugins-core": "^11.3.10",
+    "@salesforce/sf-plugins-core": "^11.3.12",
     "got": "^13.0.0",
     "npm": "^10.9.0",
     "npm-run-path": "^4.0.1",
