@@ -1,3 +1,9 @@
+## [3.7.40](https://github.com/salesforcecli/plugin-trust/compare/3.7.39...3.7.40) (2024-11-08)
+
+### Bug Fixes
+
+- bump sf-plugins-core ([19699e6](https://github.com/salesforcecli/plugin-trust/commit/19699e61b2bab8e73cb7c95c4e76cc4a21c37b2a))
+
 ## [3.7.39](https://github.com/salesforcecli/plugin-trust/compare/3.7.38...3.7.39) (2024-11-03)
 
 ### Bug Fixes
