@@ -1484,10 +1484,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@jsforce/jsforce-node@^3.2.2", "@jsforce/jsforce-node@^3.6.1":
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/@jsforce/jsforce-node/-/jsforce-node-3.6.1.tgz#cdd112a33b8139ca798dd4eef91d3dc2a5a0f291"
-  integrity sha512-N294vrCY7bIdHzTNAHe0t20riTxozEyvCmYPM4rp/C7uGdBX3AYrPDBdojw7rsXOBsRtoFqr7L/tUwMbw1hRTg==
+"@jsforce/jsforce-node@^3.6.1", "@jsforce/jsforce-node@^3.6.2":
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/@jsforce/jsforce-node/-/jsforce-node-3.6.2.tgz#5d8509aaeb161f1d6658e4ce737948a04d3ce3a6"
+  integrity sha512-bBWRCZl4kVRnYLHRSzl4piqowM3GeTW2yBoKo+WnMGAw36uGjyMq/9z9yAaA+0AmpHFaI4po7/0PrAMdEU/AGA==
   dependencies:
     "@sindresorhus/is" "^4"
     base64url "^3.0.1"
@@ -1968,17 +1968,17 @@
     debug "^4.3.7"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-info@^3.4.13":
-  version "3.4.13"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-info/-/plugin-info-3.4.13.tgz#61800dbbd45b4e90d9c835e8cefd37321c192953"
-  integrity sha512-nKyDyDFytwzXbj0jhjjrsMpku6qpj08t3ljir9v/OfGIk+9M7SRrPPnxZmwNzqCAR3uJDyitNGCDiQVyD4ndAA==
+"@salesforce/plugin-info@^3.4.18":
+  version "3.4.18"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-info/-/plugin-info-3.4.18.tgz#babb2bd0e6972e5e204c49ed0e9123fc55a82764"
+  integrity sha512-QgLtgWmHG+bd88K3JTtsoa39KiimDzKFbw0pSuBU33lxoq24E2XTaFyEj1X6+HvGtDMExnv66VHjC3OU3hLMuQ==
   dependencies:
     "@inquirer/input" "^2.3.0"
-    "@jsforce/jsforce-node" "^3.2.2"
+    "@jsforce/jsforce-node" "^3.6.2"
     "@oclif/core" "^4"
-    "@salesforce/core" "^8.6.2"
+    "@salesforce/core" "^8.6.3"
     "@salesforce/kit" "^3.2.3"
-    "@salesforce/sf-plugins-core" "^11.3.12"
+    "@salesforce/sf-plugins-core" "^12"
     got "^13.0.0"
     marked "^4.3.0"
     marked-terminal "^4.2.0"
