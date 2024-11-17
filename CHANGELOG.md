@@ -1,3 +1,9 @@
+## [3.7.43](https://github.com/salesforcecli/plugin-trust/compare/3.7.42...3.7.43) (2024-11-17)
+
+### Bug Fixes
+
+- **deps:** bump cross-spawn from 7.0.3 to 7.0.5 ([896b4a7](https://github.com/salesforcecli/plugin-trust/commit/896b4a77742c923cec6a25830f8915097f551552))
+
 ## [3.7.42](https://github.com/salesforcecli/plugin-trust/compare/3.7.41...3.7.42) (2024-11-16)
 
 ### Bug Fixes
