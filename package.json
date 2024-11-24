@@ -24,7 +24,7 @@
     "@oclif/plugin-command-snapshot": "^5.2.22",
     "@salesforce/cli-plugins-testkit": "^5.3.38",
     "@salesforce/dev-scripts": "^10.2.11",
-    "@salesforce/plugin-command-reference": "^3.1.33",
+    "@salesforce/plugin-command-reference": "^3.1.34",
     "@salesforce/plugin-telemetry": "^3.6.23",
     "@salesforce/ts-sinon": "^1.4.30",
     "@types/shelljs": "^0.8.15",
