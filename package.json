@@ -16,7 +16,7 @@
     "got": "^13.0.0",
     "npm": "^10.9.1",
     "npm-run-path": "^4.0.1",
-    "proxy-agent": "^6.4.0",
+    "proxy-agent": "^6.5.0",
     "semver": "^7.6.3",
     "shelljs": "^0.8.4"
   },
