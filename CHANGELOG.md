@@ -1,3 +1,9 @@
+## [3.7.51](https://github.com/salesforcecli/plugin-trust/compare/3.7.50...3.7.51) (2024-12-14)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 12.1.0 to 12.1.1 ([f8d8469](https://github.com/salesforcecli/plugin-trust/commit/f8d8469e55884ac3f431b8f2a0307cbd75656051))
+
 ## [3.7.50](https://github.com/salesforcecli/plugin-trust/compare/3.7.49...3.7.50) (2024-12-08)
 
 ### Bug Fixes
