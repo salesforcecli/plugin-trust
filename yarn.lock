@@ -2268,16 +2268,16 @@
     proxy-agent "^6.5.0"
     semver "^7.6.3"
 
-"@salesforce/plugin-telemetry@^3.6.28":
-  version "3.6.28"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.28.tgz#ca51c467f9072b23dcaddada779ee52fe8532828"
-  integrity sha512-U8l52S1NK/ADkMk4gAoqOyXu9CigQlJXTkoJ+03kaBsT4Bk0kWkMhMKdapChKrznG9/F9/BQ2vqciLOt+JhuXQ==
+"@salesforce/plugin-telemetry@^3.6.29":
+  version "3.6.29"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.29.tgz#d82e0bc4bc4118650fc0ed821466b547ccb3a528"
+  integrity sha512-KzL31oxXuG93ck+gQqA5ioq+uhQ30anTMEyRIx9uFDLBDekflW+wH2kVptHJtiIJ/RywDb6A6+uzKXEpfRJj4A==
   dependencies:
     "@oclif/core" "^4.0.34"
     "@salesforce/core" "^8.8.0"
     "@salesforce/kit" "^3.2.3"
     "@salesforce/sf-plugins-core" "^12"
-    "@salesforce/telemetry" "^6.0.38"
+    "@salesforce/telemetry" "^6.0.39"
     "@salesforce/ts-types" "^2.0.11"
     debug "^4.3.7"
 
@@ -2325,16 +2325,16 @@
     cli-progress "^3.12.0"
     terminal-link "^3.0.0"
 
-"@salesforce/telemetry@^6.0.38":
-  version "6.0.38"
-  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-6.0.38.tgz#c33f909c66cba0209f66e548661aec60865caea2"
-  integrity sha512-CypenGpBjoewc6TmXJg886EfD/Fya0PsfacT9pFcs+wmE4eyFnBH/e1SIfZs3tBh5zHNTBJI0UnvIRzgssm2jQ==
+"@salesforce/telemetry@^6.0.39":
+  version "6.0.39"
+  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-6.0.39.tgz#b27cddd42948ba59d0aab9edde3db8e434ad68b4"
+  integrity sha512-5Wc+c7TOSeevqDpANVBDgJ17/fnOSmw8Ok/d3jhPli757vyHg0FAJyX9x+1mXxZhDtYJag9yJZ1RWEjOB+7RgQ==
   dependencies:
     "@salesforce/core" "^8.8.0"
     "@salesforce/kit" "^3.2.3"
     applicationinsights "^2.9.6"
     got "^11"
-    proxy-agent "^6.4.0"
+    proxy-agent "^6.5.0"
 
 "@salesforce/ts-sinon@^1.4.30":
   version "1.4.30"
@@ -8367,7 +8367,7 @@ proto-list@~1.2.1:
   resolved "https://registry.yarnpkg.com/proto-list/-/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
   integrity sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==
 
-proxy-agent@^6.4.0, proxy-agent@^6.5.0:
+proxy-agent@^6.5.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/proxy-agent/-/proxy-agent-6.5.0.tgz#9e49acba8e4ee234aacb539f89ed9c23d02f232d"
   integrity sha512-TmatMXdr2KlRiA2CyDu8GqR8EjahTG3aY3nXjdzFyoZbmB8hrBsTyMezhULIXKnC0jpfjlmiZ3+EaCzoInSu/A==
