@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-trust",
   "description": "validate a digital signature for a npm package",
-  "version": "3.7.53",
+  "version": "3.7.54",
   "author": "Salesforce",
   "bin": {
     "sf-trust": "bin/dev"
