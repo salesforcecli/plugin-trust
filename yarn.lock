@@ -1593,13 +1593,13 @@
     proc-log "^5.0.0"
     which "^5.0.0"
 
-"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.2.3", "@oclif/core@^4.2.4", "@oclif/core@^4.2.5":
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.2.6.tgz#f2f1696be03a815a4c391504312f90fce29fbb4e"
-  integrity sha512-agk1Tlm7qMemWx+qq5aNgkYwX2JCkoVP4M0ruFveJrarmdUPbKZTMW1j/eg8lNKZh1sp68ytZyKhYXYEfRPcww==
+"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.2.3", "@oclif/core@^4.2.4", "@oclif/core@^4.2.7":
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.2.8.tgz#6e71c76b8ea91064ffc8390a3fd2502c5d32a3db"
+  integrity sha512-OWv4Va6bERxIhrYcnUGzyhGRqktc64lJO6cZ3UwkzJDpfR8ZrbCxRfKRBBah1i8kzUlOAeAXnpbMBMah3skKwA==
   dependencies:
     ansi-escapes "^4.3.2"
-    ansis "^3.10.0"
+    ansis "^3.16.0"
     clean-stack "^3.0.1"
     cli-spinners "^2.9.2"
     debug "^4.4.0"
@@ -1863,12 +1863,12 @@
     proxy-agent "^6.5.0"
     semver "^7.7.1"
 
-"@salesforce/plugin-telemetry@^3.6.33":
-  version "3.6.33"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.33.tgz#c9c265723bb83b9233f4385041cd1a0b0ab3542a"
-  integrity sha512-hgBQ6vLkjKrwY+LMOfYCl0yy0v7rKeOxFgmuTzZu4TW4Bv5XyebEBMYAOIxZ2ehPodqMuFXNTZLMbIxOodZkPw==
+"@salesforce/plugin-telemetry@^3.6.35":
+  version "3.6.35"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.35.tgz#9e1d9514fe2630b9d2f5215798708df1610e5233"
+  integrity sha512-vvgtEUG8QM9ZP/ZQBuAkkPSI71MnM4NLn/wz39WTRKxcl4r2+qjL2wk9pY389IyqcapNsDvGbvieeLeotrbHBw==
   dependencies:
-    "@oclif/core" "^4.2.5"
+    "@oclif/core" "^4.2.7"
     "@salesforce/core" "^8.8.0"
     "@salesforce/kit" "^3.2.3"
     "@salesforce/sf-plugins-core" "^12"
@@ -3097,6 +3097,11 @@ ansis@^3.10.0, ansis@^3.3.2, ansis@^3.5.2:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/ansis/-/ansis-3.10.0.tgz#6886afb0f729b1fa865df6b710b97a9915b7d0d4"
   integrity sha512-hxDKLYT7hy3Y4sF3HxI926A3urzPxi73mZBB629m9bCVF+NyKNxbwCqqm+C/YrGPtxLwnl6d8/ZASCsz6SyvJA==
+
+ansis@^3.16.0:
+  version "3.16.0"
+  resolved "https://registry.yarnpkg.com/ansis/-/ansis-3.16.0.tgz#5e365fd173133756a01199c77fc9146bb22fb5eb"
+  integrity sha512-sU7d/tfZiYrsIAXbdL/CNZld5bCkruzwT5KmqmadCJYxuLxHAOBjidxD5+iLmN/6xEfjcQq1l7OpsiCBlc4LzA==
 
 anymatch@~3.1.2:
   version "3.1.3"
