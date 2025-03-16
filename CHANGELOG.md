@@ -1,3 +1,9 @@
+## [3.7.71](https://github.com/salesforcecli/plugin-trust/compare/3.7.70...3.7.71) (2025-03-16)
+
+### Bug Fixes
+
+- **deps:** bump shelljs from 0.8.5 to 0.9.1 ([2485225](https://github.com/salesforcecli/plugin-trust/commit/24852257b44c44a0b202cc81dfc7ca95b4b5c9df))
+
 ## [3.7.70](https://github.com/salesforcecli/plugin-trust/compare/3.7.69...3.7.70) (2025-03-09)
 
 ### Bug Fixes
