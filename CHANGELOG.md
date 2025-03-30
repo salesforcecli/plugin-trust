@@ -1,3 +1,9 @@
+## [3.7.77](https://github.com/salesforcecli/plugin-trust/compare/3.7.76...3.7.77) (2025-03-30)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 3.4.48 to 3.4.50 ([0087935](https://github.com/salesforcecli/plugin-trust/commit/0087935198614bd8608c53ada9cbe4ebe4ab3c58))
+
 ## [3.7.76](https://github.com/salesforcecli/plugin-trust/compare/3.7.75...3.7.76) (2025-03-29)
 
 ### Bug Fixes
