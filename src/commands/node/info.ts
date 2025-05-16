@@ -19,6 +19,7 @@ export type NodeInfoResult = {
 
 export default class NodeInfo extends SfCommand<NodeInfoResult> {
   public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('description');
   public static readonly hidden = true;
 
   // eslint-disable-next-line @typescript-eslint/require-await
