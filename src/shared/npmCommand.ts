@@ -56,7 +56,7 @@ type NpmPackage = {
   };
 };
 
-class NpmCommand {
+export class NpmCommand {
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const nodeExecutable = NpmCommand.findNode(options.cliRoot);
     const npmCli = NpmCommand.npmCli();
@@ -74,12 +74,7 @@ class NpmCommand {
     return npmCmdResult;
   }
 
-  /**
-   * Returns the path to the npm-cli.js file in this package's node_modules
-   *
-   * @private
-   */
-  private static npmCli(): string {
+  public static npxCli(): string {
     const require = createRequire(import.meta.url);
     const pkgPath = require.resolve('npm/package.json');
 
@@ -87,7 +82,7 @@ class NpmCommand {
     const pkgJson = parseJson(fileData, pkgPath) as NpmPackage;
 
     const prjPath = pkgPath.substring(0, pkgPath.lastIndexOf(path.sep));
-    return path.join(prjPath, pkgJson.bin['npm']);
+    return path.join(prjPath, pkgJson.bin['npx']);
   }
 
   /**
@@ -99,7 +94,7 @@ class NpmCommand {
    *
    * @private
    */
-  private static findNode(root?: string): string {
+  public static findNode(root?: string): string {
     const isExecutable = (filepath: string): boolean => {
       if (os.type() === 'Windows_NT') return filepath.endsWith('node.exe');
 
@@ -134,6 +129,22 @@ class NpmCommand {
       new SfError('Cannot locate node executable.', 'CannotFindNodeExecutable'),
       'CannotFindNodeExecutable'
     );
+  }
+
+  /**
+   * Returns the path to the npm-cli.js file in this package's node_modules
+   *
+   * @private
+   */
+  private static npmCli(): string {
+    const require = createRequire(import.meta.url);
+    const pkgPath = require.resolve('npm/package.json');
+
+    const fileData = fs.readFileSync(pkgPath, 'utf8');
+    const pkgJson = parseJson(fileData, pkgPath) as NpmPackage;
+
+    const prjPath = pkgPath.substring(0, pkgPath.lastIndexOf(path.sep));
+    return path.join(prjPath, pkgJson.bin['npm']);
   }
 
   /**
