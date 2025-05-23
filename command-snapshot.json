@@ -1,6 +1,14 @@
 [
   {
     "alias": [],
+    "command": "node:info",
+    "flagAliases": [],
+    "flagChars": [],
+    "flags": ["flags-dir", "json"],
+    "plugin": "@salesforce/plugin-trust"
+  },
+  {
+    "alias": [],
     "command": "plugins:trust:verify",
     "flagAliases": [],
     "flagChars": ["n", "r"],
