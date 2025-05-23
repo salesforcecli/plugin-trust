@@ -1,3 +1,5 @@
+## [3.7.94](https://github.com/salesforcecli/plugin-trust/compare/3.7.93...3.7.94) (2025-05-23)
+
 ## [3.7.93](https://github.com/salesforcecli/plugin-trust/compare/3.7.92...3.7.93) (2025-05-18)
 
 ### Bug Fixes
