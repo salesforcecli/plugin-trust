@@ -1,3 +1,9 @@
+## [3.7.95](https://github.com/salesforcecli/plugin-trust/compare/3.7.94...3.7.95) (2025-05-25)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 8.11.0 to 8.11.1 ([ab00e25](https://github.com/salesforcecli/plugin-trust/commit/ab00e25f8d78e43755f642d6d3c24e008d007336))
+
 ## [3.7.94](https://github.com/salesforcecli/plugin-trust/compare/3.7.93...3.7.94) (2025-05-23)
 
 ## [3.7.93](https://github.com/salesforcecli/plugin-trust/compare/3.7.92...3.7.93) (2025-05-18)
