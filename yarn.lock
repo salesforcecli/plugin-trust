@@ -2092,10 +2092,10 @@
     proxy-agent "^6.5.0"
     semver "^7.7.2"
 
-"@salesforce/plugin-telemetry@^3.6.41":
-  version "3.6.41"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.41.tgz#ddd8a7666694dd2c28ea8875a82182ccf33477a6"
-  integrity sha512-P9+qwYLPd7kuu+yt0xhmM+FshCLJON6/mqwJeps8Z8QrpBIsv99afiZz6ohYKKF0MMjyG9dOhRIdM+OcBjf4fw==
+"@salesforce/plugin-telemetry@^3.6.43":
+  version "3.6.43"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.43.tgz#9b968328250bcb34b07d3e02af093d6f0115c636"
+  integrity sha512-mB5sik+B/ysWevBkKX//RP/ywjQjhepXhNHRnNWAigkfwG1Q8g3b8ADb59qDp2w3Hd+pgAtqp/uFbp3mqdjF3A==
   dependencies:
     "@oclif/core" "^4.3.0"
     "@salesforce/core" "^8.10.3"
@@ -2103,7 +2103,7 @@
     "@salesforce/sf-plugins-core" "^12"
     "@salesforce/telemetry" "^6.0.39"
     "@salesforce/ts-types" "^2.0.11"
-    debug "^4.3.7"
+    debug "^4.4.1"
 
 "@salesforce/prettier-config@^0.0.3":
   version "0.0.3"
@@ -4272,7 +4272,7 @@ dateformat@^4.6.3:
   resolved "https://registry.npmjs.org/dateformat/-/dateformat-4.6.3.tgz"
   integrity sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==
 
-debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@^4.3.5, debug@^4.3.6, debug@^4.3.7, debug@^4.4.0, debug@^4.4.1:
+debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@^4.3.5, debug@^4.3.6, debug@^4.4.0, debug@^4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.1.tgz#e5a8bc6cbc4c6cd3e64308b0693a3d4fa550189b"
   integrity sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==
