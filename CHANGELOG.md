@@ -1,3 +1,9 @@
+## [3.7.105](https://github.com/salesforcecli/plugin-trust/compare/3.7.104...3.7.105) (2025-07-01)
+
+### Bug Fixes
+
+- revert to shelljs 0.8.5 ([#1152](https://github.com/salesforcecli/plugin-trust/issues/1152)) ([c40af12](https://github.com/salesforcecli/plugin-trust/commit/c40af12af9f19d5237d74aa03497ea8c906516bd))
+
 ## [3.7.104](https://github.com/salesforcecli/plugin-trust/compare/3.7.103...3.7.104) (2025-06-29)
 
 ### Bug Fixes
