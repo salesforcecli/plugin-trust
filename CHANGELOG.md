@@ -1,3 +1,9 @@
+## [3.7.108](https://github.com/salesforcecli/plugin-trust/compare/3.7.107...3.7.108) (2025-07-05)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.4.0 to 4.4.1 ([cc19db3](https://github.com/salesforcecli/plugin-trust/commit/cc19db345b9c557936d012eb6f6ef15946430074))
+
 ## [3.7.107](https://github.com/salesforcecli/plugin-trust/compare/3.7.106...3.7.107) (2025-07-02)
 
 ### Bug Fixes
