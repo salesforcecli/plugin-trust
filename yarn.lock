@@ -1804,10 +1804,10 @@
     proc-log "^5.0.0"
     which "^5.0.0"
 
-"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.3.0", "@oclif/core@^4.4.0", "@oclif/core@^4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.4.1.tgz#359d4df4f066529f3f4b44652db2d3dceb723823"
-  integrity sha512-RYonV4IJZcGAoi3pdo5CPl5hVH1YdtQMEX77TLdgTPVrMmIjbiB0Borfguj/mdDF2TjLXp+Z+RbmLUejuhSYTA==
+"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.3.0", "@oclif/core@^4.4.0", "@oclif/core@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.5.0.tgz#0163f933098bfa52f86387f11900da1ad13235d3"
+  integrity sha512-UYWyDFNKFyzgXVXO0DHfOvJ/8qpw4yPYe7fOHausDEVU44qjDr90ZnfYTljZPK8dhgMggxiZs9n+TFajnXRp7g==
   dependencies:
     ansi-escapes "^4.3.2"
     ansis "^3.17.0"
@@ -2074,12 +2074,12 @@
     proxy-agent "^6.5.0"
     semver "^7.7.2"
 
-"@salesforce/plugin-telemetry@^3.6.47":
-  version "3.6.47"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.47.tgz#841d633a089e203bd8b5a4ff1f8635f7a59398b7"
-  integrity sha512-ORtY0rFXH4gJM6JTjfrW3KAh4xtnYZwO10TpgcKARDneeWDjUmpP6Zck3CSC1kIJplZo83E2x9nvV0T1o4+hsw==
+"@salesforce/plugin-telemetry@^3.6.48":
+  version "3.6.48"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.6.48.tgz#a5d92823f69aa8ce31a22d70b132d3e0553f5583"
+  integrity sha512-QesEPqcJTV76d3sUy2rsYd4CeocLxW4VUKqqZkmeqx+5FPu8mUmLOhQOvjLdmsT2IIITZijRWNBNgEjiFJBEng==
   dependencies:
-    "@oclif/core" "^4.4.1"
+    "@oclif/core" "^4.5.0"
     "@salesforce/core" "^8.15.0"
     "@salesforce/kit" "^3.2.3"
     "@salesforce/sf-plugins-core" "^12"
