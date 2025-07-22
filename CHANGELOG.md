@@ -1,3 +1,9 @@
+## [3.7.111](https://github.com/salesforcecli/plugin-trust/compare/3.7.110...3.7.111) (2025-07-22)
+
+### Bug Fixes
+
+- **deps:** bump form-data from 4.0.0 to 4.0.4 ([b0dd2ff](https://github.com/salesforcecli/plugin-trust/commit/b0dd2ff693e3ddfff902ccf44b7e0b212ab83f66))
+
 ## [3.7.110](https://github.com/salesforcecli/plugin-trust/compare/3.7.109...3.7.110) (2025-07-20)
 
 ### Bug Fixes
