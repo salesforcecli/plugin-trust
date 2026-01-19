@@ -78,7 +78,7 @@ describe('plugin install hook', () => {
     expect(promptSpy.called).to.be.false;
   });
 
-  it.only('should skip signature verification for JIT plugins with matching version', async () => {
+  it('should skip signature verification for JIT plugins with matching version', async () => {
     sandbox.stub(config, 'pjson').value({ oclif: { jitPlugins: { '@ns/test': '1.2.3' } } });
     await config.runHook('plugins:preinstall:verify:signature', {
       plugin: { name: '@ns/test', type: 'npm', tag: '1.2.3' },
