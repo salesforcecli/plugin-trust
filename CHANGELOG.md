@@ -1,3 +1,10 @@
+## [3.7.114](https://github.com/salesforcecli/plugin-trust/compare/3.7.113...3.7.114) (2026-02-18)
+
+### Bug Fixes
+
+- bump deps and update licenses ([dfd7466](https://github.com/salesforcecli/plugin-trust/commit/dfd74663b25a775eef73fe45fb659d909dbc9c7e))
+- enable PDP events via o11y for PFT ([78e9590](https://github.com/salesforcecli/plugin-trust/commit/78e959058490084db30e391852b0ece440337e92))
+
 ## [3.7.113](https://github.com/salesforcecli/plugin-trust/compare/3.7.112...3.7.113) (2025-07-27)
 
 ### Bug Fixes
