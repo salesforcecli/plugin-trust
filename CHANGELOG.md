@@ -1,3 +1,9 @@
+## [3.7.116](https://github.com/salesforcecli/plugin-trust/compare/3.7.115...3.7.116) (2026-03-25)
+
+### Bug Fixes
+
+- **deps:** bump flatted from 3.3.3 to 3.4.2 ([6428cbc](https://github.com/salesforcecli/plugin-trust/commit/6428cbce05fa092317e55831221106dcb6c00c88))
+
 ## [3.7.115](https://github.com/salesforcecli/plugin-trust/compare/3.7.114...3.7.115) (2026-03-25)
 
 ### Bug Fixes
