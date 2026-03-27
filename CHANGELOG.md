@@ -1,3 +1,9 @@
+## [3.7.117](https://github.com/salesforcecli/plugin-trust/compare/3.7.116...3.7.117) (2026-03-27)
+
+### Bug Fixes
+
+- **deps:** bump handlebars from 4.7.8 to 4.7.9 ([d874ec4](https://github.com/salesforcecli/plugin-trust/commit/d874ec49a46289a88de18fc64b417ca76a529438))
+
 ## [3.7.116](https://github.com/salesforcecli/plugin-trust/compare/3.7.115...3.7.116) (2026-03-25)
 
 ### Bug Fixes
