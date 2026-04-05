@@ -1,3 +1,9 @@
+## [3.7.121](https://github.com/salesforcecli/plugin-trust/compare/3.7.120...3.7.121) (2026-04-05)
+
+### Bug Fixes
+
+- **deps:** bump lodash from 4.17.23 to 4.18.1 ([8c95ee6](https://github.com/salesforcecli/plugin-trust/commit/8c95ee6c2ace44e55d16a054f61e0b10d7762107))
+
 ## [3.7.120](https://github.com/salesforcecli/plugin-trust/compare/3.7.119...3.7.120) (2026-04-04)
 
 ### Bug Fixes
