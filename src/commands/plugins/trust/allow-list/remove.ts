@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-import path from 'node:path';
-import fs from 'node:fs';
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 
-import { ALLOW_LIST_FILENAME } from '../../../../shared/constants.js';
-import type { AllowListResult } from '../../../../shared/types.js';
+import { getExistingAllowList, type AllowListResult } from '../../../../shared/allow-list.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'allow-list.remove');
@@ -41,34 +38,21 @@ export class AllowListRemove extends SfCommand<AllowListResult> {
 
   public async run(): Promise<AllowListResult> {
     const { flags } = await this.parse(AllowListRemove);
-
-    const allowListPath = path.join(this.config.configDir, ALLOW_LIST_FILENAME);
-
-    let existingAllowList: string[] = [];
-    try {
-      const content = (await fs.promises.readFile(allowListPath, 'utf8')) ?? '[]';
-      existingAllowList = JSON.parse(content) as string[];
-    } catch (err) {
-      if (!(err instanceof Error) || !('code' in err) || err.code !== 'ENOENT') {
-        throw err;
-      }
-    }
+    const { existingAllowList, persistAllowList } = await getExistingAllowList(this.config.configDir);
 
     const results: AllowListResult = [];
-
-    let hasRemovedPlugins = false;
+    const pluginsToRemove = new Set<string>();
     for (const name of flags.name) {
       if (existingAllowList.includes(name)) {
-        hasRemovedPlugins = true;
-        existingAllowList = existingAllowList.filter((p) => p !== name);
+        pluginsToRemove.add(name);
         results.push({ Plugin: name, Status: 'removed' });
       } else {
         results.push({ Plugin: name, Status: 'skipped' });
       }
     }
 
-    if (hasRemovedPlugins) {
-      await fs.promises.writeFile(allowListPath, JSON.stringify(existingAllowList));
+    if (pluginsToRemove.size > 0) {
+      await persistAllowList(existingAllowList.filter((plugin) => !pluginsToRemove.has(plugin)));
     }
 
     this.table({

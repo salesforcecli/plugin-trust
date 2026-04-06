@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-import path from 'node:path';
-import fs from 'node:fs';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 
-import { ALLOW_LIST_FILENAME } from '../../../../shared/constants.js';
-import type { AllowListResult } from '../../../../shared/types.js';
+import { getExistingAllowList, type AllowListResult } from '../../../../shared/allow-list.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-trust', 'allow-list.list');
@@ -31,24 +28,14 @@ export class AllowListList extends SfCommand<AllowListResult> {
   public static readonly examples = messages.getMessages('examples');
 
   public async run(): Promise<AllowListResult> {
-    const allowListPath = path.join(this.config.configDir, ALLOW_LIST_FILENAME);
+    const { existingAllowList } = await getExistingAllowList(this.config.configDir);
 
-    let allowList: string[] = [];
-    try {
-      const content = (await fs.promises.readFile(allowListPath, 'utf8')) ?? '[]';
-      allowList = JSON.parse(content) as string[];
-    } catch (err) {
-      if (!(err instanceof Error) || !('code' in err) || err.code !== 'ENOENT') {
-        throw err;
-      }
-    }
-
-    if (allowList.length === 0) {
+    if (existingAllowList.length === 0) {
       this.log(messages.getMessage('NoPluginsAllowListed'));
       return [];
     }
 
-    const results: AllowListResult = allowList.map((plugin) => ({ Plugin: plugin }));
+    const results: AllowListResult = existingAllowList.map((plugin) => ({ Plugin: plugin }));
 
     this.table({
       data: results,
