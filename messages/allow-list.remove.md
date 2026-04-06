@@ -1,21 +1,23 @@
 # summary
 
-Remove plugins from the unsigned plugin allow-list.
+Remove plugins from the plugin allowlist.
 
 # description
 
-Removes one or more plugins from the `unsignedPluginAllowList.json` file. Plugins not present in the allow-list are skipped.
+The plugin allowlist lets users automatically install a plugin without being prompted, even when the plugin is unsigned.
+
+This command removes one or more plugins from the `unsignedPluginAllowList.json` file. Plugins not present in the allowlist are skipped.
 
 # examples
 
-- Remove a single plugin from the allow-list:
+- Remove a single plugin from the allowlist:
 
   <%= config.bin %> <%= command.id %> --name @scope/my-plugin
 
-- Remove multiple plugins from the allow-list:
+- Remove multiple plugins from the allowlist:
 
   <%= config.bin %> <%= command.id %> --name @scope/my-plugin --name another-plugin
 
 # flags.name.summary
 
-The npm name of the plugin to remove from the allow-list. Multiple names can be removed in one invocation by repeating the `--name` flag.
+The npm name of the plugin to remove from the allowlist. Remove multiple plugins by specifying the `--name` flag multiple times.
