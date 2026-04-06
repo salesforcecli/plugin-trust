@@ -17,12 +17,12 @@
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 
-import { getExistingAllowList, type AllowListResult } from '../../../../shared/allow-list.js';
+import { getExistingAllowList, type AllowListResult } from '../../../../shared/allowlist.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-trust', 'allow-list.add');
+const messages = Messages.loadMessages('@salesforce/plugin-trust', 'allowlist.remove');
 
-export class AllowListAdd extends SfCommand<AllowListResult> {
+export class AllowListRemove extends SfCommand<AllowListResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -37,17 +37,22 @@ export class AllowListAdd extends SfCommand<AllowListResult> {
   };
 
   public async run(): Promise<AllowListResult> {
-    const { flags } = await this.parse(AllowListAdd);
+    const { flags } = await this.parse(AllowListRemove);
     const { existingAllowList, persistAllowList } = await getExistingAllowList(this.config.configDir);
-    const results: AllowListResult = [];
 
+    const results: AllowListResult = [];
+    const pluginsToRemove = new Set<string>();
     for (const name of flags.name) {
-      const shouldAddPlugin = !existingAllowList.includes(name);
-      results.push({ Plugin: name, Status: shouldAddPlugin ? 'added' : 'skipped' });
+      if (existingAllowList.includes(name)) {
+        pluginsToRemove.add(name);
+        results.push({ Plugin: name, Status: 'removed' });
+      } else {
+        results.push({ Plugin: name, Status: 'skipped' });
+      }
     }
 
-    if (results.find((result) => result.Status === 'added')) {
-      await persistAllowList(existingAllowList);
+    if (pluginsToRemove.size > 0) {
+      await persistAllowList(existingAllowList.filter((plugin) => !pluginsToRemove.has(plugin)));
     }
 
     this.table({

@@ -79,17 +79,17 @@
           "trust": {
             "description": "validate a digital signature for a npm package",
             "subtopics": {
-              "allow-list": {
-                "description": "manage the unsigned plugin allow-list",
+              "allowlist": {
+                "description": "manage the unsigned plugin allowlist",
                 "subtopics": {
                   "add": {
-                    "description": "adds to the allow-list"
+                    "description": "adds to the allowlist"
                   },
                   "remove": {
-                    "description": "removes from the allow-list"
+                    "description": "removes from the allowlist"
                   },
                   "list": {
-                    "description": "lists plugins in the allow-list"
+                    "description": "lists plugins in the allowlist"
                   }
                 }
               }

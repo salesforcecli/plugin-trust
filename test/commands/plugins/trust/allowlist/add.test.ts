@@ -24,9 +24,9 @@ import { stubMethod } from '@salesforce/ts-sinon';
 import { TestContext } from '@salesforce/core/testSetup';
 
 import { ALLOW_LIST_FILENAME } from '../../../../../src/shared/constants.js';
-import { AllowListAdd } from '../../../../../src/commands/plugins/trust/allow-list/add.js';
+import { AllowListAdd } from '../../../../../src/commands/plugins/trust/allowlist/add.js';
 
-describe('plugins trust allow-list add', () => {
+describe('plugins trust allowlist add', () => {
   let sandbox: sinon.SinonSandbox;
   const $$ = new TestContext();
   let writeFileStub: sinon.SinonStub;
@@ -61,7 +61,7 @@ describe('plugins trust allow-list add', () => {
     expect(writeFileStub.args[0][1]).to.eq(JSON.stringify(['somepackagename']));
   });
 
-  it('adds plugin to allow-list even when no file content', async () => {
+  it('adds plugin to allowlist even when no file content', async () => {
     readFileStub.resolves(null);
     const tableStub = $$.SANDBOX.stub(SfCommand.prototype, 'table');
 
@@ -73,7 +73,7 @@ describe('plugins trust allow-list add', () => {
     expect(tableStub.args[0][0]).to.deep.eq({ data: [{ Plugin: 'somepackagename', Status: 'added' }] });
   });
 
-  it('skips plugin already part of allow-list', async () => {
+  it('skips plugin already part of allowlist', async () => {
     readFileStub.resolves(JSON.stringify(['somepackagename']));
     const tableStub = $$.SANDBOX.stub(SfCommand.prototype, 'table');
 
@@ -82,7 +82,7 @@ describe('plugins trust allow-list add', () => {
     expect(tableStub.args[0][0]).to.deep.eq({ data: [{ Plugin: 'somepackagename', Status: 'skipped' }] });
   });
 
-  it('adds plugin to allow-list and skips plugin already added', async () => {
+  it('adds plugin to allowlist and skips plugin already added', async () => {
     const existingPackage = 'somepackagename';
     readFileStub.resolves(JSON.stringify([existingPackage]));
     const tableStub = $$.SANDBOX.stub(SfCommand.prototype, 'table');

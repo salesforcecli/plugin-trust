@@ -9,7 +9,7 @@
   },
   {
     "alias": [],
-    "command": "plugins:trust:allow-list:add",
+    "command": "plugins:trust:allowlist:add",
     "flagAliases": [],
     "flagChars": ["n"],
     "flags": ["flags-dir", "json", "name"],
@@ -17,7 +17,7 @@
   },
   {
     "alias": [],
-    "command": "plugins:trust:allow-list:list",
+    "command": "plugins:trust:allowlist:list",
     "flagAliases": [],
     "flagChars": [],
     "flags": ["flags-dir", "json"],
@@ -25,7 +25,7 @@
   },
   {
     "alias": [],
-    "command": "plugins:trust:allow-list:remove",
+    "command": "plugins:trust:allowlist:remove",
     "flagAliases": [],
     "flagChars": ["n"],
     "flags": ["flags-dir", "json", "name"],

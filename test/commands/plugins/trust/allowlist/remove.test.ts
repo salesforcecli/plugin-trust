@@ -24,9 +24,9 @@ import { stubMethod } from '@salesforce/ts-sinon';
 import { TestContext } from '@salesforce/core/testSetup';
 
 import { ALLOW_LIST_FILENAME } from '../../../../../src/shared/constants.js';
-import { AllowListRemove } from '../../../../../src/commands/plugins/trust/allow-list/remove.js';
+import { AllowListRemove } from '../../../../../src/commands/plugins/trust/allowlist/remove.js';
 
-describe('plugins trust allow-list remove', () => {
+describe('plugins trust allowlist remove', () => {
   let sandbox: sinon.SinonSandbox;
   const $$ = new TestContext();
   let writeFileStub: sinon.SinonStub;

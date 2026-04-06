@@ -17,10 +17,10 @@
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 
-import { getExistingAllowList, type AllowListResult } from '../../../../shared/allow-list.js';
+import { getExistingAllowList, type AllowListResult } from '../../../../shared/allowlist.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-trust', 'allow-list.list');
+const messages = Messages.loadMessages('@salesforce/plugin-trust', 'allowlist.list');
 
 export class AllowListList extends SfCommand<AllowListResult> {
   public static readonly summary = messages.getMessage('summary');

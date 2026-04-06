@@ -23,9 +23,9 @@ import { SfCommand } from '@salesforce/sf-plugins-core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { TestContext } from '@salesforce/core/testSetup';
 
-import { AllowListList } from '../../../../../src/commands/plugins/trust/allow-list/list.js';
+import { AllowListList } from '../../../../../src/commands/plugins/trust/allowlist/list.js';
 
-describe('plugins trust allow-list list', () => {
+describe('plugins trust allowlist list', () => {
   let sandbox: sinon.SinonSandbox;
   const $$ = new TestContext();
   let readFileStub: sinon.SinonStub;
