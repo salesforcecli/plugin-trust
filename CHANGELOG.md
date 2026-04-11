@@ -1,3 +1,9 @@
+## [3.7.122](https://github.com/salesforcecli/plugin-trust/compare/3.7.121...3.7.122) (2026-04-11)
+
+### Bug Fixes
+
+- **deps:** bump basic-ftp from 5.1.0 to 5.2.2 ([ae9a1e7](https://github.com/salesforcecli/plugin-trust/commit/ae9a1e7cc26c6eeecf079bfde395fefd4e9879b0))
+
 ## [3.7.121](https://github.com/salesforcecli/plugin-trust/compare/3.7.120...3.7.121) (2026-04-05)
 
 ### Bug Fixes
