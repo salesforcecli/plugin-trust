@@ -13,7 +13,7 @@
     "@oclif/core": "^4",
     "@salesforce/core": "^8.28.1",
     "@salesforce/kit": "^3.2.6",
-    "@salesforce/plugin-info": "^3.4.115",
+    "@salesforce/plugin-info": "^3.4.121",
     "@salesforce/sf-plugins-core": "^12",
     "got": "^13.0.0",
     "npm": "^10.9.8",
