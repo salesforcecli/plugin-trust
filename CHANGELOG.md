@@ -1,3 +1,9 @@
+## [3.7.123](https://github.com/salesforcecli/plugin-trust/compare/3.7.122...3.7.123) (2026-04-11)
+
+### Bug Fixes
+
+- **deps:** bump npm from 10.9.4 to 10.9.8 ([a09f3fe](https://github.com/salesforcecli/plugin-trust/commit/a09f3fe0cfe7c43307071473003268d5e99981a8))
+
 ## [3.7.122](https://github.com/salesforcecli/plugin-trust/compare/3.7.121...3.7.122) (2026-04-11)
 
 ### Bug Fixes
