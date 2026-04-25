@@ -1643,10 +1643,10 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.10.3", "@oclif/core@^4.5.2", "@oclif/core@^4.8.0":
-  version "4.10.5"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.10.5.tgz#bcf7c5bb783849ccdce2fd2b5d691a247082ba51"
-  integrity sha512-qcdCF7NrdWPfme6Kr34wwljRCXbCVpL1WVxiNy0Ep6vbWKjxAjFQwuhqkoyL0yjI+KdwtLcOCGn5z2yzdijc8w==
+"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.10.3", "@oclif/core@^4.10.5", "@oclif/core@^4.5.2":
+  version "4.10.6"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.10.6.tgz#233d66284d8c7c8162c9d437754503734069dd85"
+  integrity sha512-ySCOYnPKZE3KACT1V9It99hWG9b8E5MpagbRdWxPNRO3beMqmbr4SLUQoFtZ9XRtW++kks1ZVwZOdpnR8rpb9A==
   dependencies:
     ansi-escapes "^4.3.2"
     ansis "^3.17.0"
@@ -1920,10 +1920,10 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.1"
 
-"@salesforce/core@^8.18.7", "@salesforce/core@^8.23.1", "@salesforce/core@^8.27.1", "@salesforce/core@^8.28.1", "@salesforce/core@^8.28.3", "@salesforce/core@^8.5.1":
-  version "8.28.3"
-  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.28.3.tgz#1344dc408833fb2a6ac19e6c4c09f846b6593ce3"
-  integrity sha512-DDAeHVwDO8wUlqEGwfp8Vuu7Vp7K+hpubKu6baWkHAXiO1u7ZbQkvwCbpPz9JiYEXVUBvP11JtBQ7zOUIPShlQ==
+"@salesforce/core@^8.18.7", "@salesforce/core@^8.23.1", "@salesforce/core@^8.27.1", "@salesforce/core@^8.28.1", "@salesforce/core@^8.28.4", "@salesforce/core@^8.5.1":
+  version "8.28.4"
+  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.28.4.tgz#98920d62c2b2a7fa025af38c74bdf6687d91b0a8"
+  integrity sha512-XQ0BBSetdW9cu36pu8ig5ZBX3oAbDSSH4djHkSU3iAzjLdTygEPIBVtKNeyj1++GmCy0rRiLr/yqoFYr21+GuQ==
   dependencies:
     "@jsforce/jsforce-node" "^3.10.13"
     "@salesforce/kit" "^3.2.4"
@@ -1989,10 +1989,10 @@
   dependencies:
     "@salesforce/ts-types" "^2.0.12"
 
-"@salesforce/o11y-reporter@1.8.2":
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/@salesforce/o11y-reporter/-/o11y-reporter-1.8.2.tgz#4cc57d775cc58a4dde28b0b707570dfc1fbbcdeb"
-  integrity sha512-6Z4L/4C//f5OboxVVK0rRZCo7sRn5REI6e6O8o4cqmJNKiKhn2GzLft6Jfqa9sk46YOXn5ok4yJ6HGQUJZ1gPg==
+"@salesforce/o11y-reporter@1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/o11y-reporter/-/o11y-reporter-1.8.3.tgz#bc52de911e49a7154fb183601763897190fe1350"
+  integrity sha512-m9LY3gQ8WFeB38NHmQRie9WtiaeUr+Lvy45RthbSSFwe6PDzfiD8jknpsSNTce0GRPZLly46wqrOXyyMSb8yxg==
   dependencies:
     o11y "^258.7.0"
     o11y_schema "256.154.0"
@@ -2029,16 +2029,16 @@
     proxy-agent "^6.5.0"
     semver "^7.7.3"
 
-"@salesforce/plugin-telemetry@^3.8.13":
-  version "3.8.13"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.8.13.tgz#e2ebc89956297280653f289f11ac73bbf9bab285"
-  integrity sha512-OJ7v6xtVo650vc4dEMOppom+uSjw7hmSSjdsfGlLYc+nyR6IAUrylBsBUQ4U7QSYV/plWP1YKyPlJHrvxok6Lw==
+"@salesforce/plugin-telemetry@^3.8.15":
+  version "3.8.15"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.8.15.tgz#5be79b2167b7141b5c662da460f7382f4e5be420"
+  integrity sha512-/2ezpJ8lGm2YMuexkAjPyPgzSPCSOmJZGfmj9ZDEQpUv5RFXtWQAp+zCrL7O+5zXFwTiVdVj9xQ3LXzALo6tng==
   dependencies:
-    "@oclif/core" "^4.8.0"
+    "@oclif/core" "^4.10.5"
     "@salesforce/core" "^8.27.1"
     "@salesforce/kit" "^3.2.6"
     "@salesforce/sf-plugins-core" "^12"
-    "@salesforce/telemetry" "^6.8.14"
+    "@salesforce/telemetry" "^6.8.17"
     "@salesforce/ts-types" "^2.0.12"
     debug "^4.4.3"
 
@@ -2081,14 +2081,14 @@
     cli-progress "^3.12.0"
     terminal-link "^3.0.0"
 
-"@salesforce/telemetry@^6.8.14":
-  version "6.8.16"
-  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-6.8.16.tgz#f5448d3dd2cdd260d70aad6036bdc8cf812efa61"
-  integrity sha512-QnwP1/nV6prnyoaXn8jeBqRHldj7GTS+TxDT/AnXzxjxIBntYz6dQu3i0GBWOf4vMm50FHzloEZy2h+AsTCnXw==
+"@salesforce/telemetry@^6.8.17":
+  version "6.8.18"
+  resolved "https://registry.yarnpkg.com/@salesforce/telemetry/-/telemetry-6.8.18.tgz#add7ab3ea0da78fd5805d40a894b9c371caabc8b"
+  integrity sha512-YHXOdGB6wrS7aekS+F7DNGgohlKv25MXioYrCnn7D/g6u47s7lT5Q2NGmSiMA3wspz4aSNEmIf20FGtKhhZDmQ==
   dependencies:
-    "@salesforce/core" "^8.28.3"
+    "@salesforce/core" "^8.28.4"
     "@salesforce/kit" "^3.2.6"
-    "@salesforce/o11y-reporter" "1.8.2"
+    "@salesforce/o11y-reporter" "1.8.3"
     applicationinsights "^2.9.8"
     got "^11"
     o11y_schema "^260.63.0"
