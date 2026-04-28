@@ -1,3 +1,9 @@
+## [3.7.126](https://github.com/salesforcecli/plugin-trust/compare/3.7.125...3.7.126) (2026-04-28)
+
+### Bug Fixes
+
+- updating dependency on npm ([517a8e8](https://github.com/salesforcecli/plugin-trust/commit/517a8e874af11e3ed3f86cdda7661a06c5b9c832))
+
 ## [3.7.125](https://github.com/salesforcecli/plugin-trust/compare/3.7.124...3.7.125) (2026-04-26)
 
 ### Bug Fixes
