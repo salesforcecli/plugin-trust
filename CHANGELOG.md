@@ -1,3 +1,19 @@
+# [3.8.0](https://github.com/salesforcecli/plugin-trust/compare/3.7.127...3.8.0) (2026-04-30)
+
+### Bug Fixes
+
+- adds fallback when not only is allowlist file missing, but part of the base dir as well ([e5f7dd2](https://github.com/salesforcecli/plugin-trust/commit/e5f7dd277e814b6fe0eeebdf5618293615d6f05d))
+- code review feedback from [@jfeingold35](https://github.com/jfeingold35) ([bab7c64](https://github.com/salesforcecli/plugin-trust/commit/bab7c6438394247123ecc221cf7715a8e41dda39))
+- code review feedback updates for @ZLeventer ([f1cd1a8](https://github.com/salesforcecli/plugin-trust/commit/f1cd1a816d83f433be56eefb1399baaf7b2dafce))
+- slightly cleaned up robo feedback ([9169e62](https://github.com/salesforcecli/plugin-trust/commit/9169e62dfdbcb20f2e3017fad0101962e7799945))
+- thanks to [@jfeingold35](https://github.com/jfeingold35) for helping to triage mocha not recursively running all tests ([b263f7b](https://github.com/salesforcecli/plugin-trust/commit/b263f7bf5b9b639164dcf103b13c1234b84ef632))
+- update all allow-list references to allowlist ([3b34c18](https://github.com/salesforcecli/plugin-trust/commit/3b34c18d4665989358329239cfd966bc18c4617c))
+- updated AllowList shared file to use class instead of function ([0678856](https://github.com/salesforcecli/plugin-trust/commit/067885681b07c448a8ff278bf302e5d3b659e95a))
+
+### Features
+
+- adds allow-list commands ([dc200fd](https://github.com/salesforcecli/plugin-trust/commit/dc200fde6aec984f334073ad258e19d093926b10))
+
 ## [3.7.127](https://github.com/salesforcecli/plugin-trust/compare/3.7.126...3.7.127) (2026-04-29)
 
 ### Bug Fixes
