@@ -9,7 +9,8 @@ package-lock.json
 # debug logs
 npm-error.log
 yarn-error.log
-
+stderr*.txt
+stdout*.txt
 
 # compile source
 lib

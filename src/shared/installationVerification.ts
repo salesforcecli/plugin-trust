@@ -26,12 +26,12 @@ import got from 'got';
 import { ProxyAgent } from 'proxy-agent';
 import { prompts } from '@salesforce/sf-plugins-core';
 import { maxSatisfying } from 'semver';
+import { ALLOW_LIST_FILENAME } from './constants.js';
 import { NpmModule, NpmMeta } from './npmCommand.js';
 import { type NpmName, npmNameToString } from './npmName.js';
 import { setErrorName } from './errors.js';
 
 const CRYPTO_LEVEL = 'RSA-SHA256';
-const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';
 export const DEFAULT_REGISTRY = 'https://registry.npmjs.org/';
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 
