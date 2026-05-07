@@ -1,3 +1,9 @@
+## [3.8.2](https://github.com/salesforcecli/plugin-trust/compare/3.8.1...3.8.2) (2026-05-07)
+
+### Bug Fixes
+
+- **deps:** bump ip-address from 10.1.0 to 10.2.0 ([ea19514](https://github.com/salesforcecli/plugin-trust/commit/ea19514431a2b0af1a38246b3f029b961a146d71))
+
 ## [3.8.1](https://github.com/salesforcecli/plugin-trust/compare/3.8.0...3.8.1) (2026-05-02)
 
 ### Bug Fixes
