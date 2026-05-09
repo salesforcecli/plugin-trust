@@ -1,3 +1,9 @@
+## [3.8.4](https://github.com/salesforcecli/plugin-trust/compare/3.8.3...3.8.4) (2026-05-09)
+
+### Bug Fixes
+
+- **deps:** bump fast-xml-builder from 1.1.4 to 1.2.0 ([865c767](https://github.com/salesforcecli/plugin-trust/commit/865c7670393662c96f333e12b410521fd528a697))
+
 ## [3.8.3](https://github.com/salesforcecli/plugin-trust/compare/3.8.2...3.8.3) (2026-05-09)
 
 ### Bug Fixes
