@@ -1,3 +1,9 @@
+## [3.8.8](https://github.com/salesforcecli/plugin-trust/compare/3.8.7...3.8.8) (2026-05-13)
+
+### Bug Fixes
+
+- **deps:** bump @protobufjs/utf8 from 1.1.0 to 1.1.1 ([13a8862](https://github.com/salesforcecli/plugin-trust/commit/13a88629fce8d753942176b6c0ef1a93b5938d57))
+
 ## [3.8.7](https://github.com/salesforcecli/plugin-trust/compare/3.8.6...3.8.7) (2026-05-10)
 
 ### Bug Fixes
