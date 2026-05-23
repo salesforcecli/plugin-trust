@@ -1,3 +1,9 @@
+## [3.8.10](https://github.com/salesforcecli/plugin-trust/compare/3.8.9...3.8.10) (2026-05-23)
+
+### Bug Fixes
+
+- **deps:** bump npm from 11.14.1 to 11.15.0 ([c5ff9bb](https://github.com/salesforcecli/plugin-trust/commit/c5ff9bb439e009e4c498bab113c6e8c8739987e1))
+
 ## [3.8.9](https://github.com/salesforcecli/plugin-trust/compare/3.8.8...3.8.9) (2026-05-16)
 
 ### Bug Fixes
