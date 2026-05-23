@@ -16,7 +16,7 @@
     "@salesforce/plugin-info": "^3.4.131",
     "@salesforce/sf-plugins-core": "^12",
     "got": "^13.0.0",
-    "npm": "^11.14.1",
+    "npm": "^11.15.0",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^6.5.0",
     "semver": "^7.7.4",
