@@ -1,3 +1,9 @@
+## [3.8.11](https://github.com/salesforcecli/plugin-trust/compare/3.8.10...3.8.11) (2026-05-24)
+
+### Bug Fixes
+
+- **deps:** bump ws from 8.19.0 to 8.21.0 ([9b7ca83](https://github.com/salesforcecli/plugin-trust/commit/9b7ca83143ec76a108c895dd0f9e65f49346d42c))
+
 ## [3.8.10](https://github.com/salesforcecli/plugin-trust/compare/3.8.9...3.8.10) (2026-05-23)
 
 ### Bug Fixes
