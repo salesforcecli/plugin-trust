@@ -20,7 +20,7 @@ import { dirname } from 'node:path';
 import { assert, expect } from 'chai';
 import got from 'got';
 import { OptionsOfTextResponseBody } from 'got';
-import shelljs from 'shelljs';
+import crossSpawn from 'cross-spawn';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
 import { Ux, prompts } from '@salesforce/sf-plugins-core';
@@ -61,41 +61,28 @@ const PACK_RESULT = [
   },
 ];
 
-const getShelljsExecStub = (
+const getCrossSpawnSyncStub = (
   sandbox: sinon.SinonSandbox,
   npmMetadata: NpmShowResults,
   code = 0 as number,
   stderr?: string
 ): Sinon.SinonStub =>
-  stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
-    expect(cmd).to.be.a('string').and.not.to.be.empty;
-    if (cmd.includes('show')) {
+  stubMethod(sandbox, crossSpawn, 'sync').callsFake((_cmd: string, args: string[]) => {
+    const joined = args.join(' ');
+    if (joined.includes('show')) {
       return {
-        code,
-        stderr,
-        stdout: JSON.stringify(npmMetadata),
+        status: code,
+        stderr: Buffer.from(stderr ?? ''),
+        stdout: Buffer.from(JSON.stringify(npmMetadata)),
       };
-    } else if (cmd.includes('pack')) {
+    } else if (joined.includes('pack')) {
       return {
-        code,
-        stderr,
-        stdout: JSON.stringify(PACK_RESULT),
+        status: code,
+        stderr: Buffer.from(stderr ?? ''),
+        stdout: Buffer.from(JSON.stringify(PACK_RESULT)),
       };
-    } else if (cmd.includes('node')) {
-      return {
-        code: 0,
-        stderr,
-        stdout: 'node',
-      };
-    } else if (cmd.includes('sfdx')) {
-      return {
-        code: 0,
-        stderr,
-        stdout: 'sfdx',
-      };
-    } else {
-      throw new Error(`Unexpected test cmd - ${cmd}`);
     }
+    throw new Error(`Unexpected test args - ${joined}`);
   });
 
 describe('getNpmRegistry', () => {
@@ -145,40 +132,33 @@ describe('InstallationVerification Tests', () => {
     },
   };
   const currentRegistry = process.env.SFDX_NPM_REGISTRY;
-  let fsReaddirSyncStub: Sinon.SinonStub;
+  let readdirSyncStub: Sinon.SinonStub;
   let plugin: NpmName;
   let realpathSyncStub: Sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
-  let shelljsExecStub: Sinon.SinonStub;
-  let shelljsFindStub: Sinon.SinonStub;
+  let crossSpawnSyncStub: Sinon.SinonStub;
   let pollForAvailabilityStub: Sinon.SinonStub;
   let gotStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
-    fsReaddirSyncStub = stubMethod(sandbox, fs, 'readdirSync').returns([
-      {
-        name: 'foo-1.0.0.tgz',
-        isFile() {
-          return true;
-        },
-      },
+    readdirSyncStub = stubMethod(sandbox, fs, 'readdirSync').returns([
+      { name: 'foo-1.0.0.tgz', isFile: () => true, isDirectory: () => false },
+      { name: 'node.exe', isFile: () => true, isDirectory: () => false },
     ]);
     stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
 
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
-    shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
     plugin = parseNpmName('foo');
     pollForAvailabilityStub = stubMethod(sandbox, NpmModule.prototype, 'pollForAvailability').resolves();
     gotStub = stubMethod(sandbox, got, 'get');
   });
 
   afterEach(() => {
-    fsReaddirSyncStub.restore();
+    readdirSyncStub.restore();
     realpathSyncStub.restore();
-    shelljsFindStub.restore();
-    if (shelljsExecStub) {
-      shelljsExecStub.restore();
+    if (crossSpawnSyncStub) {
+      crossSpawnSyncStub.restore();
     }
     pollForAvailabilityStub.restore();
     gotStub.restore();
@@ -212,7 +192,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
+    crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, npmMetadata);
 
     gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
       const url = opts.url as string;
@@ -258,7 +238,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
+    crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, npmMetadata);
 
     gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
       const url = opts.url as string;
@@ -314,7 +294,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
+    crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, npmMetadata);
     gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
       const url = opts.url as string;
 
@@ -365,7 +345,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
+    crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, npmMetadata);
 
     gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
       const url = opts.url as string;
@@ -401,7 +381,7 @@ describe('InstallationVerification Tests', () => {
   it('InvalidNpmMetadata', async () => {
     const npmMetadata = {} as unknown as NpmShowResults;
 
-    shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
+    crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, npmMetadata);
 
     gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
       const url = opts.url as string;
@@ -448,7 +428,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
+    crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, npmMetadata);
 
     gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
       const url = opts.url as string;
@@ -484,7 +464,7 @@ describe('InstallationVerification Tests', () => {
   });
 
   it('npm show fails to find a package', async () => {
-    shelljsExecStub = getShelljsExecStub(sandbox, {} as NpmShowResults, 1, 'command execution error');
+    crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, {} as NpmShowResults, 1, 'command execution error');
 
     stubMethod(sandbox, fs.promises, 'readFile').resolves();
     stubMethod(sandbox, fs.promises, 'rm').resolves();
@@ -515,7 +495,7 @@ describe('InstallationVerification Tests', () => {
       },
     };
 
-    shelljsExecStub = getShelljsExecStub(sandbox, npmMetadata);
+    crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, npmMetadata);
 
     gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
       const url = opts.url as string;
