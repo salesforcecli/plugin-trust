@@ -62,7 +62,8 @@ describe('sf doctor', () => {
       cli: 'sf',
       env: {
         ...process.env,
-        NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org; uname -a > /tmp/proof; #',
+        // eslint-disable-next-line camelcase
+        npm_config_registry: 'https://registry.npmjs.org; uname -a > /tmp/proof; #',
       },
     });
     expect(result.shellOutput.stdout).to.contain(
