@@ -16,21 +16,84 @@
 import { SfDoctor } from '@salesforce/plugin-info';
 import { Lifecycle } from '@salesforce/core';
 import { NpmModule } from '../shared/npmCommand.js';
+
 type HookFunction = (options: { doctor: SfDoctor }) => Promise<[void]>;
 export const hook: HookFunction = (options) => Promise.all([registryCheck(options)]);
+
+/**
+ * Validates that a string is a well-formed HTTP/HTTPS URL
+ *
+ * @param urlString - The URL string to validate
+ * @returns true if valid, false otherwise
+ */
+const isValidRegistryUrl = (urlString: string): boolean => {
+  try {
+    const url = new URL(urlString);
+    // Only allow http/https protocols to prevent protocol-based attacks
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * Sanitizes a registry URL to prevent command injection
+ * Validates URL format and ensures no shell metacharacters
+ *
+ * @param registryUrl - The registry URL to sanitize
+ * @returns The sanitized URL or undefined if invalid
+ */
+const sanitizeRegistryUrl = (registryUrl: string): string | undefined => {
+  if (!registryUrl || typeof registryUrl !== 'string') {
+    return undefined;
+  }
+
+  // Trim whitespace
+  const trimmed = registryUrl.trim();
+
+  // Check for shell metacharacters that could enable command injection
+  const dangerousChars = /[;&|`$(){}[\]<>\\'"]/;
+  if (dangerousChars.test(trimmed)) {
+    return undefined;
+  }
+
+  // Validate as proper URL
+  if (!isValidRegistryUrl(trimmed)) {
+    return undefined;
+  }
+
+  return trimmed;
+};
 
 const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
   const pluginName = '@salesforce/plugin-trust';
   // find npm install
   const npm = new NpmModule('');
   const env = process.env.npm_config_registry ?? process.env.NPM_CONFIG_REGISTRY;
+
+  let sanitizedEnv: string | undefined;
   if (env) {
-    options.doctor.addSuggestion(`using npm registry ${env} from environment variable`);
+    sanitizedEnv = sanitizeRegistryUrl(env);
+    if (sanitizedEnv) {
+      options.doctor.addSuggestion(`using npm registry ${sanitizedEnv} from environment variable`);
+    } else {
+      options.doctor.addSuggestion(
+        `WARNING: npm registry environment variable contains invalid or potentially unsafe URL: ${env}`
+      );
+    }
   }
 
   const config = npm.run('config get registry').stdout.trim();
+  let sanitizedConfig: string | undefined;
   if (config) {
-    options.doctor.addSuggestion(`using npm registry ${config} from npm config`);
+    sanitizedConfig = sanitizeRegistryUrl(config);
+    if (sanitizedConfig) {
+      options.doctor.addSuggestion(`using npm registry ${sanitizedConfig} from npm config`);
+    } else {
+      options.doctor.addSuggestion(
+        `WARNING: npm config registry contains invalid or potentially unsafe URL: ${config}`
+      );
+    }
   }
 
   await Promise.all(
@@ -39,7 +102,7 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
         // npm and yarn registries
         'https://registry.npmjs.org',
         'https://registry.yarnpkg.com',
-        env ?? config,
+        sanitizedEnv ?? sanitizedConfig ?? '',
       ]),
     ]
       // incase customRegistry is undefined, prevent printing an extra line

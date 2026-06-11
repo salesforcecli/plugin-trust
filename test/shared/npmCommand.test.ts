@@ -21,7 +21,8 @@ import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 import { expect, use as chaiUse, assert } from 'chai';
 import Sinon from 'sinon';
-import shelljs from 'shelljs';
+import crossSpawn from 'cross-spawn';
+import which from 'which';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SfError } from '@salesforce/core';
 import SinonChai from 'sinon-chai';
@@ -71,47 +72,28 @@ const NODE_PATH = `/usr/local/sfdx/bin/${NODE_NAME}`;
 describe('should run npm commands', () => {
   let sandbox: Sinon.SinonSandbox;
   let realpathSyncStub: Sinon.SinonStub;
-  let shelljsExecStub: Sinon.SinonStub;
-  let shelljsFindStub: Sinon.SinonStub;
+  let crossSpawnSyncStub: Sinon.SinonStub;
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
     stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
 
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
-    shelljsFindStub = stubMethod(sandbox, shelljs, 'find').returns(['node.exe']);
-    shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
-      expect(cmd).to.be.a('string').and.not.to.be.empty;
-      if (cmd.includes('show')) {
-        return {
-          code: 0,
-          stdout: JSON.stringify(SHOW_RESULT),
-        };
-      } else if (cmd.includes('pack')) {
-        return {
-          code: 0,
-          stdout: JSON.stringify(PACK_RESULT),
-        };
-      } else if (cmd.includes('node')) {
-        return {
-          code: 0,
-          stdout: 'node',
-        };
-      } else if (cmd.includes('sfdx')) {
-        return {
-          code: 0,
-          stdout: 'sfdx',
-        };
-      } else {
-        throw new Error(`Unexpected test cmd - ${cmd}`);
+    stubMethod(sandbox, fs, 'readdirSync').returns([{ name: 'node.exe', isDirectory: () => false }]);
+    crossSpawnSyncStub = stubMethod(sandbox, crossSpawn, 'sync').callsFake((_cmd: string, args: string[]) => {
+      const joined = args.join(' ');
+      if (joined.includes('show')) {
+        return { status: 0, stdout: Buffer.from(JSON.stringify(SHOW_RESULT)), stderr: Buffer.from('') };
+      } else if (joined.includes('pack')) {
+        return { status: 0, stdout: Buffer.from(JSON.stringify(PACK_RESULT)), stderr: Buffer.from('') };
       }
+      throw new Error(`Unexpected test args - ${joined}`);
     });
   });
 
   afterEach(() => {
     realpathSyncStub.restore();
-    shelljsFindStub.restore();
-    shelljsExecStub.restore();
+    crossSpawnSyncStub.restore();
     sandbox.restore();
   });
 
@@ -119,9 +101,11 @@ describe('should run npm commands', () => {
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
       DEFAULT_REGISTRY
     );
-    expect(shelljsExecStub).to.have.been.calledOnce;
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(crossSpawnSyncStub).to.have.been.calledOnce;
+    const args = crossSpawnSyncStub.firstCall.args[1] as string[];
+    expect(args).to.include('show');
+    expect(args).to.include(`${MODULE_NAME}@latest`);
+    expect(args).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
@@ -129,9 +113,11 @@ describe('should run npm commands', () => {
     const npmMetadata = new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).show(
       DEFAULT_REGISTRY
     );
-    expect(shelljsExecStub).to.have.been.calledOnce;
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@${MODULE_VERSION}`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(crossSpawnSyncStub).to.have.been.calledOnce;
+    const args = crossSpawnSyncStub.firstCall.args[1] as string[];
+    expect(args).to.include('show');
+    expect(args).to.include(`${MODULE_NAME}@${MODULE_VERSION}`);
+    expect(args).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
@@ -139,17 +125,19 @@ describe('should run npm commands', () => {
     new NpmModule(MODULE_NAME, MODULE_VERSION, dirname(fileURLToPath(import.meta.url))).pack(DEFAULT_REGISTRY, {
       cwd: CACHE_PATH,
     });
-    expect(shelljsExecStub).to.have.been.calledOnce;
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`pack ${MODULE_NAME}@${MODULE_VERSION}`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(crossSpawnSyncStub).to.have.been.calledOnce;
+    const args = crossSpawnSyncStub.firstCall.args[1] as string[];
+    expect(args).to.include('pack');
+    expect(args).to.include(`${MODULE_NAME}@${MODULE_VERSION}`);
+    expect(args).to.include(`--registry=${DEFAULT_REGISTRY}`);
   });
 });
 
 describe('should find the node executable', () => {
   let sandbox: Sinon.SinonSandbox;
-  let shelljsExecStub: Sinon.SinonStub;
-  let shelljsFindStub: Sinon.SinonStub;
-  let shelljsWhichStub: Sinon.SinonStub;
+  let crossSpawnSyncStub: Sinon.SinonStub;
+  let readdirSyncStub: Sinon.SinonStub;
+  let whichSyncStub: Sinon.SinonStub;
   let existsSyncStub: Sinon.SinonStub;
   let realpathSyncStub: Sinon.SinonStub;
   let osTypeStub: Sinon.SinonStub;
@@ -158,36 +146,16 @@ describe('should find the node executable', () => {
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
     stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
-    shelljsExecStub = stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
-      expect(cmd).to.be.a('string').and.not.to.be.empty;
-      if (cmd.includes('show')) {
-        return {
-          code: 0,
-          stdout: JSON.stringify(SHOW_RESULT),
-        };
-      } else if (cmd.includes('pack')) {
-        return {
-          code: 0,
-          stdout: JSON.stringify(PACK_RESULT),
-        };
-      } else if (cmd.includes('node')) {
-        return {
-          code: 0,
-          stdout: 'node',
-        };
-      } else if (cmd.includes('sfdx')) {
-        return {
-          code: 0,
-          stdout: 'sfdx',
-        };
-      } else {
-        throw new Error(`Unexpected test cmd - ${cmd}`);
+    crossSpawnSyncStub = stubMethod(sandbox, crossSpawn, 'sync').callsFake((_cmd: string, args: string[]) => {
+      const joined = args.join(' ');
+      if (joined.includes('show')) {
+        return { status: 0, stdout: Buffer.from(JSON.stringify(SHOW_RESULT)), stderr: Buffer.from('') };
+      } else if (joined.includes('pack')) {
+        return { status: 0, stdout: Buffer.from(JSON.stringify(PACK_RESULT)), stderr: Buffer.from('') };
       }
+      throw new Error(`Unexpected test args - ${joined}`);
     });
-    shelljsFindStub = stubMethod(sandbox, shelljs, 'find').callsFake((filePaths: string[]) => {
-      expect(filePaths).to.be.a('array').and.to.have.length.greaterThan(0);
-      return [NODE_PATH];
-    });
+    readdirSyncStub = stubMethod(sandbox, fs, 'readdirSync').returns([{ name: NODE_NAME, isDirectory: () => false }]);
     realpathSyncStub = stubMethod(sandbox, fs, 'realpathSync').callsFake((filePath: string) => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
       return NODE_PATH;
@@ -215,21 +183,19 @@ describe('should find the node executable', () => {
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(osTypeStub).to.have.been.calledOnce;
     expect(realpathSyncStub).to.have.been.calledTwice;
-    // when switching to ESM, realpathSyncStub started to be called twice
-    // realpathSync('C:\\Program Files\\sfdx\\client\\bin\\node.exe')
-    // realpathSync('/Users/william.ruemmele/projects/oss/plugin-trust/node_modules/npm/package.json'
-    // when placing a breakpoint at NpmCommand~124 - the only realPathSync method usage, it was only hit once while debugging this UT
     expect(realpathSyncStub.firstCall.args[0]).to.include(NODE_NAME);
-    expect(shelljsExecStub).to.have.been.calledOnce;
-    expect(shelljsFindStub).to.have.been.calledOnce;
-    expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(crossSpawnSyncStub).to.have.been.calledOnce;
+    expect(readdirSyncStub).to.have.been.called;
+    expect(crossSpawnSyncStub.firstCall.args[0]).to.include(NODE_NAME);
+    const args = crossSpawnSyncStub.firstCall.args[1] as string[];
+    expect(args).to.include('show');
+    expect(args).to.include(`${MODULE_NAME}@latest`);
+    expect(args).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
   it('finds node binary inside sfdx bin folder on windows and runs npm show command', () => {
-    shelljsFindStub.returns(['C:\\Program Files\\sfdx\\client\\bin\\node.exe']);
+    readdirSyncStub.returns([{ name: 'node.exe', isDirectory: () => false }]);
     osTypeStub.returns('Windows_NT');
 
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
@@ -239,16 +205,14 @@ describe('should find the node executable', () => {
     expect(existsSyncStub).to.have.been.calledTwice;
     expect(osTypeStub).to.have.been.calledOnce;
     expect(realpathSyncStub).to.have.been.calledTwice;
-    // when switching to ESM, realpathSyncStub started to be called twice
-    // realpathSync('C:\\Program Files\\sfdx\\client\\bin\\node.exe')
-    // realpathSync('/Users/william.ruemmele/projects/oss/plugin-trust/node_modules/npm/package.json'
-    // when placing a breakpoint at NpmCommand~124 - the only realPathSync method usage, it was only hit once while debugging this UT
     expect(realpathSyncStub.firstCall.args[0]).to.include(NODE_NAME);
-    expect(shelljsExecStub).to.have.been.calledOnce;
-    expect(shelljsFindStub).to.have.been.calledOnce;
-    expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_PATH);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(crossSpawnSyncStub).to.have.been.calledOnce;
+    expect(readdirSyncStub).to.have.been.called;
+    expect(crossSpawnSyncStub.firstCall.args[0]).to.include(NODE_NAME);
+    const args = crossSpawnSyncStub.firstCall.args[1] as string[];
+    expect(args).to.include('show');
+    expect(args).to.include(`${MODULE_NAME}@latest`);
+    expect(args).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
@@ -259,24 +223,20 @@ describe('should find the node executable', () => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
       return false;
     });
-    shelljsWhichStub = stubMethod(sandbox, shelljs, 'which').callsFake((filePath: string) => {
-      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0).and.to.be.equal('node');
-      return {
-        stdout: NODE_PATH,
-        code: 0,
-      } as shelljs.ShellString;
-    });
+    whichSyncStub = stubMethod(sandbox, which, 'sync').returns(NODE_PATH);
     const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
       DEFAULT_REGISTRY
     );
     expect(existsSyncStub).to.have.been.calledTwice;
-    expect(shelljsFindStub).to.not.have.been.called;
+    expect(readdirSyncStub).to.not.have.been.called;
     expect(realpathSyncStub).to.not.have.been.called;
-    expect(shelljsWhichStub).to.have.been.calledOnce;
-    expect(shelljsExecStub).to.have.been.calledOnce;
-    expect(shelljsExecStub.firstCall.args[0]).to.include(NODE_NAME);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`show ${MODULE_NAME}@latest`);
-    expect(shelljsExecStub.firstCall.args[0]).to.include(`--registry=${DEFAULT_REGISTRY}`);
+    expect(whichSyncStub).to.have.been.calledOnce;
+    expect(crossSpawnSyncStub).to.have.been.calledOnce;
+    expect(crossSpawnSyncStub.firstCall.args[0]).to.include(NODE_NAME);
+    const args = crossSpawnSyncStub.firstCall.args[1] as string[];
+    expect(args).to.include('show');
+    expect(args).to.include(`${MODULE_NAME}@latest`);
+    expect(args).to.include(`--registry=${DEFAULT_REGISTRY}`);
     expect(npmMetadata).to.deep.equal(SHOW_RESULT);
   });
 
@@ -286,11 +246,7 @@ describe('should find the node executable', () => {
       expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0);
       return false;
     });
-    shelljsWhichStub.restore();
-    shelljsWhichStub = stubMethod(sandbox, shelljs, 'which').callsFake((filePath: string) => {
-      expect(filePath).to.be.a('string').and.to.have.length.greaterThan(0).and.to.be.equal('node');
-      return null;
-    });
+    whichSyncStub = stubMethod(sandbox, which, 'sync').returns(null);
     try {
       const npmMetadata = new NpmModule(MODULE_NAME, undefined, dirname(fileURLToPath(import.meta.url))).show(
         DEFAULT_REGISTRY
@@ -310,33 +266,15 @@ describe('should run npm commands with execution errors', () => {
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
-    stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
-      expect(cmd).to.be.a('string').and.not.to.be.empty;
-      if (cmd.includes('show')) {
-        return {
-          code: 1,
-          stderr: 'command execution error',
-          stdout: '',
-        };
-      } else if (cmd.includes('pack')) {
-        return {
-          code: 1,
-          stderr: 'command execution error',
-          stdout: '',
-        };
-      } else if (cmd.includes('node')) {
-        return {
-          code: 0,
-          stdout: 'node',
-        };
-      } else if (cmd.includes('sfdx')) {
-        return {
-          code: 0,
-          stdout: 'sfdx',
-        };
-      } else {
-        throw new Error(`Unexpected test cmd - ${cmd}`);
+    stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
+    stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
+    stubMethod(sandbox, fs, 'readdirSync').returns([{ name: 'node.exe', isDirectory: () => false }]);
+    stubMethod(sandbox, crossSpawn, 'sync').callsFake((_cmd: string, args: string[]) => {
+      const joined = args.join(' ');
+      if (joined.includes('show') || joined.includes('pack')) {
+        return { status: 1, stdout: Buffer.from(''), stderr: Buffer.from('command execution error') };
       }
+      throw new Error(`Unexpected test args - ${joined}`);
     });
   });
 
@@ -375,31 +313,15 @@ describe('should run npm commands with parse errors', () => {
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
-    stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
-      expect(cmd).to.be.a('string').and.not.to.be.empty;
-      if (cmd.includes('show')) {
-        return {
-          code: 0,
-          stdout: 'not a json string',
-        };
-      } else if (cmd.includes('pack')) {
-        return {
-          code: 0,
-          stdout: 'not a json string',
-        };
-      } else if (cmd.includes('node')) {
-        return {
-          code: 0,
-          stdout: 'node',
-        };
-      } else if (cmd.includes('sfdx')) {
-        return {
-          code: 0,
-          stdout: 'sfdx',
-        };
-      } else {
-        throw new Error(`Unexpected test cmd - ${cmd}`);
+    stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
+    stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
+    stubMethod(sandbox, fs, 'readdirSync').returns([{ name: 'node.exe', isDirectory: () => false }]);
+    stubMethod(sandbox, crossSpawn, 'sync').callsFake((_cmd: string, args: string[]) => {
+      const joined = args.join(' ');
+      if (joined.includes('show') || joined.includes('pack')) {
+        return { status: 0, stdout: Buffer.from('not a json string'), stderr: Buffer.from('') };
       }
+      throw new Error(`Unexpected test args - ${joined}`);
     });
   });
 
@@ -426,21 +348,17 @@ describe('should run npm commands with npm errors', () => {
 
   beforeEach(() => {
     sandbox = Sinon.createSandbox();
-    stubMethod(sandbox, shelljs, 'exec').callsFake((cmd: string) => {
-      expect(cmd).to.be.a('string').and.not.to.be.empty;
-      if (cmd.includes('show')) {
-        return {
-          code: 0,
-          stdout: '',
-        };
-      } else if (cmd.includes('pack')) {
-        return {
-          code: 1,
-          stderr: 'npm err',
-        };
-      } else {
-        throw new Error(`Unexpected test cmd - ${cmd}`);
+    stubMethod(sandbox, fs, 'readFileSync').returns(JSON.stringify({ bin: { npm: 'bc' } }));
+    stubMethod(sandbox, fs, 'realpathSync').returns('node.exe');
+    stubMethod(sandbox, fs, 'readdirSync').returns([{ name: 'node.exe', isDirectory: () => false }]);
+    stubMethod(sandbox, crossSpawn, 'sync').callsFake((_cmd: string, args: string[]) => {
+      const joined = args.join(' ');
+      if (joined.includes('show')) {
+        return { status: 0, stdout: Buffer.from(''), stderr: Buffer.from('') };
+      } else if (joined.includes('pack')) {
+        return { status: 1, stdout: Buffer.from(''), stderr: Buffer.from('npm err') };
       }
+      throw new Error(`Unexpected test args - ${joined}`);
     });
   });
 
