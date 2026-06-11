@@ -1,3 +1,12 @@
+## [3.8.16](https://github.com/salesforcecli/plugin-trust/compare/3.8.15...3.8.16) (2026-06-11)
+
+### Bug Fixes
+
+- feedback from code review @W-26606077@ ([2e340b3](https://github.com/salesforcecli/plugin-trust/commit/2e340b35334e04e0f229313d4e502cefe19e7144))
+- properly sanitize npm_config_registry env-var @W-22606077 ([df64938](https://github.com/salesforcecli/plugin-trust/commit/df649388a4db6bcf70623c83ac277502c03c52e4))
+- replaced shelljs with cross-spawn ([dbc1493](https://github.com/salesforcecli/plugin-trust/commit/dbc1493bd171039b1ae017498be2bf6ebe17aeef))
+- resolved NUT collision with yarn env-vars @W-22606077@ ([ab3742a](https://github.com/salesforcecli/plugin-trust/commit/ab3742a68d6c90caaece3167ac227f714057609a))
+
 ## [3.8.15](https://github.com/salesforcecli/plugin-trust/compare/3.8.14...3.8.15) (2026-06-07)
 
 ### Bug Fixes
