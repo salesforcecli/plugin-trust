@@ -1,3 +1,9 @@
+## [3.8.18](https://github.com/salesforcecli/plugin-trust/compare/3.8.17...3.8.18) (2026-06-12)
+
+### Bug Fixes
+
+- removed shelljs dependency @W-22606077@ ([d2249af](https://github.com/salesforcecli/plugin-trust/commit/d2249aff0b4e20e5f8ec1bc49b5f097b0bfd9677))
+
 ## [3.8.17](https://github.com/salesforcecli/plugin-trust/compare/3.8.16...3.8.17) (2026-06-12)
 
 ### Bug Fixes
