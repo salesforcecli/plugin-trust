@@ -1715,7 +1715,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.1"
 
-"@salesforce/core@^8.23.1", "@salesforce/core@^8.27.1", "@salesforce/core@^8.29.1", "@salesforce/core@^8.31.0", "@salesforce/core@^8.31.1":
+"@salesforce/core@^8.23.1", "@salesforce/core@^8.29.1", "@salesforce/core@^8.31.0", "@salesforce/core@^8.31.1":
   version "8.31.1"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.31.1.tgz#a0057e46568b5aeb6d838c461d7c98105ec11dc2"
   integrity sha512-dnBfLI0v/Ucsh/QrpYPGeo39qsvvglWMRSifx1lmAwLc9QAnL3Hhp9zUxJyX5icD9jj1uMftsAtIOGyjC2+KXA==
@@ -1824,13 +1824,13 @@
     proxy-agent "^6.5.0"
     semver "^7.8.0"
 
-"@salesforce/plugin-telemetry@^3.8.23":
-  version "3.8.23"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.8.23.tgz#044b19193371d1574b94e78910797a8948f16da0"
-  integrity sha512-HzHxTNHZLlUvBgnK/AbG7Qg2Hiy69MYnjAFxC7w0wqLLokfvTqlv09cixa97/osrolzq2geLzTu/hYhhtnkmPQ==
+"@salesforce/plugin-telemetry@^3.8.26":
+  version "3.8.26"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.8.26.tgz#0710d4c7e0b764489ac1c0e9bc771b4036184951"
+  integrity sha512-UPn3ochQwvCVahs2eOD1nRc2PNDojVIiUotKkGxs6gLQAr9Pcfoway3m2sfFx0B2KBepeT3qNM8h8nRhwptL8w==
   dependencies:
     "@oclif/core" "^4.10.5"
-    "@salesforce/core" "^8.27.1"
+    "@salesforce/core" "^8.31.1"
     "@salesforce/kit" "^3.2.6"
     "@salesforce/sf-plugins-core" "^12"
     "@salesforce/telemetry" "^6.8.27"
