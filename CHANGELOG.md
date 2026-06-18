@@ -1,3 +1,9 @@
+## [3.8.21](https://github.com/salesforcecli/plugin-trust/compare/3.8.20...3.8.21) (2026-06-18)
+
+### Bug Fixes
+
+- **deps:** bump @babel/core from 7.29.0 to 7.29.7 ([5a92b2b](https://github.com/salesforcecli/plugin-trust/commit/5a92b2b0f216ae0e21c39b7638d45771cc074e11))
+
 ## [3.8.20](https://github.com/salesforcecli/plugin-trust/compare/3.8.19...3.8.20) (2026-06-18)
 
 ### Bug Fixes
