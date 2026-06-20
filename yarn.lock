@@ -1858,10 +1858,10 @@
     proxy-agent "^6.5.0"
     semver "^7.8.0"
 
-"@salesforce/plugin-telemetry@^3.8.26":
-  version "3.8.26"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.8.26.tgz#0710d4c7e0b764489ac1c0e9bc771b4036184951"
-  integrity sha512-UPn3ochQwvCVahs2eOD1nRc2PNDojVIiUotKkGxs6gLQAr9Pcfoway3m2sfFx0B2KBepeT3qNM8h8nRhwptL8w==
+"@salesforce/plugin-telemetry@^3.8.27":
+  version "3.8.27"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-3.8.27.tgz#bf5c807a3f597fc516ac7c25cbf88f5bf52d5893"
+  integrity sha512-a/dqfs1xORT+h3iGyW73aT/9+gKlJJpCehc0yC/QmxePXq182IX6WcRPPZh0fKrk+97N3Hot5rua7SODSW4/Cg==
   dependencies:
     "@oclif/core" "^4.10.5"
     "@salesforce/core" "^8.31.1"
