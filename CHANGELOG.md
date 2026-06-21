@@ -1,3 +1,9 @@
+## [3.8.24](https://github.com/salesforcecli/plugin-trust/compare/3.8.23...3.8.24) (2026-06-21)
+
+### Bug Fixes
+
+- **deps:** bump undici from 6.25.0 to 6.27.0 ([64f9bed](https://github.com/salesforcecli/plugin-trust/commit/64f9bed279d393a441dba1359618865d1ada9a39))
+
 ## [3.8.23](https://github.com/salesforcecli/plugin-trust/compare/3.8.22...3.8.23) (2026-06-18)
 
 ### Bug Fixes
