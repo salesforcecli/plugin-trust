@@ -1,3 +1,9 @@
+## [3.8.28](https://github.com/salesforcecli/plugin-trust/compare/3.8.27...3.8.28) (2026-06-28)
+
+### Bug Fixes
+
+- **deps:** bump @sigstore/core from 3.2.0 to 3.2.1 ([af40eb1](https://github.com/salesforcecli/plugin-trust/commit/af40eb14fbcc564b8024f02a41fda2bd93b5d4c4))
+
 ## [3.8.27](https://github.com/salesforcecli/plugin-trust/compare/3.8.26...3.8.27) (2026-06-27)
 
 ### Bug Fixes
