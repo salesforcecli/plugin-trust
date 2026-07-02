@@ -1,3 +1,9 @@
+## [3.8.30](https://github.com/salesforcecli/plugin-trust/compare/3.8.29...3.8.30) (2026-07-02)
+
+### Bug Fixes
+
+- **deps:** bump @sigstore/verify from 3.1.0 to 3.1.1 ([b55ccd1](https://github.com/salesforcecli/plugin-trust/commit/b55ccd11dbb962ec5b7f38d2a55ccb8ed96eeb09))
+
 ## [3.8.29](https://github.com/salesforcecli/plugin-trust/compare/3.8.28...3.8.29) (2026-06-28)
 
 ### Bug Fixes
