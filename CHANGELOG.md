@@ -1,3 +1,9 @@
+## [3.8.31](https://github.com/salesforcecli/plugin-trust/compare/3.8.30...3.8.31) (2026-07-02)
+
+### Bug Fixes
+
+- **deps:** bump sigstore from 4.1.0 to 4.1.1 ([495da09](https://github.com/salesforcecli/plugin-trust/commit/495da09f0da73a1642304fc0b08a1589095a5768))
+
 ## [3.8.30](https://github.com/salesforcecli/plugin-trust/compare/3.8.29...3.8.30) (2026-07-02)
 
 ### Bug Fixes
