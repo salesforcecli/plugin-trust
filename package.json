@@ -17,7 +17,7 @@
     "@salesforce/sf-plugins-core": "^12",
     "cross-spawn": "^7.0.6",
     "got": "^13.0.0",
-    "npm": "^11.17.0",
+    "npm": "^11.18.0",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^6.5.0",
     "semver": "^7.8.2",
