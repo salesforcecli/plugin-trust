@@ -1,15 +1,24 @@
 /*
- * Copyright (c) 2024, salesforce.com, inc.
- * All rights reserved.
- * Licensed under the BSD 3-Clause license.
- * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Copyright 2026, Salesforce, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import path from 'node:path';
 import { expect } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
-import shelljs from 'shelljs';
+import { sync as spawnSync } from 'cross-spawn';
 import { ensureObject } from '@salesforce/ts-types';
 import { NodeInfoResult } from '../../src/commands/node/info.js';
 
@@ -52,13 +61,13 @@ describe('node info command', () => {
     expect(info.npxPath).to.be.a('string').and.not.empty;
 
     // Verify node path works
-    const nodeHelp = shelljs.exec(`"${info.nodePath}" --help`, { silent: true });
-    expect(nodeHelp.code).to.equal(0);
-    expect(nodeHelp.stdout).to.contain('Usage: node');
+    const nodeHelp = spawnSync(info.nodePath, ['--help']);
+    expect(nodeHelp.status).to.equal(0);
+    expect(nodeHelp.stdout.toString()).to.contain('Usage: node');
 
     // Verify npx path works
-    const npxHelp = shelljs.exec(`"${info.nodePath}" "${info.npxPath}" --help`, { silent: true });
-    expect(npxHelp.code).to.equal(0);
-    expect(npxHelp.stdout).to.contain('Run a command from a local or remote npm package');
+    const npxHelp = spawnSync(info.nodePath, [info.npxPath, '--help']);
+    expect(npxHelp.status).to.equal(0);
+    expect(npxHelp.stdout.toString()).to.contain('Run a command from a local or remote npm package');
   });
 });

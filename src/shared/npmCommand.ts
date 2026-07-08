@@ -1,8 +1,17 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
- * All rights reserved.
- * Licensed under the BSD 3-Clause license.
- * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Copyright 2026, Salesforce, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import os from 'node:os';
@@ -11,7 +20,8 @@ import { createRequire } from 'node:module';
 
 import fs from 'node:fs';
 import npmRunPath from 'npm-run-path';
-import shelljs, { ShellString } from 'shelljs';
+import crossSpawn from 'cross-spawn';
+import which from 'which';
 import { SfError } from '@salesforce/core';
 import { sleep, parseJson } from '@salesforce/kit';
 import { Ux } from '@salesforce/sf-plugins-core';
@@ -42,13 +52,18 @@ export type NpmShowResults = {
   };
 };
 
-type NpmCommandOptions = shelljs.ExecOptions & {
+type NpmCommandOptions = {
   json?: boolean;
   registry?: string;
   cliRoot?: string;
+  cwd?: string;
 };
 
-type NpmCommandResult = shelljs.ShellString;
+type NpmCommandResult = {
+  code: number;
+  stdout: string;
+  stderr: string;
+};
 
 type NpmPackage = {
   bin: {
@@ -60,18 +75,20 @@ export class NpmCommand {
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const nodeExecutable = NpmCommand.findNode(options.cliRoot);
     const npmCli = NpmCommand.npmCli();
-    const command = `"${nodeExecutable}" "${npmCli}" ${cmd} --registry=${options.registry ?? ''}`;
-    const npmCmdResult = shelljs.exec(command, {
-      ...options,
-      silent: true,
-      async: false,
+    const args = [npmCli, ...cmd.split(/\s+/), ...(options.registry ? [`--registry=${options.registry}`] : [])];
+    const result = crossSpawn.sync(nodeExecutable, args, {
+      cwd: options.cwd,
       env: npmRunPath.env({ env: process.env }),
     });
-    if (npmCmdResult.code !== 0) {
-      throw new SfError(npmCmdResult.stderr, 'ShellExecError');
+    const stdout = result.stdout?.toString() ?? '';
+    const stderr = result.stderr?.toString() ?? '';
+    const code = result.status ?? 1;
+
+    if (code !== 0) {
+      throw new SfError(stderr, 'ShellExecError');
     }
 
-    return npmCmdResult;
+    return { code, stdout, stderr };
   }
 
   public static npxCli(): string {
@@ -100,7 +117,6 @@ export class NpmCommand {
 
       try {
         if (filepath.endsWith('node')) {
-          // This checks if the filepath is executable on Mac or Linux, if it is not it errors.
           fs.accessSync(filepath, fs.constants.X_OK);
           return true;
         }
@@ -113,22 +129,34 @@ export class NpmCommand {
     if (root) {
       const sfdxBinDirs = NpmCommand.findSfdxBinDirs(root);
       if (sfdxBinDirs.length > 0) {
-        // Find the node executable
-        const node = shelljs.find(sfdxBinDirs).filter((file) => isExecutable(file))[0];
+        const allFiles = sfdxBinDirs.flatMap((dir) => NpmCommand.findFilesRecursively(dir));
+        const node = allFiles.find((file) => isExecutable(file));
         if (node) {
           return fs.realpathSync(node);
         }
       }
     }
 
-    // Check to see if node is installed
-    const nodeShellString = shelljs.which('node');
-    if (nodeShellString?.code === 0 && nodeShellString?.stdout) return nodeShellString.stdout;
+    const nodePath = which.sync('node', { nothrow: true });
+    if (nodePath) return nodePath;
 
     throw setErrorName(
       new SfError('Cannot locate node executable.', 'CannotFindNodeExecutable'),
       'CannotFindNodeExecutable'
     );
+  }
+
+  private static findFilesRecursively(dir: string): string[] {
+    const results: string[] = [];
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        results.push(...NpmCommand.findFilesRecursively(fullPath));
+      } else {
+        results.push(fullPath);
+      }
+    }
+    return results;
   }
 
   /**
@@ -169,14 +197,15 @@ export class NpmModule {
   }
 
   public ping(registry?: string): { registry: string; time: number; details: Record<string, unknown> } {
-    return JSON.parse(NpmCommand.runNpmCmd(`ping ${registry ?? ''} --json`, { json: true, cliRoot: this.cliRoot })) as {
+    const result = NpmCommand.runNpmCmd(`ping ${registry ?? ''} --json`, { json: true, cliRoot: this.cliRoot });
+    return JSON.parse(result.stdout) as {
       registry: string;
       time: number;
       details: Record<string, unknown>;
     };
   }
 
-  public run(command: string): ShellString {
+  public run(command: string): NpmCommandResult {
     return NpmCommand.runNpmCmd(command, { cliRoot: this.cliRoot, json: command.includes('--json') });
   }
 
@@ -212,7 +241,7 @@ export class NpmModule {
     }
   }
 
-  public pack(registry: string, options?: shelljs.ExecOptions): void {
+  public pack(registry: string, options?: NpmCommandOptions): void {
     try {
       NpmCommand.runNpmCmd(`pack ${this.module}@${this.version}`, {
         ...options,
@@ -229,7 +258,7 @@ export class NpmModule {
     return;
   }
 
-  public async fetchTarball(registry: string, options?: shelljs.ExecOptions): Promise<void> {
+  public async fetchTarball(registry: string, options?: NpmCommandOptions): Promise<void> {
     await this.pollForAvailability(() => {
       this.pack(registry, options);
     });

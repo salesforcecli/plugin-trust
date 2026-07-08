@@ -1,3 +1,305 @@
+## [3.8.33](https://github.com/salesforcecli/plugin-trust/compare/3.8.32...3.8.33) (2026-07-05)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 12.2.24 to 12.2.25 ([cc6ac57](https://github.com/salesforcecli/plugin-trust/commit/cc6ac572961853d3e68592fd12a349a795949e3f))
+
+## [3.8.32](https://github.com/salesforcecli/plugin-trust/compare/3.8.31...3.8.32) (2026-07-04)
+
+### Bug Fixes
+
+- **deps:** bump npm from 11.17.0 to 11.18.0 ([1acdb85](https://github.com/salesforcecli/plugin-trust/commit/1acdb8588b32c6c5cb78fd15ea87112672d78eaa))
+
+## [3.8.31](https://github.com/salesforcecli/plugin-trust/compare/3.8.30...3.8.31) (2026-07-02)
+
+### Bug Fixes
+
+- **deps:** bump sigstore from 4.1.0 to 4.1.1 ([495da09](https://github.com/salesforcecli/plugin-trust/commit/495da09f0da73a1642304fc0b08a1589095a5768))
+
+## [3.8.30](https://github.com/salesforcecli/plugin-trust/compare/3.8.29...3.8.30) (2026-07-02)
+
+### Bug Fixes
+
+- **deps:** bump @sigstore/verify from 3.1.0 to 3.1.1 ([b55ccd1](https://github.com/salesforcecli/plugin-trust/commit/b55ccd11dbb962ec5b7f38d2a55ccb8ed96eeb09))
+
+## [3.8.29](https://github.com/salesforcecli/plugin-trust/compare/3.8.28...3.8.29) (2026-06-28)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.11.4 to 4.11.11 ([968c0f5](https://github.com/salesforcecli/plugin-trust/commit/968c0f5f41709e5c852ee968fb939f10fe095af6))
+
+## [3.8.28](https://github.com/salesforcecli/plugin-trust/compare/3.8.27...3.8.28) (2026-06-28)
+
+### Bug Fixes
+
+- **deps:** bump @sigstore/core from 3.2.0 to 3.2.1 ([af40eb1](https://github.com/salesforcecli/plugin-trust/commit/af40eb14fbcc564b8024f02a41fda2bd93b5d4c4))
+
+## [3.8.27](https://github.com/salesforcecli/plugin-trust/compare/3.8.26...3.8.27) (2026-06-27)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 3.4.143 to 3.4.144 ([8e82274](https://github.com/salesforcecli/plugin-trust/commit/8e82274c7830bb6acb87056c5c87b95d313553ee))
+
+## [3.8.26](https://github.com/salesforcecli/plugin-trust/compare/3.8.25...3.8.26) (2026-06-21)
+
+### Bug Fixes
+
+- **deps:** bump npm from 11.16.0 to 11.17.0 ([ccaa3c8](https://github.com/salesforcecli/plugin-trust/commit/ccaa3c85175977e0e506953ca8627bc29f381dce))
+
+## [3.8.25](https://github.com/salesforcecli/plugin-trust/compare/3.8.24...3.8.25) (2026-06-21)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 3.4.131 to 3.4.143 ([6719eaf](https://github.com/salesforcecli/plugin-trust/commit/6719eafab285c29a8661507b52b32d474138f284))
+
+## [3.8.24](https://github.com/salesforcecli/plugin-trust/compare/3.8.23...3.8.24) (2026-06-21)
+
+### Bug Fixes
+
+- **deps:** bump undici from 6.25.0 to 6.27.0 ([64f9bed](https://github.com/salesforcecli/plugin-trust/commit/64f9bed279d393a441dba1359618865d1ada9a39))
+
+## [3.8.23](https://github.com/salesforcecli/plugin-trust/compare/3.8.22...3.8.23) (2026-06-18)
+
+### Bug Fixes
+
+- **deps:** bump form-data from 4.0.5 to 4.0.6 ([b40f01c](https://github.com/salesforcecli/plugin-trust/commit/b40f01cb3314e784bdb76a6795fcf66979426dbd))
+
+## [3.8.22](https://github.com/salesforcecli/plugin-trust/compare/3.8.21...3.8.22) (2026-06-18)
+
+### Bug Fixes
+
+- **deps:** bump tar from 7.5.15 to 7.5.16 ([530703f](https://github.com/salesforcecli/plugin-trust/commit/530703fb848f00c10e145c27ad950f562bcd2c79))
+
+## [3.8.21](https://github.com/salesforcecli/plugin-trust/compare/3.8.20...3.8.21) (2026-06-18)
+
+### Bug Fixes
+
+- **deps:** bump @babel/core from 7.29.0 to 7.29.7 ([5a92b2b](https://github.com/salesforcecli/plugin-trust/commit/5a92b2b0f216ae0e21c39b7638d45771cc074e11))
+
+## [3.8.20](https://github.com/salesforcecli/plugin-trust/compare/3.8.19...3.8.20) (2026-06-18)
+
+### Bug Fixes
+
+- **deps:** bump markdown-it from 14.1.1 to 14.2.0 ([4f17b90](https://github.com/salesforcecli/plugin-trust/commit/4f17b902f9bb45e2881e208743ecd30178d01450))
+
+## [3.8.19](https://github.com/salesforcecli/plugin-trust/compare/3.8.18...3.8.19) (2026-06-13)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 12.2.6 to 12.2.24 ([0fb749c](https://github.com/salesforcecli/plugin-trust/commit/0fb749cd26c186d2ed2cad3ecd8555bf7195c198))
+
+## [3.8.18](https://github.com/salesforcecli/plugin-trust/compare/3.8.17...3.8.18) (2026-06-12)
+
+### Bug Fixes
+
+- removed shelljs dependency @W-22606077@ ([d2249af](https://github.com/salesforcecli/plugin-trust/commit/d2249aff0b4e20e5f8ec1bc49b5f097b0bfd9677))
+
+## [3.8.17](https://github.com/salesforcecli/plugin-trust/compare/3.8.16...3.8.17) (2026-06-12)
+
+### Bug Fixes
+
+- **deps:** bump basic-ftp from 5.1.0 to 5.3.1 ([dcf80d3](https://github.com/salesforcecli/plugin-trust/commit/dcf80d3dcb021f48508ff48864cc025b3169e736))
+
+## [3.8.16](https://github.com/salesforcecli/plugin-trust/compare/3.8.15...3.8.16) (2026-06-11)
+
+### Bug Fixes
+
+- feedback from code review @W-26606077@ ([2e340b3](https://github.com/salesforcecli/plugin-trust/commit/2e340b35334e04e0f229313d4e502cefe19e7144))
+- properly sanitize npm_config_registry env-var @W-22606077 ([df64938](https://github.com/salesforcecli/plugin-trust/commit/df649388a4db6bcf70623c83ac277502c03c52e4))
+- replaced shelljs with cross-spawn ([dbc1493](https://github.com/salesforcecli/plugin-trust/commit/dbc1493bd171039b1ae017498be2bf6ebe17aeef))
+- resolved NUT collision with yarn env-vars @W-22606077@ ([ab3742a](https://github.com/salesforcecli/plugin-trust/commit/ab3742a68d6c90caaece3167ac227f714057609a))
+
+## [3.8.15](https://github.com/salesforcecli/plugin-trust/compare/3.8.14...3.8.15) (2026-06-07)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 12.2.22 to 12.2.24 ([05ce5ee](https://github.com/salesforcecli/plugin-trust/commit/05ce5ee4eeef29381cee3176d8cca1d49a3158a4))
+
+## [3.8.14](https://github.com/salesforcecli/plugin-trust/compare/3.8.13...3.8.14) (2026-06-07)
+
+### Bug Fixes
+
+- **deps:** bump semver from 7.8.1 to 7.8.2 ([5b16e62](https://github.com/salesforcecli/plugin-trust/commit/5b16e6202926f7259e42b404fc4380ff52a6a2ab))
+
+## [3.8.13](https://github.com/salesforcecli/plugin-trust/compare/3.8.12...3.8.13) (2026-05-31)
+
+### Bug Fixes
+
+- **deps:** bump npm from 11.15.0 to 11.16.0 ([13bda8c](https://github.com/salesforcecli/plugin-trust/commit/13bda8c7f0b8fb6ff026cbf506f70733afe514f4))
+
+## [3.8.12](https://github.com/salesforcecli/plugin-trust/compare/3.8.11...3.8.12) (2026-05-31)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 12.2.19 to 12.2.22 ([e37eeea](https://github.com/salesforcecli/plugin-trust/commit/e37eeea62913a43bc85973d342aad5176424630e))
+
+## [3.8.11](https://github.com/salesforcecli/plugin-trust/compare/3.8.10...3.8.11) (2026-05-24)
+
+### Bug Fixes
+
+- **deps:** bump ws from 8.19.0 to 8.21.0 ([9b7ca83](https://github.com/salesforcecli/plugin-trust/commit/9b7ca83143ec76a108c895dd0f9e65f49346d42c))
+
+## [3.8.10](https://github.com/salesforcecli/plugin-trust/compare/3.8.9...3.8.10) (2026-05-23)
+
+### Bug Fixes
+
+- **deps:** bump npm from 11.14.1 to 11.15.0 ([c5ff9bb](https://github.com/salesforcecli/plugin-trust/commit/c5ff9bb439e009e4c498bab113c6e8c8739987e1))
+
+## [3.8.9](https://github.com/salesforcecli/plugin-trust/compare/3.8.8...3.8.9) (2026-05-16)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 3.4.123 to 3.4.131 ([f6620a2](https://github.com/salesforcecli/plugin-trust/commit/f6620a2766a2f47142a9bd3f7f1155b8619aef8e))
+
+## [3.8.8](https://github.com/salesforcecli/plugin-trust/compare/3.8.7...3.8.8) (2026-05-13)
+
+### Bug Fixes
+
+- **deps:** bump @protobufjs/utf8 from 1.1.0 to 1.1.1 ([13a8862](https://github.com/salesforcecli/plugin-trust/commit/13a88629fce8d753942176b6c0ef1a93b5938d57))
+
+## [3.8.7](https://github.com/salesforcecli/plugin-trust/compare/3.8.6...3.8.7) (2026-05-10)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.11.0 to 4.11.2 ([34ef8bd](https://github.com/salesforcecli/plugin-trust/commit/34ef8bd425d39c396b5b0f23eb72622203ab3a31))
+
+## [3.8.6](https://github.com/salesforcecli/plugin-trust/compare/3.8.5...3.8.6) (2026-05-10)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 8.29.0 to 8.29.1 ([5222b62](https://github.com/salesforcecli/plugin-trust/commit/5222b62684132da556f3f797816428ecf424a3d6))
+
+## [3.8.5](https://github.com/salesforcecli/plugin-trust/compare/3.8.4...3.8.5) (2026-05-09)
+
+### Bug Fixes
+
+- **deps:** bump npm from 11.13.0 to 11.14.1 ([84c62d4](https://github.com/salesforcecli/plugin-trust/commit/84c62d46201b5f2dcb8284cf2f6e6b242cce3a77))
+
+## [3.8.4](https://github.com/salesforcecli/plugin-trust/compare/3.8.3...3.8.4) (2026-05-09)
+
+### Bug Fixes
+
+- **deps:** bump fast-xml-builder from 1.1.4 to 1.2.0 ([865c767](https://github.com/salesforcecli/plugin-trust/commit/865c7670393662c96f333e12b410521fd528a697))
+
+## [3.8.3](https://github.com/salesforcecli/plugin-trust/compare/3.8.2...3.8.3) (2026-05-09)
+
+### Bug Fixes
+
+- **deps:** bump fast-uri from 3.1.0 to 3.1.2 ([5aaf640](https://github.com/salesforcecli/plugin-trust/commit/5aaf640015c780e25ab4444a4cf51318b1d15a11))
+
+## [3.8.2](https://github.com/salesforcecli/plugin-trust/compare/3.8.1...3.8.2) (2026-05-07)
+
+### Bug Fixes
+
+- **deps:** bump ip-address from 10.1.0 to 10.2.0 ([ea19514](https://github.com/salesforcecli/plugin-trust/commit/ea19514431a2b0af1a38246b3f029b961a146d71))
+
+## [3.8.1](https://github.com/salesforcecli/plugin-trust/compare/3.8.0...3.8.1) (2026-05-02)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.10.6 to 4.11.0 ([6e65192](https://github.com/salesforcecli/plugin-trust/commit/6e65192a3b0c5f43a293012655ce89efff9025fe))
+
+# [3.8.0](https://github.com/salesforcecli/plugin-trust/compare/3.7.127...3.8.0) (2026-04-30)
+
+### Bug Fixes
+
+- adds fallback when not only is allowlist file missing, but part of the base dir as well ([e5f7dd2](https://github.com/salesforcecli/plugin-trust/commit/e5f7dd277e814b6fe0eeebdf5618293615d6f05d))
+- code review feedback from [@jfeingold35](https://github.com/jfeingold35) ([bab7c64](https://github.com/salesforcecli/plugin-trust/commit/bab7c6438394247123ecc221cf7715a8e41dda39))
+- code review feedback updates for @ZLeventer ([f1cd1a8](https://github.com/salesforcecli/plugin-trust/commit/f1cd1a816d83f433be56eefb1399baaf7b2dafce))
+- slightly cleaned up robo feedback ([9169e62](https://github.com/salesforcecli/plugin-trust/commit/9169e62dfdbcb20f2e3017fad0101962e7799945))
+- thanks to [@jfeingold35](https://github.com/jfeingold35) for helping to triage mocha not recursively running all tests ([b263f7b](https://github.com/salesforcecli/plugin-trust/commit/b263f7bf5b9b639164dcf103b13c1234b84ef632))
+- update all allow-list references to allowlist ([3b34c18](https://github.com/salesforcecli/plugin-trust/commit/3b34c18d4665989358329239cfd966bc18c4617c))
+- updated AllowList shared file to use class instead of function ([0678856](https://github.com/salesforcecli/plugin-trust/commit/067885681b07c448a8ff278bf302e5d3b659e95a))
+
+### Features
+
+- adds allow-list commands ([dc200fd](https://github.com/salesforcecli/plugin-trust/commit/dc200fde6aec984f334073ad258e19d093926b10))
+
+## [3.7.127](https://github.com/salesforcecli/plugin-trust/compare/3.7.126...3.7.127) (2026-04-29)
+
+### Bug Fixes
+
+- **deps:** bump basic-ftp from 5.2.2 to 5.3.1 ([b97c86e](https://github.com/salesforcecli/plugin-trust/commit/b97c86e47a829ecc10ba1f38ff8c7b685f3fbad1))
+
+## [3.7.126](https://github.com/salesforcecli/plugin-trust/compare/3.7.125...3.7.126) (2026-04-28)
+
+### Bug Fixes
+
+- updating dependency on npm ([517a8e8](https://github.com/salesforcecli/plugin-trust/commit/517a8e874af11e3ed3f86cdda7661a06c5b9c832))
+
+## [3.7.125](https://github.com/salesforcecli/plugin-trust/compare/3.7.124...3.7.125) (2026-04-26)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 3.4.121 to 3.4.123 ([e3920ec](https://github.com/salesforcecli/plugin-trust/commit/e3920ec6b78a7ddf35c60cc54dca85bf4f419568))
+
+## [3.7.124](https://github.com/salesforcecli/plugin-trust/compare/3.7.123...3.7.124) (2026-04-12)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 3.4.115 to 3.4.121 ([3b71a77](https://github.com/salesforcecli/plugin-trust/commit/3b71a77cdcfd61c369f822114cc309ad101b24aa))
+
+## [3.7.123](https://github.com/salesforcecli/plugin-trust/compare/3.7.122...3.7.123) (2026-04-11)
+
+### Bug Fixes
+
+- **deps:** bump npm from 10.9.4 to 10.9.8 ([a09f3fe](https://github.com/salesforcecli/plugin-trust/commit/a09f3fe0cfe7c43307071473003268d5e99981a8))
+
+## [3.7.122](https://github.com/salesforcecli/plugin-trust/compare/3.7.121...3.7.122) (2026-04-11)
+
+### Bug Fixes
+
+- **deps:** bump basic-ftp from 5.1.0 to 5.2.2 ([ae9a1e7](https://github.com/salesforcecli/plugin-trust/commit/ae9a1e7cc26c6eeecf079bfde395fefd4e9879b0))
+
+## [3.7.121](https://github.com/salesforcecli/plugin-trust/compare/3.7.120...3.7.121) (2026-04-05)
+
+### Bug Fixes
+
+- **deps:** bump lodash from 4.17.23 to 4.18.1 ([8c95ee6](https://github.com/salesforcecli/plugin-trust/commit/8c95ee6c2ace44e55d16a054f61e0b10d7762107))
+
+## [3.7.120](https://github.com/salesforcecli/plugin-trust/compare/3.7.119...3.7.120) (2026-04-04)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 8.27.1 to 8.28.1 ([4a15831](https://github.com/salesforcecli/plugin-trust/commit/4a15831a1ba13771b42e440c34578de4db7fb032))
+
+## [3.7.119](https://github.com/salesforcecli/plugin-trust/compare/3.7.118...3.7.119) (2026-03-29)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/kit from 3.2.4 to 3.2.6 ([1116496](https://github.com/salesforcecli/plugin-trust/commit/1116496a7e236574b2eafb535f1f43a5cb8839d5))
+
+## [3.7.118](https://github.com/salesforcecli/plugin-trust/compare/3.7.117...3.7.118) (2026-03-28)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 3.4.114 to 3.4.115 ([0ddaa2a](https://github.com/salesforcecli/plugin-trust/commit/0ddaa2a6244444f5d1a13a8ed04a0720c228f8f1))
+
+## [3.7.117](https://github.com/salesforcecli/plugin-trust/compare/3.7.116...3.7.117) (2026-03-27)
+
+### Bug Fixes
+
+- **deps:** bump handlebars from 4.7.8 to 4.7.9 ([d874ec4](https://github.com/salesforcecli/plugin-trust/commit/d874ec49a46289a88de18fc64b417ca76a529438))
+
+## [3.7.116](https://github.com/salesforcecli/plugin-trust/compare/3.7.115...3.7.116) (2026-03-25)
+
+### Bug Fixes
+
+- **deps:** bump flatted from 3.3.3 to 3.4.2 ([6428cbc](https://github.com/salesforcecli/plugin-trust/commit/6428cbce05fa092317e55831221106dcb6c00c88))
+
+## [3.7.115](https://github.com/salesforcecli/plugin-trust/compare/3.7.114...3.7.115) (2026-03-25)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 3.4.74 to 3.4.93 ([1ed6b03](https://github.com/salesforcecli/plugin-trust/commit/1ed6b036be7f8ceaece33a00f9fad2700de8ba27))
+
+## [3.7.114](https://github.com/salesforcecli/plugin-trust/compare/3.7.113...3.7.114) (2026-02-18)
+
+### Bug Fixes
+
+- bump deps and update licenses ([dfd7466](https://github.com/salesforcecli/plugin-trust/commit/dfd74663b25a775eef73fe45fb659d909dbc9c7e))
+- enable PDP events via o11y for PFT ([78e9590](https://github.com/salesforcecli/plugin-trust/commit/78e959058490084db30e391852b0ece440337e92))
+
 ## [3.7.113](https://github.com/salesforcecli/plugin-trust/compare/3.7.112...3.7.113) (2025-07-27)
 
 ### Bug Fixes

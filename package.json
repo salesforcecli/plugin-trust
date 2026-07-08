@@ -1,39 +1,43 @@
 {
   "name": "@salesforce/plugin-trust",
   "description": "validate a digital signature for a npm package",
-  "version": "3.7.113",
+  "version": "3.8.33",
   "author": "Salesforce",
   "bin": {
     "sf-trust": "bin/dev"
   },
   "bugs": "https://github.com/forcedotcom/cli/issues",
+  "enableO11y": true,
+  "o11yUploadEndpoint": "https://794testsite.my.site.com/byolwr/webruntime/log/metrics",
   "dependencies": {
     "@oclif/core": "^4",
-    "@salesforce/core": "^8.18.1",
-    "@salesforce/kit": "^3.2.0",
-    "@salesforce/plugin-info": "^3.4.74",
+    "@salesforce/core": "^8.29.1",
+    "@salesforce/kit": "^3.2.6",
+    "@salesforce/plugin-info": "^3.4.144",
     "@salesforce/sf-plugins-core": "^12",
+    "cross-spawn": "^7.0.6",
     "got": "^13.0.0",
-    "npm": "^10.9.3",
+    "npm": "^11.18.0",
     "npm-run-path": "^4.0.1",
     "proxy-agent": "^6.5.0",
-    "semver": "^7.7.2",
-    "shelljs": "0.8.5"
+    "semver": "^7.8.2",
+    "which": "^5"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^5.3.4",
-    "@salesforce/cli-plugins-testkit": "^5.3.39",
-    "@salesforce/dev-scripts": "^11.0.2",
-    "@salesforce/plugin-command-reference": "^3.1.60",
-    "@salesforce/plugin-telemetry": "^3.6.71",
-    "@salesforce/ts-sinon": "^1.4.30",
-    "@types/shelljs": "^0.8.16",
+    "@oclif/plugin-command-snapshot": "^5.3.28",
+    "@salesforce/cli-plugins-testkit": "^5.3.59",
+    "@salesforce/dev-scripts": "^11.0.4",
+    "@salesforce/plugin-command-reference": "^3.1.116",
+    "@salesforce/plugin-telemetry": "^3.8.27",
+    "@salesforce/ts-sinon": "^1.4.36",
+    "@types/cross-spawn": "^6.0.6",
     "@types/sinon-chai": "^3.2.12",
-    "eslint-plugin-sf-plugin": "^1.20.29",
-    "oclif": "^4.22.4",
+    "@types/which": "^3.0.4",
+    "eslint-plugin-sf-plugin": "^1.20.33",
+    "oclif": "^4.23.24",
     "sinon-chai": "^3.7.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   },
   "config": {},
   "engines": {
@@ -75,7 +79,23 @@
         "description": "list installed plugins",
         "subtopics": {
           "trust": {
-            "description": "validate a digital signature for a npm package"
+            "description": "validate a digital signature for a npm package",
+            "subtopics": {
+              "allowlist": {
+                "description": "manage the unsigned plugin allowlist",
+                "subtopics": {
+                  "add": {
+                    "description": "adds to the allowlist"
+                  },
+                  "remove": {
+                    "description": "removes from the allowlist"
+                  },
+                  "list": {
+                    "description": "lists plugins in the allowlist"
+                  }
+                }
+              }
+            }
           }
         }
       }

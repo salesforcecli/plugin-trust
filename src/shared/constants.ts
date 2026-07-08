@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-import { SfError } from '@salesforce/core';
-
 /**
- * convenience method for doing something SfError doesn't allow
- * (explicitly setting the error name)
+ * @description Plugins either have to be digitally signed & verified in order to be installed without being prompted, _or_ you can opt into the unsigned allowlist,
+which gets saved to this filename within the CLI's local install folder. **This file name should not be updated**, because that would in turn
+lead to unspecified behavior(s) downstream
  */
-export const setErrorName = (err: SfError, name: string): SfError => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore override readonly .name field
-  // eslint-disable-next-line no-param-reassign
-  err.name = name;
-  return err;
-};
+export const ALLOW_LIST_FILENAME = 'unsignedPluginAllowList.json';

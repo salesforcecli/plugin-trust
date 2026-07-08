@@ -9,6 +9,30 @@
   },
   {
     "alias": [],
+    "command": "plugins:trust:allowlist:add",
+    "flagAliases": [],
+    "flagChars": ["n"],
+    "flags": ["flags-dir", "json", "name"],
+    "plugin": "@salesforce/plugin-trust"
+  },
+  {
+    "alias": [],
+    "command": "plugins:trust:allowlist:list",
+    "flagAliases": [],
+    "flagChars": [],
+    "flags": ["flags-dir", "json"],
+    "plugin": "@salesforce/plugin-trust"
+  },
+  {
+    "alias": [],
+    "command": "plugins:trust:allowlist:remove",
+    "flagAliases": [],
+    "flagChars": ["n"],
+    "flags": ["flags-dir", "json", "name"],
+    "plugin": "@salesforce/plugin-trust"
+  },
+  {
+    "alias": [],
     "command": "plugins:trust:verify",
     "flagAliases": [],
     "flagChars": ["n", "r"],

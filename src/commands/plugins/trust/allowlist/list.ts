@@ -16,26 +16,31 @@
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { NpmCommand } from '../../shared/npmCommand.js';
+
+import { AllowList, type AllowListResult } from '../../../../shared/allowlist.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-trust', 'node.info');
+const messages = Messages.loadMessages('@salesforce/plugin-trust', 'allowlist.list');
 
-export type NodeInfoResult = {
-  nodePath: string;
-  npxPath: string;
-};
-
-export default class NodeInfo extends SfCommand<NodeInfoResult> {
+export class AllowListList extends SfCommand<AllowListResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
-  public static readonly hidden = true;
+  public static readonly examples = messages.getMessages('examples');
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  public async run(): Promise<NodeInfoResult> {
-    return {
-      nodePath: NpmCommand.findNode(this.config.root),
-      npxPath: NpmCommand.npxCli(),
-    };
+  public async run(): Promise<AllowListResult> {
+    const existingAllowList = await new AllowList(this.config.configDir).get();
+
+    if (existingAllowList.length === 0) {
+      this.log(messages.getMessage('NoPluginsAllowListed'));
+      return [];
+    }
+
+    const results: AllowListResult = existingAllowList.map((plugin) => ({ Plugin: plugin }));
+
+    this.table({
+      data: results,
+    });
+
+    return results;
   }
 }
