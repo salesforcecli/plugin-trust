@@ -1,3 +1,9 @@
+## [3.8.36](https://github.com/salesforcecli/plugin-trust/compare/3.8.35...3.8.36) (2026-07-16)
+
+### Bug Fixes
+
+- **deps:** bump websocket-driver from 0.7.4 to 0.7.5 ([2a734a0](https://github.com/salesforcecli/plugin-trust/commit/2a734a07916559b00526df1b2ff0b89cbdba688c))
+
 ## [3.8.35](https://github.com/salesforcecli/plugin-trust/compare/3.8.34...3.8.35) (2026-07-12)
 
 ### Bug Fixes
