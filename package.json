@@ -65,9 +65,9 @@
     "hooks": {
       "sf-doctor-@salesforce/plugin-trust": "./lib/hooks/diagnostics",
       "plugins:preinstall:verify:signature": [
-        "./lib/hooks/verifyInstallSignature.js"
+        "./lib/hooks/verifyInstallSignature"
       ],
-      "jit_plugin_not_installed": "./lib/hooks/jitPluginInstall.js"
+      "jit_plugin_not_installed": "./lib/hooks/jitPluginInstall"
     },
     "devPlugins": [
       "@oclif/plugin-help",
