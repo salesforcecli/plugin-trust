@@ -1,3 +1,9 @@
+## [3.8.39](https://github.com/salesforcecli/plugin-trust/compare/3.8.38...3.8.39) (2026-07-24)
+
+### Bug Fixes
+
+- **deps:** bump linkify-it from 5.0.1 to 5.0.2 ([35566f9](https://github.com/salesforcecli/plugin-trust/commit/35566f982fab6edf3d70876ad339aab9a550a348))
+
 ## [3.8.38](https://github.com/salesforcecli/plugin-trust/compare/3.8.37...3.8.38) (2026-07-19)
 
 ### Bug Fixes
