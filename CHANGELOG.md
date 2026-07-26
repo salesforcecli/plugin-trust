@@ -1,3 +1,9 @@
+## [3.8.42](https://github.com/salesforcecli/plugin-trust/compare/3.8.41...3.8.42) (2026-07-26)
+
+### Bug Fixes
+
+- **deps:** bump tar from 7.5.19 to 7.5.22 ([e1c7a99](https://github.com/salesforcecli/plugin-trust/commit/e1c7a996fb98e41dcc5dae09063a2f4423cc5fe9))
+
 ## [3.8.41](https://github.com/salesforcecli/plugin-trust/compare/3.8.40...3.8.41) (2026-07-25)
 
 ### Bug Fixes
