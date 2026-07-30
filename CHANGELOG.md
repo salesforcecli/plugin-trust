@@ -1,3 +1,11 @@
+# [4.0.0](https://github.com/salesforcecli/plugin-trust/compare/3.8.43...4.0.0) (2026-07-30)
+
+- feat!: require Node >=22, drop EOL Node versions @W-23480655@ ([a319e0b](https://github.com/salesforcecli/plugin-trust/commit/a319e0b79d4fae9e40babe9c610fe32a203a9d0c))
+
+### BREAKING CHANGES
+
+- engines.node raised to >=22.0.0, dropping support for Node 18 and 20
+
 ## [3.8.43](https://github.com/salesforcecli/plugin-trust/compare/3.8.42...3.8.43) (2026-07-26)
 
 ### Bug Fixes
