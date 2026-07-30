@@ -1,3 +1,9 @@
+## [4.0.1](https://github.com/salesforcecli/plugin-trust/compare/4.0.0...4.0.1) (2026-07-30)
+
+### Bug Fixes
+
+- bump plugin-info ([#1318](https://github.com/salesforcecli/plugin-trust/issues/1318)) ([3e54824](https://github.com/salesforcecli/plugin-trust/commit/3e54824b834a5caded2bcedeae94523fc288aad5))
+
 # [4.0.0](https://github.com/salesforcecli/plugin-trust/compare/3.8.43...4.0.0) (2026-07-30)
 
 - feat!: require Node >=22, drop EOL Node versions @W-23480655@ ([a319e0b](https://github.com/salesforcecli/plugin-trust/commit/a319e0b79d4fae9e40babe9c610fe32a203a9d0c))
