@@ -1,3 +1,9 @@
+## [4.0.3](https://github.com/salesforcecli/plugin-trust/compare/4.0.2...4.0.3) (2026-08-05)
+
+### Bug Fixes
+
+- **deps:** bump ip-address from 10.1.0 to 10.4.0 ([5993fbf](https://github.com/salesforcecli/plugin-trust/commit/5993fbf26377220b94441ee265af1a33c708b82f))
+
 ## [4.0.2](https://github.com/salesforcecli/plugin-trust/compare/4.0.1...4.0.2) (2026-08-02)
 
 ### Bug Fixes
