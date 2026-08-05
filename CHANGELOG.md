@@ -1,3 +1,9 @@
+## [4.0.4](https://github.com/salesforcecli/plugin-trust/compare/4.0.3...4.0.4) (2026-08-05)
+
+### Bug Fixes
+
+- **deps:** bump fast-uri from 3.1.4 to 3.1.5 ([984adc4](https://github.com/salesforcecli/plugin-trust/commit/984adc414e119e513d3c9ed908727df729cfb726))
+
 ## [4.0.3](https://github.com/salesforcecli/plugin-trust/compare/4.0.2...4.0.3) (2026-08-05)
 
 ### Bug Fixes
