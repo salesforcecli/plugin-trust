@@ -1,3 +1,9 @@
+## [4.0.6](https://github.com/salesforcecli/plugin-trust/compare/4.0.5...4.0.6) (2026-08-09)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 9.0.0 to 9.1.0 ([2ba8633](https://github.com/salesforcecli/plugin-trust/commit/2ba86333aa6a8328754d712fb78a297ec68d3be4))
+
 ## [4.0.5](https://github.com/salesforcecli/plugin-trust/compare/4.0.4...4.0.5) (2026-08-08)
 
 ### Bug Fixes
