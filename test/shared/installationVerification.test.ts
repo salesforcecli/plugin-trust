@@ -579,7 +579,7 @@ describe('InstallationVerification Tests', () => {
             verified: true,
           };
         },
-      } as Verifier;
+      };
 
       vConfig.log = (_message) => {
         message = _message;
@@ -601,7 +601,7 @@ describe('InstallationVerification Tests', () => {
             verified: false,
           };
         },
-      } as Verifier;
+      };
 
       try {
         return await doInstallationCodeSigningVerification(new Ux())({}, BLANK_PLUGIN, vConfig);
@@ -621,7 +621,7 @@ describe('InstallationVerification Tests', () => {
         async isAllowListed() {
           return false;
         },
-      } as Verifier;
+      };
 
       stubMethod(sandbox, prompts, 'confirm').resolves(false);
 
@@ -644,7 +644,7 @@ describe('InstallationVerification Tests', () => {
         async isAllowListed() {
           return false;
         },
-      } as Verifier;
+      };
 
       stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
@@ -667,7 +667,7 @@ describe('InstallationVerification Tests', () => {
         async isAllowListed() {
           return false;
         },
-      } as Verifier;
+      };
 
       stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
@@ -692,7 +692,7 @@ describe('InstallationVerification Tests', () => {
         async isAllowListed() {
           return false;
         },
-      } as Verifier;
+      };
 
       stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
@@ -717,7 +717,7 @@ describe('InstallationVerification Tests', () => {
         async isAllowListed() {
           return false;
         },
-      } as Verifier;
+      };
 
       stubMethod(sandbox, prompts, 'confirm').resolves(true);
 
