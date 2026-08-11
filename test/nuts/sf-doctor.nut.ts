@@ -51,7 +51,7 @@ describe('sf doctor', () => {
     await session?.zip(undefined, 'artifacts');
     try {
       await session?.clean();
-    } catch (error) {
+    } catch {
       // ignore
     }
   });

@@ -30,7 +30,7 @@ import { type NpmName, parseNpmName } from '../shared/npmName.js';
 
 export const hook: Hook.PluginsPreinstall = async function (options) {
   const ux = new Ux();
-  if (options.plugin && options.plugin.type === 'npm') {
+  if (options.plugin?.type === 'npm') {
     const logger = await Logger.child('verifyInstallSignature');
     const plugin = options.plugin;
 

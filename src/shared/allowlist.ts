@@ -67,7 +67,7 @@ export class AllowList {
   async #createAllowlistPath(): Promise<void> {
     try {
       await fs.promises.stat(this.#baseDir);
-    } catch (_) {
+    } catch {
       // we will try exactly once to blindly create the full directory. any error here will get bubbled back up to the caller
       await fs.promises.mkdir(this.#baseDir, { recursive: true });
     }
