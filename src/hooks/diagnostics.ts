@@ -114,13 +114,13 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
           // timeout after 5000ms, error
           if (!results || results.time > 5000) {
             // to trigger the catch/fail below
-            throw Error;
+            throw new Error('ping timeout or no response');
           }
           await Lifecycle.getInstance().emit('Doctor:diagnostic', {
             testName: `[${pluginName}] can ping: ${url}`,
             status: 'pass',
           });
-        } catch (e) {
+        } catch {
           await Lifecycle.getInstance().emit('Doctor:diagnostic', {
             testName: `[${pluginName}] can't ping: ${url}`,
             status: 'fail',

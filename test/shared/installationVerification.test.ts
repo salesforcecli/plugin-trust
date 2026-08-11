@@ -32,7 +32,6 @@ import {
   getNpmRegistry,
   InstallationVerification,
   VerificationConfig,
-  Verifier,
 } from '../../src/shared/installationVerification.js';
 import { NpmMeta, NpmModule, NpmShowResults } from '../../src/shared/npmCommand.js';
 import { type NpmName, parseNpmName } from '../../src/shared/npmName.js';

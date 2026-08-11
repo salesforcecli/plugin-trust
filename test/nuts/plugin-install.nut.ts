@@ -58,7 +58,7 @@ describe('plugins:install commands', () => {
     await session?.zip(undefined, 'artifacts');
     try {
       await session?.clean();
-    } catch (error) {
+    } catch {
       // ignore
     }
   });

@@ -41,7 +41,7 @@ describe('node info command', () => {
     await session?.zip(undefined, 'artifacts');
     try {
       await session?.clean();
-    } catch (error) {
+    } catch {
       // ignore
     }
   });

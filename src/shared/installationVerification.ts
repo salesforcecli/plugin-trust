@@ -443,9 +443,7 @@ export class InstallationVerification implements Verifier {
   }
 
   private async getLogger(): Promise<Logger> {
-    if (!this.logger) {
-      this.logger = await Logger.child('InstallationVerification');
-    }
+    this.logger ??= await Logger.child('InstallationVerification');
     return this.logger;
   }
 }
@@ -502,7 +500,7 @@ export const doInstallationCodeSigningVerification =
       if (err instanceof Error) {
         if (err.name === 'NotSigned' || err.message?.includes('Response code 403')) {
           if (!verificationConfig.verifier) {
-            throw new Error('VerificationConfig.verifier is not set.');
+            throw new Error('VerificationConfig.verifier is not set.', { cause: err });
           }
           return doPrompt(ux)(plugin.plugin);
         } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
