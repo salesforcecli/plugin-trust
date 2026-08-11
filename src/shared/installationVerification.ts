@@ -219,7 +219,7 @@ export class InstallationVerification implements Verifier {
    *
    * @param _pluginName the published plugin name
    */
-  public setPluginNpmName(_pluginName?: NpmName | undefined): InstallationVerification {
+  public setPluginNpmName(_pluginName?: NpmName  ): InstallationVerification {
     if (_pluginName) {
       this.pluginNpmName = _pluginName;
       return this;
@@ -453,7 +453,7 @@ export class InstallationVerification implements Verifier {
 export class VerificationConfig {
   public verifier?: Verifier;
   private ux = new Ux();
-  // eslint-disable-next-line class-methods-use-this
+   
   public log(message: string): void {
     this.ux.log(message);
   }
