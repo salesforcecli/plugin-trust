@@ -1,3 +1,9 @@
+## [4.0.8](https://github.com/salesforcecli/plugin-trust/compare/4.0.7...4.0.8) (2026-08-12)
+
+### Bug Fixes
+
+- add @types/semver for ESLint 10 type-aware linting @W-23474629@ ([e78e45d](https://github.com/salesforcecli/plugin-trust/commit/e78e45d6971e7070cabac75dbd1ad00be74d208d))
+
 ## [4.0.7](https://github.com/salesforcecli/plugin-trust/compare/4.0.6...4.0.7) (2026-08-09)
 
 ### Bug Fixes
