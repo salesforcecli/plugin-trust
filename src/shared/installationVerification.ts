@@ -219,7 +219,7 @@ export class InstallationVerification implements Verifier {
    *
    * @param _pluginName the published plugin name
    */
-  public setPluginNpmName(_pluginName?: NpmName | undefined): InstallationVerification {
+  public setPluginNpmName(_pluginName?: NpmName  ): InstallationVerification {
     if (_pluginName) {
       this.pluginNpmName = _pluginName;
       return this;
@@ -443,9 +443,7 @@ export class InstallationVerification implements Verifier {
   }
 
   private async getLogger(): Promise<Logger> {
-    if (!this.logger) {
-      this.logger = await Logger.child('InstallationVerification');
-    }
+    this.logger ??= await Logger.child('InstallationVerification');
     return this.logger;
   }
 }
@@ -453,7 +451,7 @@ export class InstallationVerification implements Verifier {
 export class VerificationConfig {
   public verifier?: Verifier;
   private ux = new Ux();
-  // eslint-disable-next-line class-methods-use-this
+   
   public log(message: string): void {
     this.ux.log(message);
   }
@@ -502,7 +500,7 @@ export const doInstallationCodeSigningVerification =
       if (err instanceof Error) {
         if (err.name === 'NotSigned' || err.message?.includes('Response code 403')) {
           if (!verificationConfig.verifier) {
-            throw new Error('VerificationConfig.verifier is not set.');
+            throw new Error('VerificationConfig.verifier is not set.', { cause: err });
           }
           return doPrompt(ux)(plugin.plugin);
         } else if (err.name === 'PluginNotFound' || err.name === 'PluginAccessDenied') {
