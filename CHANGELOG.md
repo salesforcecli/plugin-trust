@@ -1,3 +1,9 @@
+## [4.0.10](https://github.com/salesforcecli/plugin-trust/compare/4.0.9...4.0.10) (2026-08-21)
+
+### Bug Fixes
+
+- update plugin-telemetry to fix TypeScript issue ([e7d69ab](https://github.com/salesforcecli/plugin-trust/commit/e7d69ab2cdd2903f02c85035140a9ea280a31ef7))
+
 ## [4.0.9](https://github.com/salesforcecli/plugin-trust/compare/4.0.8...4.0.9) (2026-08-16)
 
 ### Bug Fixes
