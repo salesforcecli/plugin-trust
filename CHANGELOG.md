@@ -1,3 +1,9 @@
+## [4.0.11](https://github.com/salesforcecli/plugin-trust/compare/4.0.10...4.0.11) (2026-09-01)
+
+### Bug Fixes
+
+- upgrade @oclif/core to v5 @W-23512455@ ([#1343](https://github.com/salesforcecli/plugin-trust/issues/1343)) ([1cd29a2](https://github.com/salesforcecli/plugin-trust/commit/1cd29a24f4001db9ac3e05874e38f3fa4dc00447))
+
 ## [4.0.10](https://github.com/salesforcecli/plugin-trust/compare/4.0.9...4.0.10) (2026-08-21)
 
 ### Bug Fixes
