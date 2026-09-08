@@ -1,3 +1,9 @@
+## [4.0.12](https://github.com/salesforcecli/plugin-trust/compare/4.0.11...4.0.12) (2026-09-08)
+
+### Bug Fixes
+
+- bump npm, fix bin path ([ca37d5a](https://github.com/salesforcecli/plugin-trust/commit/ca37d5a70116693de8aa86fc62749f414e0b386a))
+
 ## [4.0.11](https://github.com/salesforcecli/plugin-trust/compare/4.0.10...4.0.11) (2026-09-01)
 
 ### Bug Fixes
