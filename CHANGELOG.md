@@ -1,3 +1,9 @@
+## [4.0.17](https://github.com/salesforcecli/plugin-trust/compare/4.0.16...4.0.17) (2026-10-09)
+
+### Bug Fixes
+
+- **deps:** bump source-map-js from 1.2.1 to 1.2.2 ([04dfcfc](https://github.com/salesforcecli/plugin-trust/commit/04dfcfc7f900293475671714d11e03e6ca600e4d))
+
 ## [4.0.16](https://github.com/salesforcecli/plugin-trust/compare/4.0.15...4.0.16) (2026-10-09)
 
 ### Bug Fixes
