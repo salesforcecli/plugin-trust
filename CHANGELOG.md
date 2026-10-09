@@ -1,3 +1,9 @@
+## [4.0.16](https://github.com/salesforcecli/plugin-trust/compare/4.0.15...4.0.16) (2026-10-09)
+
+### Bug Fixes
+
+- **deps:** bump fast-copy from 3.0.2 to 3.1.0 ([b099ec2](https://github.com/salesforcecli/plugin-trust/commit/b099ec27c2a6f3e2d26ca7da83b7b2614d310d59))
+
 ## [4.0.15](https://github.com/salesforcecli/plugin-trust/compare/4.0.14...4.0.15) (2026-10-09)
 
 ### Bug Fixes
