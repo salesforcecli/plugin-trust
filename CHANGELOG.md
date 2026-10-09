@@ -1,3 +1,10 @@
+## [4.0.14](https://github.com/salesforcecli/plugin-trust/compare/4.0.13...4.0.14) (2026-10-09)
+
+### Bug Fixes
+
+- **deps:** bump fast-uri from 3.1.7 to 3.1.8 ([fd9780a](https://github.com/salesforcecli/plugin-trust/commit/fd9780adaccb94e8fb1f5bc06a186f1c322b63c6))
+- **deps:** bump postcss-selector-parser from 7.1.1 to 7.1.5 ([3beea86](https://github.com/salesforcecli/plugin-trust/commit/3beea860f35ea8c256e47b16e96c41bc97960049))
+
 ## [4.0.13](https://github.com/salesforcecli/plugin-trust/compare/4.0.12...4.0.13) (2026-10-02)
 
 ### Bug Fixes
