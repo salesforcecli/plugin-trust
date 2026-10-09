@@ -1,3 +1,9 @@
+## [4.0.15](https://github.com/salesforcecli/plugin-trust/compare/4.0.14...4.0.15) (2026-10-09)
+
+### Bug Fixes
+
+- **deps:** bump postcss-selector-parser from 7.1.5 to 7.1.6 ([80b566a](https://github.com/salesforcecli/plugin-trust/commit/80b566a58551e3b8c3258304f8059514dda451d4))
+
 ## [4.0.14](https://github.com/salesforcecli/plugin-trust/compare/4.0.13...4.0.14) (2026-10-09)
 
 ### Bug Fixes
