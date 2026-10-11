@@ -1,3 +1,9 @@
+## [4.0.20](https://github.com/salesforcecli/plugin-trust/compare/4.0.19...4.0.20) (2026-10-11)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/kit from 4.0.0 to 4.0.1 ([8261c47](https://github.com/salesforcecli/plugin-trust/commit/8261c47ada7c5150bf2f1f3868dce1e879795d2b))
+
 ## [4.0.19](https://github.com/salesforcecli/plugin-trust/compare/4.0.18...4.0.19) (2026-10-10)
 
 ### Bug Fixes
