@@ -75,7 +75,12 @@ export class NpmCommand {
   public static runNpmCmd(cmd: string, options = {} as NpmCommandOptions): NpmCommandResult {
     const nodeExecutable = NpmCommand.findNode(options.cliRoot);
     const npmCli = NpmCommand.npmCli();
-    const args = [npmCli, ...cmd.split(/\s+/), ...(options.registry ? [`--registry=${options.registry}`] : [])];
+    const args = [
+      npmCli,
+      ...cmd.split(/\s+/),
+      ...(options.registry ? [`--registry=${options.registry}`] : []),
+      '--no-min-release-age',
+    ];
     const result = crossSpawn.sync(nodeExecutable, args, {
       cwd: options.cwd,
       env: npmRunPath.env({ env: process.env }),

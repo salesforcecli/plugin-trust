@@ -83,17 +83,21 @@ const registryCheck = async (options: { doctor: SfDoctor }): Promise<void> => {
     }
   }
 
-  const config = npm.run('config get registry').stdout.trim();
   let sanitizedConfig: string | undefined;
-  if (config) {
-    sanitizedConfig = sanitizeRegistryUrl(config);
-    if (sanitizedConfig) {
-      options.doctor.addSuggestion(`using npm registry ${sanitizedConfig} from npm config`);
-    } else {
-      options.doctor.addSuggestion(
-        `WARNING: npm config registry contains invalid or potentially unsafe URL: ${config}`
-      );
+  try {
+    const config = npm.run('config get registry').stdout.trim();
+    if (config) {
+      sanitizedConfig = sanitizeRegistryUrl(config);
+      if (sanitizedConfig) {
+        options.doctor.addSuggestion(`using npm registry ${sanitizedConfig} from npm config`);
+      } else {
+        options.doctor.addSuggestion(
+          `WARNING: npm config registry contains invalid or potentially unsafe URL: ${config}`
+        );
+      }
     }
+  } catch {
+    // npm itself may fail when npm_config_registry is set to an invalid URL
   }
 
   await Promise.all(
