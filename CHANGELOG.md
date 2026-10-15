@@ -1,3 +1,9 @@
+## [4.0.21](https://github.com/salesforcecli/plugin-trust/compare/4.0.20...4.0.21) (2026-10-15)
+
+### Bug Fixes
+
+- compile before NUTs and handle npm min-release-age ([8dd03f8](https://github.com/salesforcecli/plugin-trust/commit/8dd03f85556b48f83c982e19e81f634934259ac1))
+
 ## [4.0.20](https://github.com/salesforcecli/plugin-trust/compare/4.0.19...4.0.20) (2026-10-11)
 
 ### Bug Fixes
