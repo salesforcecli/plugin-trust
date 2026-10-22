@@ -1,3 +1,9 @@
+## [4.0.24](https://github.com/salesforcecli/plugin-trust/compare/4.0.23...4.0.24) (2026-10-22)
+
+### Bug Fixes
+
+- **deps:** bump markdown-it from 14.3.1 to 14.3.3 ([e69351d](https://github.com/salesforcecli/plugin-trust/commit/e69351df95717d8e94d7ecca9160d4b84aa440fc))
+
 ## [4.0.23](https://github.com/salesforcecli/plugin-trust/compare/4.0.22...4.0.23) (2026-10-18)
 
 ### Bug Fixes
