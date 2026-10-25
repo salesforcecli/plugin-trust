@@ -1,3 +1,9 @@
+## [4.0.26](https://github.com/salesforcecli/plugin-trust/compare/4.0.25...4.0.26) (2026-10-25)
+
+### Bug Fixes
+
+- **deps:** bump zod from 4.3.6 to 4.6.7 ([b047536](https://github.com/salesforcecli/plugin-trust/commit/b04753697ba74cfa1a5a5d9df89a09ce006299ca))
+
 ## [4.0.25](https://github.com/salesforcecli/plugin-trust/compare/4.0.24...4.0.25) (2026-10-25)
 
 ### Bug Fixes
