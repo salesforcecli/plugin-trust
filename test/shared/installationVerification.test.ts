@@ -529,6 +529,102 @@ describe('InstallationVerification Tests', () => {
     }
   });
 
+  describe('signing host allow-list', () => {
+    const currentAllowAll = process.env.SFDX_ALLOW_ALL_SALESFORCE_CERTSIG_HOSTING;
+
+    beforeEach(() => {
+      delete process.env.SFDX_ALLOW_ALL_SALESFORCE_CERTSIG_HOSTING;
+    });
+
+    afterEach(() => {
+      if (currentAllowAll === undefined) {
+        delete process.env.SFDX_ALLOW_ALL_SALESFORCE_CERTSIG_HOSTING;
+      } else {
+        process.env.SFDX_ALLOW_ALL_SALESFORCE_CERTSIG_HOSTING = currentAllowAll;
+      }
+    });
+
+    const verifyWithHost = async (publicKeyUrl: string, signatureUrl: string): Promise<NpmMeta> => {
+      const npmMetadata: NpmShowResults = {
+        versions: ['1.0.0'],
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        sfdx: {
+          publicKeyUrl,
+          signatureUrl,
+        },
+        dist: {
+          tarball: 'https://registry.example.com/foo.tgz',
+        },
+      };
+
+      crossSpawnSyncStub = getCrossSpawnSyncStub(sandbox, npmMetadata);
+
+      gotStub.callsFake((opts: OptionsOfTextResponseBody) => {
+        const url = opts.url as string;
+
+        if (url.includes('sig')) {
+          return Promise.resolve({
+            statusCode: 200,
+            body: TEST_DATA_SIGNATURE,
+          });
+        } else if (url.includes('crt')) {
+          return Promise.resolve({
+            statusCode: 200,
+            body: CERTIFICATE,
+          });
+        } else {
+          throw new Error(`Unexpected test url - ${url}`);
+        }
+      });
+
+      stubMethod(sandbox, fs.promises, 'readFile').resolves();
+      stubMethod(sandbox, fs, 'createReadStream').returns(Readable.from([TEST_DATA]));
+      stubMethod(sandbox, fs.promises, 'rm').resolves();
+
+      return new InstallationVerification().setPluginNpmName(plugin).setConfig(config).verify();
+    };
+
+    const allowed = ['developer.salesforce.com', 'cli-assets.heroku.com'];
+    for (const host of allowed) {
+      it(`accepts https://${host}`, async () => {
+        const meta = await verifyWithHost(`https://${host}/crt`, `https://${host}/sig`);
+        expect(meta).to.have.property('verified', true);
+      });
+    }
+
+    const rejected = [
+      'http://cli-assets.heroku.com',
+      'http://developer.salesforce.com',
+      'https://cli-assets.heroku.com.evil.example',
+      'https://evil-cli-assets.heroku.com',
+      'https://heroku.com',
+      'https://www.heroku.com',
+    ];
+    for (const base of rejected) {
+      it(`rejects ${base} as the public key host`, async () => {
+        try {
+          await verifyWithHost(`${base}/crt`, 'https://developer.salesforce.com/sig');
+          throw new Error("This shouldn't happen. Failure expected");
+        } catch (err) {
+          assert(err instanceof Error);
+          expect(err).to.have.property('name', 'UnexpectedHost');
+        }
+      });
+
+      it(`rejects ${base} as the signature host`, async () => {
+        try {
+          await verifyWithHost('https://developer.salesforce.com/crt', `${base}/sig`);
+          throw new Error("This shouldn't happen. Failure expected");
+        } catch (err) {
+          assert(err instanceof Error);
+          expect(err).to.have.property('name', 'UnexpectedHost');
+        }
+      });
+    }
+  });
+
   describe('isAllowListed', () => {
     it('steel thread with scope', async () => {
       const TEST_VALUE1 = '@salesforce/FOO';
