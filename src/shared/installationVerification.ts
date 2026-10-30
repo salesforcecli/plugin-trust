@@ -87,6 +87,8 @@ class CodeVerifierInfo {
   }
 }
 
+const ALLOWED_SIGNING_HOSTNAMES = ['developer.salesforce.com', 'cli-assets.heroku.com'];
+
 function validSalesforceHostname(url: string | null): boolean {
   if (!url) {
     return false;
@@ -99,7 +101,7 @@ function validSalesforceHostname(url: string | null): boolean {
     return (
       parsedUrl.protocol === 'https:' &&
       Boolean(parsedUrl.hostname) &&
-      parsedUrl.hostname === 'developer.salesforce.com'
+      ALLOWED_SIGNING_HOSTNAMES.includes(parsedUrl.hostname)
     );
   }
 }
