@@ -1840,10 +1840,10 @@
     semver "^7.8.1"
     which "^4"
 
-"@salesforce/plugin-telemetry@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-4.2.1.tgz#ba2808e01a3b67183181ba592e7c37410bb0cca1"
-  integrity sha512-XPSsCFWID9fvWH/+NJEyLW8SVOYhOGzikykVImzEeH+uNHWq3FAJfbj2GeWZmZHUR4AeRxoUcD0tauWe1cpUsg==
+"@salesforce/plugin-telemetry@^4.2.4":
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-telemetry/-/plugin-telemetry-4.2.4.tgz#6229bfea8610e879c247e25b738fdf539b3a7a3d"
+  integrity sha512-qrdqC5AJ8WDE/eELigr96X92ujJ10/uNW8Wik+h7lqdUiXTsPvugLHB5bNVeQbbAXYPxqoN9HfyYYcBNMu+adg==
   dependencies:
     "@oclif/core" "^5.0.0"
     "@salesforce/core" "^9.0.0"
