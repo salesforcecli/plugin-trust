@@ -1,3 +1,9 @@
+## [4.0.29](https://github.com/salesforcecli/plugin-trust/compare/4.0.28...4.0.29) (2026-11-01)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/plugin-info from 4.0.13 to 4.0.22 ([74a748f](https://github.com/salesforcecli/plugin-trust/commit/74a748fcaff76e3dd95d8170b24a0d01580633f9))
+
 ## [4.0.28](https://github.com/salesforcecli/plugin-trust/compare/4.0.27...4.0.28) (2026-10-26)
 
 ### Bug Fixes
