@@ -96,7 +96,10 @@ function validSalesforceHostname(url: string | null): boolean {
   const parsedUrl = new URL(url);
 
   if (process.env.SFDX_ALLOW_ALL_SALESFORCE_CERTSIG_HOSTING === 'true') {
-    return Boolean(parsedUrl.hostname) && /(\.salesforce\.com)$/.test(parsedUrl.hostname);
+    return (
+      Boolean(parsedUrl.hostname) &&
+      (ALLOWED_SIGNING_HOSTNAMES.includes(parsedUrl.hostname) || /(\.salesforce\.com)$/.test(parsedUrl.hostname))
+    );
   } else {
     return (
       parsedUrl.protocol === 'https:' &&

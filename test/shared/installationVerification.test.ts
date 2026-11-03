@@ -594,6 +594,34 @@ describe('InstallationVerification Tests', () => {
       });
     }
 
+    describe('with SFDX_ALLOW_ALL_SALESFORCE_CERTSIG_HOSTING=true', () => {
+      beforeEach(() => {
+        process.env.SFDX_ALLOW_ALL_SALESFORCE_CERTSIG_HOSTING = 'true';
+      });
+
+      for (const host of allowed) {
+        it(`still accepts https://${host}`, async () => {
+          const meta = await verifyWithHost(`https://${host}/crt`, `https://${host}/sig`);
+          expect(meta).to.have.property('verified', true);
+        });
+      }
+
+      it('still accepts other salesforce.com hosts', async () => {
+        const meta = await verifyWithHost('https://other.salesforce.com/crt', 'https://other.salesforce.com/sig');
+        expect(meta).to.have.property('verified', true);
+      });
+
+      it('does not widen to lookalike heroku hosts', async () => {
+        try {
+          await verifyWithHost('https://evil-cli-assets.heroku.com/crt', 'https://cli-assets.heroku.com/sig');
+          throw new Error("This shouldn't happen. Failure expected");
+        } catch (err) {
+          assert(err instanceof Error);
+          expect(err).to.have.property('name', 'UnexpectedHost');
+        }
+      });
+    });
+
     const rejected = [
       'http://cli-assets.heroku.com',
       'http://developer.salesforce.com',
