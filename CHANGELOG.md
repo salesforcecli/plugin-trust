@@ -1,3 +1,9 @@
+# [4.1.0](https://github.com/salesforcecli/plugin-trust/compare/4.0.29...4.1.0) (2026-11-03)
+
+### Features
+
+- allow cli-assets.heroku.com as a signing key host W-24716207 ([#1376](https://github.com/salesforcecli/plugin-trust/issues/1376)) ([ed193e6](https://github.com/salesforcecli/plugin-trust/commit/ed193e681eb0ef929050cd8ca6985aeba5a21d0a))
+
 ## [4.0.29](https://github.com/salesforcecli/plugin-trust/compare/4.0.28...4.0.29) (2026-11-01)
 
 ### Bug Fixes
