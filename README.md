@@ -26,8 +26,8 @@ If a plugin is not signed you then won't get a prompt confirming the installatio
 
 In addition to signature verification additional checks are in place to help ensure authenticity of plugins.
 
-DNS - The public key url and signature urls must have an https scheme and originate from developer.salesforce.com
-Cert Pinning - The digital fingerprint of developer.salesforce.com's certificate is validated. This helps prevent man in the middle attacks.
+Host - The public key url and signature urls must use an https scheme and originate from an approved host: `developer.salesforce.com` or `cli-assets.heroku.com`.
+Signature - The plugin tarball's RSA-SHA256 signature is verified against the public key served from the approved host.
 
 ## Install
 
