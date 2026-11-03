@@ -4,7 +4,7 @@
 
 Verify the authenticity of a plugin being installed with `plugins install`.
 
-This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli). For more information on the CLI, read the [getting started guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm).
+This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli). For more information on the CLI, read the [getting started guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm).
 
 We always recommend using the latest version of these commands bundled with the CLI, however, you can install a specific version or tag if needed.
 
@@ -32,7 +32,7 @@ Cert Pinning - The digital fingerprint of developer.salesforce.com's certificate
 ## Install
 
 ```bash
-sfdx plugins install trust@x.y.z
+sf plugins install trust@x.y.z
 ```
 
 ## Issues
@@ -52,24 +52,23 @@ To build the plugin locally, make sure to have yarn installed and run the follow
 git clone git@github.com:salesforcecli/plugin-trust
 
 # Install the dependencies and compile
-yarn install
-yarn build
+yarn && yarn build
 ```
 
 To use your plugin, run using the local `./bin/dev.js` or `./bin/dev.cmd` file.
 
 ```bash
 # Run using local run file.
-./bin/dev.js plugins:trust
+./bin/dev.js plugins trust
 ```
 
 There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
 
 ```bash
-# Link your plugin to the sfdx cli
-sfdx plugins link .
+# Link your plugin to the sf cli
+sf plugins link .
 # To verify
-sfdx plugins
+sf plugins
 ```
 
 ## Commands
