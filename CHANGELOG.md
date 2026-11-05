@@ -1,3 +1,9 @@
+## [4.1.1](https://github.com/salesforcecli/plugin-trust/compare/4.1.0...4.1.1) (2026-11-05)
+
+### Bug Fixes
+
+- bump npm for undici ([bc69462](https://github.com/salesforcecli/plugin-trust/commit/bc69462bfc96ec9749a8973c33a5e14124dc259a))
+
 # [4.1.0](https://github.com/salesforcecli/plugin-trust/compare/4.0.29...4.1.0) (2026-11-03)
 
 ### Features
