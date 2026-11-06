@@ -1,3 +1,9 @@
+## [4.1.2](https://github.com/salesforcecli/plugin-trust/compare/4.1.1...4.1.2) (2026-11-06)
+
+### Bug Fixes
+
+- **deps:** bump brace-expansion from 1.1.12 to 1.1.21 ([db3bbf5](https://github.com/salesforcecli/plugin-trust/commit/db3bbf50789b8c90b9b865aa5c1e9b493a83641f))
+
 ## [4.1.1](https://github.com/salesforcecli/plugin-trust/compare/4.1.0...4.1.1) (2026-11-05)
 
 ### Bug Fixes
