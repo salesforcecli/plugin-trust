@@ -115,7 +115,7 @@ EXAMPLES
     $ @salesforce/plugin-trust plugins trust allowlist add --name @scope/my-plugin --name another-plugin
 ```
 
-_See code: [src/commands/plugins/trust/allowlist/add.ts](https://github.com/salesforcecli/plugin-trust/blob/4.1.2/src/commands/plugins/trust/allowlist/add.ts)_
+_See code: [src/commands/plugins/trust/allowlist/add.ts](https://github.com/salesforcecli/plugin-trust/blob/4.1.3/src/commands/plugins/trust/allowlist/add.ts)_
 
 ## `@salesforce/plugin-trust plugins trust allowlist list`
 
@@ -143,7 +143,7 @@ EXAMPLES
     $ @salesforce/plugin-trust plugins trust allowlist list
 ```
 
-_See code: [src/commands/plugins/trust/allowlist/list.ts](https://github.com/salesforcecli/plugin-trust/blob/4.1.2/src/commands/plugins/trust/allowlist/list.ts)_
+_See code: [src/commands/plugins/trust/allowlist/list.ts](https://github.com/salesforcecli/plugin-trust/blob/4.1.3/src/commands/plugins/trust/allowlist/list.ts)_
 
 ## `@salesforce/plugin-trust plugins trust allowlist remove`
 
@@ -180,7 +180,7 @@ EXAMPLES
     $ @salesforce/plugin-trust plugins trust allowlist remove --name @scope/my-plugin --name another-plugin
 ```
 
-_See code: [src/commands/plugins/trust/allowlist/remove.ts](https://github.com/salesforcecli/plugin-trust/blob/4.1.2/src/commands/plugins/trust/allowlist/remove.ts)_
+_See code: [src/commands/plugins/trust/allowlist/remove.ts](https://github.com/salesforcecli/plugin-trust/blob/4.1.3/src/commands/plugins/trust/allowlist/remove.ts)_
 
 ## `@salesforce/plugin-trust plugins trust verify`
 
@@ -209,6 +209,6 @@ EXAMPLES
   $ @salesforce/plugin-trust plugins trust verify --npm @scope/npmName
 ```
 
-_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/4.1.2/src/commands/plugins/trust/verify.ts)_
+_See code: [src/commands/plugins/trust/verify.ts](https://github.com/salesforcecli/plugin-trust/blob/4.1.3/src/commands/plugins/trust/verify.ts)_
 
 <!-- commandsstop -->
