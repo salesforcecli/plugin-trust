@@ -29,7 +29,7 @@
     "@salesforce/dev-scripts": "^15.0.1",
     "@salesforce/plugin-command-reference": "^3.1.147",
     "@salesforce/plugin-telemetry": "^4.2.4",
-    "@salesforce/ts-sinon": "^1.4.39",
+    "@salesforce/ts-sinon": "^1.4.45",
     "@types/chai": "^4.3.17",
     "@types/cross-spawn": "^6.0.6",
     "@types/mocha": "^10.0.10",
