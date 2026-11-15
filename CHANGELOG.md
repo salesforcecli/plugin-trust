@@ -1,3 +1,9 @@
+## [4.1.5](https://github.com/salesforcecli/plugin-trust/compare/4.1.4...4.1.5) (2026-11-15)
+
+### Bug Fixes
+
+- **deps:** bump js-yaml from 3.14.2 to 3.15.2 ([d7b17b9](https://github.com/salesforcecli/plugin-trust/commit/d7b17b981e60c8f6dec28b84060ae47e4b08b809))
+
 ## [4.1.4](https://github.com/salesforcecli/plugin-trust/compare/4.1.3...4.1.4) (2026-11-08)
 
 ### Bug Fixes
