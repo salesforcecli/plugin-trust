@@ -1,3 +1,9 @@
+## [4.1.6](https://github.com/salesforcecli/plugin-trust/compare/4.1.5...4.1.6) (2026-11-15)
+
+### Bug Fixes
+
+- **deps:** bump picomatch from 2.3.1 to 2.3.2 ([023dd0a](https://github.com/salesforcecli/plugin-trust/commit/023dd0a71818f10e2f8abf07526e906f32a9fa96))
+
 ## [4.1.5](https://github.com/salesforcecli/plugin-trust/compare/4.1.4...4.1.5) (2026-11-15)
 
 ### Bug Fixes
